@@ -1,0 +1,18 @@
+{{#if withProps}}
+  interface
+  {{pascalCase name}}Props { // Add your props here }
+
+{{/if}}
+function
+{{pascalCase name}}({{#if withProps}}props: {{pascalCase name}}Props{{/if}}) {
+return (
+<div className='{{kebabCase name}}'>
+  <h1>{{pascalCase name}} Component</h1>
+  {/* Add your component content here */}
+</div>
+); } export default
+{{pascalCase name}};
+{{#if withProps}}
+  export type {
+  {{pascalCase name}}Props };
+{{/if}}

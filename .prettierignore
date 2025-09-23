@@ -12,3 +12,4 @@ pnpm-lock.yaml
 yarn.lock
 .git
 .DS_Store
+plop-templates/

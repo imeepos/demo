@@ -40,6 +40,7 @@ export default [
         clearInterval: 'readonly',
         NodeJS: 'readonly',
         vi: 'readonly',
+        performance: 'readonly',
       },
     },
     plugins: {
