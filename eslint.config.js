@@ -3,8 +3,12 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import tsParser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
 import importPlugin from 'eslint-plugin-import';
+import noSecrets from 'eslint-plugin-no-secrets';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
+import security from 'eslint-plugin-security';
+import sonarjs from 'eslint-plugin-sonarjs';
+import unicorn from 'eslint-plugin-unicorn';
 
 export default [
   js.configs.recommended,
@@ -48,6 +52,10 @@ export default [
       react,
       'react-hooks': reactHooks,
       import: importPlugin,
+      security,
+      sonarjs,
+      unicorn,
+      'no-secrets': noSecrets,
     },
     rules: {
       ...tseslint.configs.recommended.rules,
@@ -86,6 +94,35 @@ export default [
       'no-debugger': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
+
+      // Security rules
+      'security/detect-object-injection': 'error',
+      'security/detect-non-literal-regexp': 'warn',
+      'security/detect-unsafe-regex': 'error',
+      'security/detect-buffer-noassert': 'error',
+      'security/detect-eval-with-expression': 'error',
+      'security/detect-no-csrf-before-method-override': 'error',
+
+      // SonarJS rules
+      'sonarjs/cognitive-complexity': ['error', 15],
+      'sonarjs/no-duplicate-string': ['error', { threshold: 3 }],
+      'sonarjs/no-identical-functions': 'error',
+      'sonarjs/no-small-switch': 'error',
+      'sonarjs/prefer-immediate-return': 'error',
+
+      // Unicorn rules (selective)
+      'unicorn/better-regex': 'error',
+      'unicorn/catch-error-name': 'error',
+      'unicorn/consistent-destructuring': 'error',
+      'unicorn/filename-case': ['error', { case: 'kebabCase' }],
+      'unicorn/no-array-for-each': 'error',
+      'unicorn/no-for-loop': 'error',
+      'unicorn/prefer-includes': 'error',
+      'unicorn/prefer-string-starts-ends-with': 'error',
+      'unicorn/prefer-ternary': 'error',
+
+      // No secrets
+      'no-secrets/no-secrets': 'error',
     },
     settings: {
       react: {
