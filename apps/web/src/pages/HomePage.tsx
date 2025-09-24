@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
-import { WelcomeSection } from '../components/home/WelcomeSection';
 import { FeaturesGrid } from '../components/home/FeaturesGrid';
+import { WelcomeSection } from '../components/home/WelcomeSection';
 
 /**
  * 首页组件

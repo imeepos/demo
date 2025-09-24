@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { cn } from '@sker/ui';
 import * as echarts from 'echarts';
 import type { ECharts } from 'echarts';
+import { useEffect, useRef, useState } from 'react';
 import { SentimentEvent, MapProps } from '../../types/map';
-import { cn } from '@sker/ui';
 
 /**
  * 基于 ECharts 的舆情事件地图组件

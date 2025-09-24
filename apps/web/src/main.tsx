@@ -6,11 +6,11 @@ import { createRoot } from 'react-dom/client';
 import './styles/index.css';
 
 // Import the generated route tree
+import { SearchProvider } from './contexts/SearchContext';
+import { queryClient } from './lib/query-client';
 import { routeTree } from './routeTree.gen';
 // Import QueryClient
-import { queryClient } from './lib/query-client';
 // Import SearchProvider
-import { SearchProvider } from './contexts/SearchContext';
 
 // Create a new router instance
 const router = createRouter({

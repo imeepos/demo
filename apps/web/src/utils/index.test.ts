@@ -1,5 +1,4 @@
 import { describe, expect, it } from 'vitest';
-
 import { cn, debounce, formatDate } from './index';
 
 describe('utils', () => {
