@@ -17,9 +17,14 @@
     "clean": "rm -rf dist build node_modules/.cache"
   },
   "dependencies": {
+    "@antv/l7": "^2.23.0",
+    "@antv/l7-maps": "^2.23.0",
+    "@antv/l7-react": "^2.4.3",
     "@sker/ui": "workspace:^",
     "@tanstack/react-query": "^5.90.2",
     "@tanstack/react-router": "^1.132.2",
+    "@types/echarts": "^5.0.0",
+    "echarts": "^6.0.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },

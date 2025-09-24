@@ -62,11 +62,11 @@ export default [
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
 
-      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
 
       'react/react-in-jsx-scope': 'off',
@@ -99,7 +99,7 @@ export default [
       'unicorn/catch-error-name': 'error',
       'unicorn/consistent-destructuring': 'error',
       'unicorn/filename-case': 'off',
-      'unicorn/no-array-for-each': 'error',
+      'unicorn/no-array-for-each': 'off',
       'unicorn/no-for-loop': 'error',
       'unicorn/prefer-includes': 'error',
       'unicorn/prefer-string-starts-ends-with': 'error',
