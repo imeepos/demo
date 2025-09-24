@@ -23,6 +23,7 @@ export default [
           jsx: true,
         },
         project: './tsconfig.json',
+        tsconfigRootDir: import.meta.dirname,
       },
       globals: {
         console: 'readonly',

@@ -68,8 +68,7 @@ export class MessagePublisherService implements OnModuleInit, OnModuleDestroy {
    */
   checkHealth(): Observable<any> {
     try {
-      const result = this.client.send({ cmd: 'health_check' }, {});
-      return result;
+      return this.client.send({ cmd: 'health_check' }, {});
     } catch (error) {
       this.logger.error('健康检查失败', (error as Error).stack);
       throw error;

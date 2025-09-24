@@ -22,6 +22,8 @@ export default [
         ecmaFeatures: {
           jsx: true,
         },
+        tsconfigRootDir: process.cwd(),
+        project: ['./tsconfig.json', './apps/*/tsconfig.json', './packages/*/tsconfig.json'],
       },
       globals: {
         console: 'readonly',

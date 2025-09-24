@@ -84,7 +84,7 @@ export function L7EventMap({
       event =>
         event.location &&
         typeof event.location.lng === 'number' &&
-        typeof event.location.lat === 'number'
+        typeof event.location.lat === 'number',
     );
 
     const pointData = validEvents.map(event => ({
@@ -139,7 +139,7 @@ export function L7EventMap({
         })
         .size('hotness', [8, 24])
         .color('sentiment', (sentiment: SentimentEvent['sentiment']) =>
-          getSentimentColor(sentiment)
+          getSentimentColor(sentiment),
         )
         .shape('circle')
         .style({
@@ -157,7 +157,7 @@ export function L7EventMap({
           const event = validEvents.find(
             event =>
               Math.abs(event.location.lng - lngLat.lng) < 0.0001 &&
-              Math.abs(event.location.lat - lngLat.lat) < 0.0001
+              Math.abs(event.location.lat - lngLat.lat) < 0.0001,
           );
           if (event) {
             onEventClick(event);
@@ -170,10 +170,7 @@ export function L7EventMap({
   }, [events, isReady, onEventClick]);
 
   return (
-    <div
-      className={cn('relative w-full bg-gray-100', className)}
-      style={{ height }}
-    >
+    <div className={cn('relative w-full h-full bg-gray-100', className)} style={{ height }}>
       <div ref={containerRef} className="w-full h-full" />
 
       {!isReady && (
