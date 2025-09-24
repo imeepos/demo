@@ -1,3 +1,4 @@
+import { useLocalStorage } from '@/hooks';
 import {
   Avatar,
   AvatarFallback,
@@ -11,8 +12,6 @@ import {
   CardTitle,
 } from '@sker/ui';
 import { useState } from 'react';
-
-import { useLocalStorage } from '@/hooks';
 function App() {
   const [count, setCount] = useState(0);
   const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
