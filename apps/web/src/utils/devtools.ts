@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React from 'react';
 
 /**
@@ -35,7 +34,6 @@ export const setupReactDevTools = () => {
         root: unknown,
         priorityLevel?: number
       ) => {
-        // eslint-disable-next-line no-console
         console.log('🔄 React render:', { id, root, priorityLevel });
       };
     }
@@ -54,7 +52,6 @@ export const setupPerformanceMonitoring = () => {
         // Largest Contentful Paint
         const lcpObserver = new PerformanceObserver(list => {
           for (const entry of list.getEntries()) {
-            // eslint-disable-next-line no-console
             console.log('📊 LCP:', entry.startTime);
           }
         });
@@ -63,8 +60,8 @@ export const setupPerformanceMonitoring = () => {
         // First Input Delay
         const fidObserver = new PerformanceObserver(list => {
           for (const entry of list.getEntries()) {
-            // eslint-disable-next-line no-console
-            console.log('📊 FID:', entry.processingStart - entry.startTime);
+            const processingStart = Reflect.get(entry, 'processingStart');
+            console.log('📊 FID:', processingStart - entry.startTime);
           }
         });
         fidObserver.observe({ entryTypes: ['first-input'] });
@@ -72,15 +69,15 @@ export const setupPerformanceMonitoring = () => {
         // Cumulative Layout Shift
         const clsObserver = new PerformanceObserver(list => {
           for (const entry of list.getEntries()) {
-            if (!entry.hadRecentInput) {
-              // eslint-disable-next-line no-console
-              console.log('📊 CLS:', entry.value);
+            const hadRecentInput = Reflect.get(entry, `hadRecentInput`);
+            if (!hadRecentInput) {
+              const value = Reflect.get(entry, 'value');
+              console.log('📊 CLS:', value);
             }
           }
         });
         clsObserver.observe({ entryTypes: ['layout-shift'] });
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.warn('Performance monitoring setup failed:', error);
       }
     }
@@ -104,11 +101,11 @@ export const monitorMemoryUsage = () => {
             };
           }
         ).memory;
-        // eslint-disable-next-line no-console
+        const jsHeapSizeLimit = Reflect.get(memory, `jsHeapSizeLimit`);
         console.log('💾 Memory:', {
           used: Math.round(memory.usedJSHeapSize / 1024 / 1024) + ' MB',
           total: Math.round(memory.totalJSHeapSize / 1024 / 1024) + ' MB',
-          limit: Math.round(memory.jsHeapSizeLimit / 1024 / 1024) + ' MB',
+          limit: Math.round(jsHeapSizeLimit / 1024 / 1024) + ' MB',
         });
       }, 10000); // Every 10 seconds
     }

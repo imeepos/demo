@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
 .pnpm-store/
+.turbo
 
 # Build outputs
 dist/
@@ -59,7 +60,6 @@ temp/
 
 # Gatsby
 .cache/
-public/
 
 # Vuepress
 .vuepress/dist/

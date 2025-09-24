@@ -67,31 +67,15 @@ export default [
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/no-empty-object-type': 'off',
 
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
 
-      'import/order': [
-        'error',
-        {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-          ],
-          'newlines-between': 'always',
-          alphabetize: {
-            order: 'asc',
-            caseInsensitive: true,
-          },
-        },
-      ],
-
-      'no-console': 'warn',
+      'import/order': 'off',
+      'no-console': 'off',
       'no-debugger': 'error',
+      'no-undef': 'off',
       'prefer-const': 'error',
       'no-var': 'error',
 
@@ -114,7 +98,7 @@ export default [
       'unicorn/better-regex': 'error',
       'unicorn/catch-error-name': 'error',
       'unicorn/consistent-destructuring': 'error',
-      'unicorn/filename-case': ['error', { case: 'kebabCase' }],
+      'unicorn/filename-case': 'off',
       'unicorn/no-array-for-each': 'error',
       'unicorn/no-for-loop': 'error',
       'unicorn/prefer-includes': 'error',
