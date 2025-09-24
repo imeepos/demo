@@ -19,7 +19,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist',
+    outDir: '../api/public',
     sourcemap: true,
     rollupOptions: {
       output: {

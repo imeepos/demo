@@ -1,10 +1,11 @@
-import { Injectable, OnModuleInit, Logger } from '@nestjs/common';
-import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
 import { getRabbitMQConfig } from '@/config/rabbitmq.config';
-import { RawDataDto } from './dto/data-cleaner.dto';
+import { Injectable, Logger, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { ClientProxy, ClientProxyFactory } from '@nestjs/microservices';
+import { Observable } from 'rxjs';
+import { CrawlResultDto } from './dto/spider.dto';
 
 @Injectable()
-export class MessagePublisherService implements OnModuleInit {
+export class MessagePublisherService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger(MessagePublisherService.name);
   private client!: ClientProxy;
 
@@ -20,44 +21,44 @@ export class MessagePublisherService implements OnModuleInit {
   }
 
   /**
-   * 发布原始数据到清洗队列
+   * 发布爬取结果到清洗队列
    */
-  publishRawData(data: RawDataDto): void {
+  publishCrawlResult(data: CrawlResultDto): void {
     try {
-      this.logger.log(`发布原始数据到队列: ${data.id}`);
-      this.client.emit('raw_data_received', data);
-      this.logger.log(`原始数据发布成功: ${data.id}`);
+      this.logger.log(`发布爬取结果到队列: ${data.id}`);
+      this.client.emit('crawl_result_received', data);
+      this.logger.log(`爬取结果发布成功: ${data.id}`);
     } catch (error) {
-      this.logger.error(`发布原始数据失败: ${data.id}`, (error as Error).stack);
+      this.logger.error(`发布爬取结果失败: ${data.id}`, (error as Error).stack);
       throw error;
     }
   }
 
   /**
-   * 发布批量数据到清洗队列
+   * 发布批量爬取结果到清洗队列
    */
-  publishBatchData(dataList: RawDataDto[]): void {
+  publishBatchCrawlResults(dataList: CrawlResultDto[]): void {
     try {
-      this.logger.log(`发布批量数据到队列, 数量: ${dataList.length}`);
-      this.client.emit('batch_data_clean_requested', dataList);
-      this.logger.log(`批量数据发布成功: ${dataList.length} 条`);
+      this.logger.log(`发布批量爬取结果到队列, 数量: ${dataList.length}`);
+      this.client.emit('batch_crawl_results_received', dataList);
+      this.logger.log(`批量爬取结果发布成功: ${dataList.length} 条`);
     } catch (error) {
-      this.logger.error(`发布批量数据失败`, (error as Error).stack);
+      this.logger.error(`发布批量爬取结果失败`, (error as Error).stack);
       throw error;
     }
   }
 
   /**
-   * 同步调用数据清洗服务
+   * 同步处理爬取结果
    */
-  cleanDataSync(data: RawDataDto) {
+  processCrawlResultSync(data: CrawlResultDto): Observable<any> {
     try {
-      this.logger.log(`同步调用数据清洗: ${data.id}`);
-      const result = this.client.send({ cmd: 'clean_data_sync' }, data);
-      this.logger.log(`同步数据清洗完成: ${data.id}`);
+      this.logger.log(`同步处理爬取结果: ${data.id}`);
+      const result = this.client.send({ cmd: 'process_crawl_result_sync' }, data);
+      this.logger.log(`同步爬取结果处理完成: ${data.id}`);
       return result;
     } catch (error) {
-      this.logger.error(`同步数据清洗失败: ${data.id}`, (error as Error).stack);
+      this.logger.error(`同步爬取结果处理失败: ${data.id}`, (error as Error).stack);
       throw error;
     }
   }
@@ -65,7 +66,7 @@ export class MessagePublisherService implements OnModuleInit {
   /**
    * 检查服务健康状态
    */
-  checkHealth() {
+  checkHealth(): Observable<any> {
     try {
       const result = this.client.send({ cmd: 'health_check' }, {});
       return result;

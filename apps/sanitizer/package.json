@@ -1,5 +1,5 @@
 {
-  "name": "@sker/data-cleaner-service",
+  "name": "@sker/sanitizer",
   "version": "1.0.0",
   "description": "Data Cleaner Microservice",
   "author": "",
