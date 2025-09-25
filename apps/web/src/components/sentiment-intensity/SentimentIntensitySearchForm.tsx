@@ -47,18 +47,6 @@ export const SentimentIntensitySearchForm: React.FC<
   return (
     <DashboardCard className="mb-8">
       <div className="p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Filter className="w-5 h-5 text-primary" />
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-foreground">高级搜索</h3>
-            <p className="text-sm text-muted-foreground">
-              根据条件筛选情感强度配置
-            </p>
-          </div>
-        </div>
-
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
@@ -125,7 +113,7 @@ export const SentimentIntensitySearchForm: React.FC<
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="bg-tech-gradient hover:shadow-tech text-white font-medium px-6 py-2 transition-all duration-300 hover:-translate-y-0.5"
+              className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 transition-all duration-300 hover:-translate-y-0.5"
             >
               <Search className="w-4 h-4 mr-2" />
               {isSubmitting ? '搜索中...' : '开始搜索'}
