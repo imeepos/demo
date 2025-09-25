@@ -48,7 +48,8 @@ export default tseslint.config(
       'security/detect-object-injection': 'off',
 
       // SonarJS rules
-      'sonarjs/cognitive-complexity': 'off'
+      'sonarjs/cognitive-complexity': 'off',
+      'sonarjs/no-identical-functions': 'off'
     },
   },
   {

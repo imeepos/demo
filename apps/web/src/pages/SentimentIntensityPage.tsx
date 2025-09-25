@@ -1,19 +1,22 @@
-import React, { useEffect } from 'react';
 import { Button, Card } from '@sker/ui';
 import { Plus } from 'lucide-react';
+import React from 'react';
 import { toast } from 'react-hot-toast';
-import { useSentimentIntensityStore } from '../stores/sentiment-intensity-store';
-import { 
+import { SentimentIntensityDialog } from '../components/sentiment-intensity/SentimentIntensityDialog';
+import { SentimentIntensityList } from '../components/sentiment-intensity/SentimentIntensityList';
+import { SentimentIntensitySearchForm } from '../components/sentiment-intensity/SentimentIntensitySearchForm';
+import {
+  useCreateSentimentIntensity,
+  useDeleteSentimentIntensity,
   useSentimentIntensityList,
   useSentimentIntensitySearch,
-  useCreateSentimentIntensity,
   useUpdateSentimentIntensity,
-  useDeleteSentimentIntensity,
 } from '../hooks/use-sentiment-intensity';
-import { SentimentIntensitySearchForm } from '../components/sentiment-intensity/SentimentIntensitySearchForm';
-import { SentimentIntensityList } from '../components/sentiment-intensity/SentimentIntensityList';
-import { SentimentIntensityDialog } from '../components/sentiment-intensity/SentimentIntensityDialog';
-import type { CreateSentimentIntensityInput, SearchSentimentIntensityInput } from '../types/sentiment-intensity';
+import { useSentimentIntensityStore } from '../stores/sentiment-intensity-store';
+import type {
+  CreateSentimentIntensityInput,
+  SearchSentimentIntensityInput,
+} from '../types/sentiment-intensity';
 
 export const SentimentIntensityPage: React.FC = () => {
   const {
@@ -23,12 +26,12 @@ export const SentimentIntensityPage: React.FC = () => {
     isCreateDialogOpen,
     isEditDialogOpen,
     editingItem,
-    
+
     // 搜索 Actions
     setSearchTitle,
     setSearchIntensity,
     clearSearch,
-    
+
     // 对话框 Actions
     openCreateDialog,
     closeCreateDialog,
@@ -38,14 +41,15 @@ export const SentimentIntensityPage: React.FC = () => {
 
   // 查询
   const { data: listData = [], isLoading: isListLoading } = useSentimentIntensityList();
-  
+
   const searchParams = {
     title: searchTitle || undefined,
     intensity: searchIntensity || undefined,
   };
-  
-  const { data: searchData = [], isLoading: isSearchLoading } = useSentimentIntensitySearch(searchParams);
-  
+
+  const { data: searchData = [], isLoading: isSearchLoading } =
+    useSentimentIntensitySearch(searchParams);
+
   // 突变
   const createMutation = useCreateSentimentIntensity();
   const updateMutation = useUpdateSentimentIntensity();
@@ -82,7 +86,7 @@ export const SentimentIntensityPage: React.FC = () => {
   // 处理更新
   const handleUpdate = async (data: CreateSentimentIntensityInput) => {
     if (!editingItem) return;
-    
+
     try {
       await updateMutation.mutateAsync({
         id: editingItem.id,
@@ -99,7 +103,7 @@ export const SentimentIntensityPage: React.FC = () => {
   // 处理删除
   const handleDelete = async (item: typeof editingItem) => {
     if (!item) return;
-    
+
     if (window.confirm(`确定要删除"${item.title}"吗？此操作不可撤销。`)) {
       try {
         await deleteMutation.mutateAsync(item.id);
@@ -118,9 +122,7 @@ export const SentimentIntensityPage: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold mb-2">情感强度管理</h1>
-            <p className="text-gray-600">
-              管理系统中的情感强度定义，用于情感分析和舆情监控。
-            </p>
+            <p className="text-gray-600">管理系统中的情感强度定义，用于情感分析和舆情监控。</p>
           </div>
           <Button onClick={openCreateDialog}>
             <Plus className="w-4 h-4 mr-2" />
@@ -130,10 +132,7 @@ export const SentimentIntensityPage: React.FC = () => {
       </Card>
 
       {/* 搜索表单 */}
-      <SentimentIntensitySearchForm
-        onSearch={handleSearch}
-        onClear={handleClearSearch}
-      />
+      <SentimentIntensitySearchForm onSearch={handleSearch} onClear={handleClearSearch} />
 
       {/* 搜索结果提示 */}
       {isSearchMode && (
@@ -144,8 +143,10 @@ export const SentimentIntensityPage: React.FC = () => {
             ) : (
               <>
                 搜索结果：共找到 {displayData.length} 条记录
-                {searchTitle && <span className="ml-2">标题包含"{searchTitle}"</span>}
-                {searchIntensity !== null && <span className="ml-2">强度值为{searchIntensity}</span>}
+                {searchTitle && <span className="ml-2">标题包含&quot;{searchTitle}&quot;</span>}
+                {searchIntensity !== null && (
+                  <span className="ml-2">强度值为{searchIntensity}</span>
+                )}
               </>
             )}
           </div>

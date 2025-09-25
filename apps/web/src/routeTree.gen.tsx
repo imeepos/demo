@@ -37,7 +37,7 @@ const sentimentIntensityRoute = createRoute({
 
 // 导出路由树
 export const routeTree = rootRoute.addChildren([
-  indexRoute, 
-  dashboardRoute, 
-  sentimentIntensityRoute
+  indexRoute,
+  dashboardRoute,
+  sentimentIntensityRoute,
 ]);

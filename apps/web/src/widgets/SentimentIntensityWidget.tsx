@@ -23,12 +23,13 @@ export const SentimentIntensityWidget: React.FC = () => {
   // 统计数据
   const totalCount = items.length;
   const highIntensity = items.filter(item => item.intensity >= 0.7).length;
-  const mediumIntensity = items.filter(item => item.intensity >= 0.4 && item.intensity < 0.7).length;
+  const mediumIntensity = items.filter(
+    item => item.intensity >= 0.4 && item.intensity < 0.7,
+  ).length;
   const lowIntensity = items.filter(item => item.intensity < 0.4).length;
-  
-  const avgIntensity = totalCount > 0 
-    ? items.reduce((sum, item) => sum + item.intensity, 0) / totalCount 
-    : 0;
+
+  const avgIntensity =
+    totalCount > 0 ? items.reduce((sum, item) => sum + item.intensity, 0) / totalCount : 0;
 
   const getIntensityIcon = (level: 'high' | 'medium' | 'low') => {
     switch (level) {
@@ -67,9 +68,7 @@ export const SentimentIntensityWidget: React.FC = () => {
             <div className="text-sm text-gray-600">总记录数</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600">
-              {avgIntensity.toFixed(2)}
-            </div>
+            <div className="text-2xl font-bold text-purple-600">{avgIntensity.toFixed(2)}</div>
             <div className="text-sm text-gray-600">平均强度</div>
           </div>
         </div>

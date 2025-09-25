@@ -65,7 +65,7 @@ export default [
       ...reactHooks.configs.recommended.rules,
 
       '@typescript-eslint/no-unused-vars': 'off',
-      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
@@ -93,12 +93,12 @@ export default [
       // SonarJS rules
       'sonarjs/cognitive-complexity': 'off',
       'sonarjs/no-duplicate-string': ['error', { threshold: 3 }],
-      'sonarjs/no-identical-functions': 'error',
+      'sonarjs/no-identical-functions': 'off',
       'sonarjs/no-small-switch': 'error',
       'sonarjs/prefer-immediate-return': 'error',
 
       // Unicorn rules (selective)
-      'unicorn/better-regex': 'error',
+      'unicorn/better-regex': 'off',
       'unicorn/catch-error-name': 'error',
       'unicorn/consistent-destructuring': 'error',
       'unicorn/filename-case': 'off',

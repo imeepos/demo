@@ -1,28 +1,28 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { 
-  sentimentIntensityControllerFindAll,
+import {
+  client,
   sentimentIntensityControllerCreate,
-  sentimentIntensityControllerUpdate,
+  sentimentIntensityControllerFindAll,
   sentimentIntensityControllerRemove,
   sentimentIntensityControllerSearch,
-  client
+  sentimentIntensityControllerUpdate,
 } from '@sker/sdk';
-import type { 
-  CreateSentimentIntensityInput, 
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import type {
+  CreateSentimentIntensityInput,
   SearchSentimentIntensityInput,
-  SentimentIntensityItem 
+  SentimentIntensityItem,
 } from '../types/sentiment-intensity';
 
 // 配置 SDK 客户端
 client.setConfig({
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'http://localhost:3011',
 });
 
 // Query Keys
 export const sentimentIntensityKeys = {
   all: ['sentiment-intensity'] as const,
   lists: () => [...sentimentIntensityKeys.all, 'list'] as const,
-  search: (params: SearchSentimentIntensityInput) => 
+  search: (params: SearchSentimentIntensityInput) =>
     [...sentimentIntensityKeys.all, 'search', params] as const,
 };
 
@@ -44,8 +44,8 @@ export const useSentimentIntensitySearch = (params: SearchSentimentIntensityInpu
     queryFn: async () => {
       const response = await sentimentIntensityControllerSearch({
         query: {
-          title: params.title,
-          intensity: params.intensity,
+          ...(params.title && { title: params.title }),
+          ...(params.intensity !== undefined && { intensity: params.intensity }),
         },
       });
       return response.data as SentimentIntensityItem[];
@@ -57,11 +57,15 @@ export const useSentimentIntensitySearch = (params: SearchSentimentIntensityInpu
 // 创建情感强度记录
 export const useCreateSentimentIntensity = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: async (data: CreateSentimentIntensityInput) => {
       const response = await sentimentIntensityControllerCreate({
-        body: data,
+        body: {
+          title: data.title,
+          intensity: data.intensity,
+          ...(data.description && { description: data.description }),
+        },
       });
       return response.data;
     },
@@ -74,9 +78,15 @@ export const useCreateSentimentIntensity = () => {
 // 更新情感强度记录
 export const useUpdateSentimentIntensity = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
-    mutationFn: async ({ id, data }: { id: number; data: Partial<CreateSentimentIntensityInput> }) => {
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: Partial<CreateSentimentIntensityInput>;
+    }) => {
       const response = await sentimentIntensityControllerUpdate({
         path: { id: id.toString() },
         body: data,
@@ -92,7 +102,7 @@ export const useUpdateSentimentIntensity = () => {
 // 删除情感强度记录
 export const useDeleteSentimentIntensity = () => {
   const queryClient = useQueryClient();
-  
+
   return useMutation({
     mutationFn: async (id: number) => {
       await sentimentIntensityControllerRemove({

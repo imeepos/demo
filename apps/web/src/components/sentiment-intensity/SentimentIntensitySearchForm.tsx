@@ -2,7 +2,10 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input, Card } from '@sker/ui';
-import { searchSentimentIntensitySchema, type SearchSentimentIntensityInput } from '../../types/sentiment-intensity';
+import {
+  searchSentimentIntensitySchema,
+  type SearchSentimentIntensityInput,
+} from '../../types/sentiment-intensity';
 import { useSentimentIntensityStore } from '../../stores/sentiment-intensity-store';
 
 interface SentimentIntensitySearchFormProps {
@@ -15,7 +18,7 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
   onClear,
 }) => {
   const { searchTitle, searchIntensity } = useSentimentIntensityStore();
-  
+
   const {
     register,
     handleSubmit,
@@ -46,11 +49,7 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
             <label htmlFor="title" className="block text-sm font-medium mb-2">
               标题搜索
             </label>
-            <Input
-              id="title"
-              placeholder="请输入标题关键词"
-              {...register('title')}
-            />
+            <Input id="title" placeholder="请输入标题关键词" {...register('title')} />
           </div>
           <div>
             <label htmlFor="intensity" className="block text-sm font-medium mb-2">
@@ -64,23 +63,16 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
               step="0.01"
               placeholder="请输入强度值 (0-1)"
               {...register('intensity', {
-                setValueAs: (value) => value === '' ? undefined : parseFloat(value),
+                setValueAs: value => (value === '' ? undefined : parseFloat(value)),
               })}
             />
           </div>
         </div>
         <div className="flex gap-2">
-          <Button 
-            type="submit" 
-            disabled={isSubmitting}
-          >
+          <Button type="submit" disabled={isSubmitting}>
             搜索
           </Button>
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={handleClear}
-          >
+          <Button type="button" variant="outline" onClick={handleClear}>
             清除
           </Button>
         </div>

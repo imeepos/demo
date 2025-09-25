@@ -1,4 +1,4 @@
-import { SentimentEvent } from '../components/map';
+import { SentimentEvent } from '@sker/map';
 
 /**
  * 模拟地理事件数据

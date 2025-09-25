@@ -28,7 +28,7 @@ createRoot(container).render(
     <QueryClientProvider client={queryClient}>
       <SearchProvider>
         <RouterProvider router={router} />
-        <Toaster 
+        <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
