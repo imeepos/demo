@@ -2,231 +2,681 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerGetHelloData, AppControllerGetHelloResponses, SentimentControllerGetAllEventsData, SentimentControllerGetAllEventsResponses, SentimentControllerGetEventByIdData, SentimentControllerGetEventByIdErrors, SentimentControllerGetEventByIdResponses, SentimentControllerGetHotWordsData, SentimentControllerGetHotWordsResponses, SentimentControllerGetMetricsData, SentimentControllerGetMetricsResponses, SentimentControllerGetSentimentTableDataData, SentimentControllerGetSentimentTableDataResponses, SentimentEventControllerCreateData, SentimentEventControllerCreateErrors, SentimentEventControllerCreateResponses, SentimentEventControllerFindAllData, SentimentEventControllerFindAllResponses, SentimentEventControllerFindOneData, SentimentEventControllerFindOneErrors, SentimentEventControllerFindOneResponses, SentimentEventControllerRemoveData, SentimentEventControllerRemoveErrors, SentimentEventControllerRemoveResponses, SentimentEventControllerSearchData, SentimentEventControllerSearchResponses, SentimentEventControllerUpdateData, SentimentEventControllerUpdateErrors, SentimentEventControllerUpdateResponses, SentimentIntensityControllerCreateData, SentimentIntensityControllerCreateErrors, SentimentIntensityControllerCreateResponses, SentimentIntensityControllerFindAllData, SentimentIntensityControllerFindAllResponses, SentimentIntensityControllerRemoveData, SentimentIntensityControllerRemoveErrors, SentimentIntensityControllerRemoveResponses, SentimentIntensityControllerSearchData, SentimentIntensityControllerSearchResponses, SentimentIntensityControllerUpdateData, SentimentIntensityControllerUpdateErrors, SentimentIntensityControllerUpdateResponses } from './types.gen';
+import type {
+  AppControllerGetHelloData,
+  AppControllerGetHelloResponses,
+  EventTypeControllerCreateData,
+  EventTypeControllerCreateErrors,
+  EventTypeControllerCreateResponses,
+  EventTypeControllerFindAllData,
+  EventTypeControllerFindAllResponses,
+  EventTypeControllerFindOneData,
+  EventTypeControllerFindOneErrors,
+  EventTypeControllerFindOneResponses,
+  EventTypeControllerRemoveData,
+  EventTypeControllerRemoveErrors,
+  EventTypeControllerRemoveResponses,
+  EventTypeControllerSearchData,
+  EventTypeControllerSearchResponses,
+  EventTypeControllerUpdateData,
+  EventTypeControllerUpdateErrors,
+  EventTypeControllerUpdateResponses,
+  MediaTypeControllerCreateData,
+  MediaTypeControllerCreateErrors,
+  MediaTypeControllerCreateResponses,
+  MediaTypeControllerFindAllData,
+  MediaTypeControllerFindAllResponses,
+  MediaTypeControllerFindOneData,
+  MediaTypeControllerFindOneErrors,
+  MediaTypeControllerFindOneResponses,
+  MediaTypeControllerRemoveData,
+  MediaTypeControllerRemoveErrors,
+  MediaTypeControllerRemoveResponses,
+  MediaTypeControllerSearchData,
+  MediaTypeControllerSearchResponses,
+  MediaTypeControllerUpdateData,
+  MediaTypeControllerUpdateErrors,
+  MediaTypeControllerUpdateResponses,
+  SentimentControllerGetAllEventsData,
+  SentimentControllerGetAllEventsResponses,
+  SentimentControllerGetEventByIdData,
+  SentimentControllerGetEventByIdErrors,
+  SentimentControllerGetEventByIdResponses,
+  SentimentControllerGetHotWordsData,
+  SentimentControllerGetHotWordsResponses,
+  SentimentControllerGetMetricsData,
+  SentimentControllerGetMetricsResponses,
+  SentimentControllerGetSentimentTableDataData,
+  SentimentControllerGetSentimentTableDataResponses,
+  SentimentEventControllerCreateData,
+  SentimentEventControllerCreateErrors,
+  SentimentEventControllerCreateResponses,
+  SentimentEventControllerFindAllData,
+  SentimentEventControllerFindAllResponses,
+  SentimentEventControllerFindOneData,
+  SentimentEventControllerFindOneErrors,
+  SentimentEventControllerFindOneResponses,
+  SentimentEventControllerRemoveData,
+  SentimentEventControllerRemoveErrors,
+  SentimentEventControllerRemoveResponses,
+  SentimentEventControllerSearchData,
+  SentimentEventControllerSearchResponses,
+  SentimentEventControllerUpdateData,
+  SentimentEventControllerUpdateErrors,
+  SentimentEventControllerUpdateResponses,
+  SentimentIntensityControllerCreateData,
+  SentimentIntensityControllerCreateErrors,
+  SentimentIntensityControllerCreateResponses,
+  SentimentIntensityControllerFindAllData,
+  SentimentIntensityControllerFindAllResponses,
+  SentimentIntensityControllerRemoveData,
+  SentimentIntensityControllerRemoveErrors,
+  SentimentIntensityControllerRemoveResponses,
+  SentimentIntensityControllerSearchData,
+  SentimentIntensityControllerSearchResponses,
+  SentimentIntensityControllerUpdateData,
+  SentimentIntensityControllerUpdateErrors,
+  SentimentIntensityControllerUpdateResponses,
+} from './types.gen';
 
-export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
-    /**
-     * You can provide a client instance returned by `createClient()` instead of
-     * individual options. This might be also useful if you want to implement a
-     * custom client.
-     */
-    client?: Client;
-    /**
-     * You can pass arbitrary values through the `meta` object. This can be
-     * used to access values that aren't defined as part of the SDK function.
-     */
-    meta?: Record<string, unknown>;
+export type Options<
+  TData extends TDataShape = TDataShape,
+  ThrowOnError extends boolean = boolean,
+> = Options2<TData, ThrowOnError> & {
+  /**
+   * You can provide a client instance returned by `createClient()` instead of
+   * individual options. This might be also useful if you want to implement a
+   * custom client.
+   */
+  client?: Client;
+  /**
+   * You can pass arbitrary values through the `meta` object. This can be
+   * used to access values that aren't defined as part of the SDK function.
+   */
+  meta?: Record<string, unknown>;
 };
 
-export const appControllerGetHello = <ThrowOnError extends boolean = false>(options?: Options<AppControllerGetHelloData, ThrowOnError>) => {
-    return (options?.client ?? client).get<AppControllerGetHelloResponses, unknown, ThrowOnError>({
-        url: '/api',
-        ...options
-    });
+export const appControllerGetHello = <ThrowOnError extends boolean = false>(
+  options?: Options<AppControllerGetHelloData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    AppControllerGetHelloResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: '/api',
+    ...options,
+  });
 };
 
 /**
  * 获取所有舆情事件
  * 获取系统中所有舆情事件的完整列表，包含事件详情、地理位置、情感分析结果等信息
  */
-export const sentimentControllerGetAllEvents = <ThrowOnError extends boolean = false>(options?: Options<SentimentControllerGetAllEventsData, ThrowOnError>) => {
-    return (options?.client ?? client).get<SentimentControllerGetAllEventsResponses, unknown, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment/events',
-        ...options
-    });
+export const sentimentControllerGetAllEvents = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<SentimentControllerGetAllEventsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    SentimentControllerGetAllEventsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment/events',
+    ...options,
+  });
 };
 
 /**
  * 根据ID获取单个舆情事件
  * 根据事件唯一标识符获取特定舆情事件的详细信息
  */
-export const sentimentControllerGetEventById = <ThrowOnError extends boolean = false>(options: Options<SentimentControllerGetEventByIdData, ThrowOnError>) => {
-    return (options.client ?? client).get<SentimentControllerGetEventByIdResponses, SentimentControllerGetEventByIdErrors, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment/events/{id}',
-        ...options
-    });
+export const sentimentControllerGetEventById = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SentimentControllerGetEventByIdData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    SentimentControllerGetEventByIdResponses,
+    SentimentControllerGetEventByIdErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment/events/{id}',
+    ...options,
+  });
 };
 
 /**
  * 获取舆情统计指标
  * 获取舆情分析的统计数据，包含正面、负面、中性情感的数量和比例信息
  */
-export const sentimentControllerGetMetrics = <ThrowOnError extends boolean = false>(options?: Options<SentimentControllerGetMetricsData, ThrowOnError>) => {
-    return (options?.client ?? client).get<SentimentControllerGetMetricsResponses, unknown, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment/metrics',
-        ...options
-    });
+export const sentimentControllerGetMetrics = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<SentimentControllerGetMetricsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    SentimentControllerGetMetricsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment/metrics',
+    ...options,
+  });
 };
 
 /**
  * 获取热点词汇数据
  * 获取当前热门词汇的统计信息，包含词汇出现频次和整体情感倾向
  */
-export const sentimentControllerGetHotWords = <ThrowOnError extends boolean = false>(options?: Options<SentimentControllerGetHotWordsData, ThrowOnError>) => {
-    return (options?.client ?? client).get<SentimentControllerGetHotWordsResponses, unknown, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment/hotwords',
-        ...options
-    });
+export const sentimentControllerGetHotWords = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<SentimentControllerGetHotWordsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    SentimentControllerGetHotWordsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment/hotwords',
+    ...options,
+  });
 };
 
 /**
  * 获取舆情表格显示数据
  * 获取适合在表格中展示的简化舆情数据，包含关键信息字段
  */
-export const sentimentControllerGetSentimentTableData = <ThrowOnError extends boolean = false>(options?: Options<SentimentControllerGetSentimentTableDataData, ThrowOnError>) => {
-    return (options?.client ?? client).get<SentimentControllerGetSentimentTableDataResponses, unknown, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment/table',
-        ...options
-    });
+export const sentimentControllerGetSentimentTableData = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<SentimentControllerGetSentimentTableDataData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    SentimentControllerGetSentimentTableDataResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment/table',
+    ...options,
+  });
 };
 
 /**
  * 获取所有情感强度记录
  * 获取系统中所有情感强度记录，返回简化数据（仅包含id、title、intensity字段）
  */
-export const sentimentIntensityControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<SentimentIntensityControllerFindAllData, ThrowOnError>) => {
-    return (options?.client ?? client).get<SentimentIntensityControllerFindAllResponses, unknown, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment-intensity',
-        ...options
-    });
+export const sentimentIntensityControllerFindAll = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<SentimentIntensityControllerFindAllData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    SentimentIntensityControllerFindAllResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment-intensity',
+    ...options,
+  });
 };
 
 /**
  * 创建情感强度记录
  * 创建新的情感强度记录，包含标题、强度值和可选的描述信息
  */
-export const sentimentIntensityControllerCreate = <ThrowOnError extends boolean = false>(options: Options<SentimentIntensityControllerCreateData, ThrowOnError>) => {
-    return (options.client ?? client).post<SentimentIntensityControllerCreateResponses, SentimentIntensityControllerCreateErrors, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment-intensity',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
+export const sentimentIntensityControllerCreate = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SentimentIntensityControllerCreateData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    SentimentIntensityControllerCreateResponses,
+    SentimentIntensityControllerCreateErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment-intensity',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
 };
 
 /**
  * 搜索情感强度记录
  * 根据标题和/或强度区间搜索情感强度记录
  */
-export const sentimentIntensityControllerSearch = <ThrowOnError extends boolean = false>(options?: Options<SentimentIntensityControllerSearchData, ThrowOnError>) => {
-    return (options?.client ?? client).get<SentimentIntensityControllerSearchResponses, unknown, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment-intensity/search',
-        ...options
-    });
+export const sentimentIntensityControllerSearch = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<SentimentIntensityControllerSearchData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    SentimentIntensityControllerSearchResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment-intensity/search',
+    ...options,
+  });
 };
 
 /**
  * 删除情感强度记录
  * 根据ID删除指定的情感强度记录
  */
-export const sentimentIntensityControllerRemove = <ThrowOnError extends boolean = false>(options: Options<SentimentIntensityControllerRemoveData, ThrowOnError>) => {
-    return (options.client ?? client).delete<SentimentIntensityControllerRemoveResponses, SentimentIntensityControllerRemoveErrors, ThrowOnError>({
-        url: '/api/sentiment-intensity/{id}',
-        ...options
-    });
+export const sentimentIntensityControllerRemove = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SentimentIntensityControllerRemoveData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    SentimentIntensityControllerRemoveResponses,
+    SentimentIntensityControllerRemoveErrors,
+    ThrowOnError
+  >({
+    url: '/api/sentiment-intensity/{id}',
+    ...options,
+  });
 };
 
 /**
  * 更新情感强度记录
  * 根据ID更新指定的情感强度记录信息
  */
-export const sentimentIntensityControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<SentimentIntensityControllerUpdateData, ThrowOnError>) => {
-    return (options.client ?? client).patch<SentimentIntensityControllerUpdateResponses, SentimentIntensityControllerUpdateErrors, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment-intensity/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
+export const sentimentIntensityControllerUpdate = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SentimentIntensityControllerUpdateData, ThrowOnError>
+) => {
+  return (options.client ?? client).patch<
+    SentimentIntensityControllerUpdateResponses,
+    SentimentIntensityControllerUpdateErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment-intensity/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
 };
 
 /**
  * 获取所有舆情事件记录
  * 获取系统中所有舆情事件记录，返回简化数据（仅包含id、title、score、source、timestamp字段），用于下拉选择等场景
  */
-export const sentimentEventControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<SentimentEventControllerFindAllData, ThrowOnError>) => {
-    return (options?.client ?? client).get<SentimentEventControllerFindAllResponses, unknown, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment-event',
-        ...options
-    });
+export const sentimentEventControllerFindAll = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<SentimentEventControllerFindAllData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    SentimentEventControllerFindAllResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment-event',
+    ...options,
+  });
 };
 
 /**
  * 创建舆情事件记录
  * 创建新的舆情事件记录，包含事件标题、内容、情感分数、地理位置等信息
  */
-export const sentimentEventControllerCreate = <ThrowOnError extends boolean = false>(options: Options<SentimentEventControllerCreateData, ThrowOnError>) => {
-    return (options.client ?? client).post<SentimentEventControllerCreateResponses, SentimentEventControllerCreateErrors, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment-event',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
+export const sentimentEventControllerCreate = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SentimentEventControllerCreateData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    SentimentEventControllerCreateResponses,
+    SentimentEventControllerCreateErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment-event',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
 };
 
 /**
  * 搜索舆情事件记录
  * 根据标题、情感分数区间、事件时间区间等条件搜索舆情事件记录
  */
-export const sentimentEventControllerSearch = <ThrowOnError extends boolean = false>(options?: Options<SentimentEventControllerSearchData, ThrowOnError>) => {
-    return (options?.client ?? client).get<SentimentEventControllerSearchResponses, unknown, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment-event/search',
-        ...options
-    });
+export const sentimentEventControllerSearch = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<SentimentEventControllerSearchData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    SentimentEventControllerSearchResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment-event/search',
+    ...options,
+  });
 };
 
 /**
  * 删除舆情事件记录
  * 根据ID删除指定的舆情事件记录
  */
-export const sentimentEventControllerRemove = <ThrowOnError extends boolean = false>(options: Options<SentimentEventControllerRemoveData, ThrowOnError>) => {
-    return (options.client ?? client).delete<SentimentEventControllerRemoveResponses, SentimentEventControllerRemoveErrors, ThrowOnError>({
-        url: '/api/sentiment-event/{id}',
-        ...options
-    });
+export const sentimentEventControllerRemove = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SentimentEventControllerRemoveData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    SentimentEventControllerRemoveResponses,
+    SentimentEventControllerRemoveErrors,
+    ThrowOnError
+  >({
+    url: '/api/sentiment-event/{id}',
+    ...options,
+  });
 };
 
 /**
  * 获取单个舆情事件记录
  * 根据ID获取指定舆情事件的完整信息
  */
-export const sentimentEventControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<SentimentEventControllerFindOneData, ThrowOnError>) => {
-    return (options.client ?? client).get<SentimentEventControllerFindOneResponses, SentimentEventControllerFindOneErrors, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment-event/{id}',
-        ...options
-    });
+export const sentimentEventControllerFindOne = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SentimentEventControllerFindOneData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    SentimentEventControllerFindOneResponses,
+    SentimentEventControllerFindOneErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment-event/{id}',
+    ...options,
+  });
 };
 
 /**
  * 更新舆情事件记录
  * 根据ID更新指定的舆情事件记录信息
  */
-export const sentimentEventControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<SentimentEventControllerUpdateData, ThrowOnError>) => {
-    return (options.client ?? client).patch<SentimentEventControllerUpdateResponses, SentimentEventControllerUpdateErrors, ThrowOnError>({
-        responseType: 'json',
-        url: '/api/sentiment-event/{id}',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
+export const sentimentEventControllerUpdate = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<SentimentEventControllerUpdateData, ThrowOnError>
+) => {
+  return (options.client ?? client).patch<
+    SentimentEventControllerUpdateResponses,
+    SentimentEventControllerUpdateErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/sentiment-event/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * 获取所有事件类型
+ * 获取系统中所有事件类型，返回简化数据，按排序权重降序排列
+ */
+export const eventTypeControllerFindAll = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<EventTypeControllerFindAllData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    EventTypeControllerFindAllResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/event-type',
+    ...options,
+  });
+};
+
+/**
+ * 创建事件类型
+ * 创建新的事件类型，用于分类舆情事件，支持政治、经济、社会等不同类别
+ */
+export const eventTypeControllerCreate = <ThrowOnError extends boolean = false>(
+  options: Options<EventTypeControllerCreateData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    EventTypeControllerCreateResponses,
+    EventTypeControllerCreateErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/event-type',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * 搜索事件类型
+ * 根据名称、代码、启用状态等条件搜索事件类型
+ */
+export const eventTypeControllerSearch = <ThrowOnError extends boolean = false>(
+  options?: Options<EventTypeControllerSearchData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    EventTypeControllerSearchResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/event-type/search',
+    ...options,
+  });
+};
+
+/**
+ * 删除事件类型
+ * 根据ID删除指定的事件类型
+ */
+export const eventTypeControllerRemove = <ThrowOnError extends boolean = false>(
+  options: Options<EventTypeControllerRemoveData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    EventTypeControllerRemoveResponses,
+    EventTypeControllerRemoveErrors,
+    ThrowOnError
+  >({
+    url: '/api/event-type/{id}',
+    ...options,
+  });
+};
+
+/**
+ * 获取单个事件类型
+ * 根据ID获取指定事件类型的完整信息
+ */
+export const eventTypeControllerFindOne = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<EventTypeControllerFindOneData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    EventTypeControllerFindOneResponses,
+    EventTypeControllerFindOneErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/event-type/{id}',
+    ...options,
+  });
+};
+
+/**
+ * 更新事件类型
+ * 根据ID更新指定的事件类型信息
+ */
+export const eventTypeControllerUpdate = <ThrowOnError extends boolean = false>(
+  options: Options<EventTypeControllerUpdateData, ThrowOnError>
+) => {
+  return (options.client ?? client).patch<
+    EventTypeControllerUpdateResponses,
+    EventTypeControllerUpdateErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/event-type/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * 获取所有媒体类型
+ * 获取系统中所有媒体类型，返回简化数据，按排序权重降序排列
+ */
+export const mediaTypeControllerFindAll = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<MediaTypeControllerFindAllData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    MediaTypeControllerFindAllResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/media-type',
+    ...options,
+  });
+};
+
+/**
+ * 创建媒体类型
+ * 创建新的媒体类型，用于分类舆情事件的媒体来源，支持政府部门、自媒体、企业等不同类别
+ */
+export const mediaTypeControllerCreate = <ThrowOnError extends boolean = false>(
+  options: Options<MediaTypeControllerCreateData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    MediaTypeControllerCreateResponses,
+    MediaTypeControllerCreateErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/media-type',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * 搜索媒体类型
+ * 根据名称、代码、启用状态、可信度等级等条件搜索媒体类型
+ */
+export const mediaTypeControllerSearch = <ThrowOnError extends boolean = false>(
+  options?: Options<MediaTypeControllerSearchData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    MediaTypeControllerSearchResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/media-type/search',
+    ...options,
+  });
+};
+
+/**
+ * 删除媒体类型
+ * 根据ID删除指定的媒体类型
+ */
+export const mediaTypeControllerRemove = <ThrowOnError extends boolean = false>(
+  options: Options<MediaTypeControllerRemoveData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    MediaTypeControllerRemoveResponses,
+    MediaTypeControllerRemoveErrors,
+    ThrowOnError
+  >({
+    url: '/api/media-type/{id}',
+    ...options,
+  });
+};
+
+/**
+ * 获取单个媒体类型
+ * 根据ID获取指定媒体类型的完整信息
+ */
+export const mediaTypeControllerFindOne = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<MediaTypeControllerFindOneData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    MediaTypeControllerFindOneResponses,
+    MediaTypeControllerFindOneErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/media-type/{id}',
+    ...options,
+  });
+};
+
+/**
+ * 更新媒体类型
+ * 根据ID更新指定的媒体类型信息
+ */
+export const mediaTypeControllerUpdate = <ThrowOnError extends boolean = false>(
+  options: Options<MediaTypeControllerUpdateData, ThrowOnError>
+) => {
+  return (options.client ?? client).patch<
+    MediaTypeControllerUpdateResponses,
+    MediaTypeControllerUpdateErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/media-type/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
 };
