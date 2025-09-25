@@ -4,7 +4,12 @@
  */
 
 import { useState, useEffect } from 'react';
-import { mockDashboardData, generateDashboardMetrics, generateSystemStatus, generateSentimentIntensity } from '../../data/mockDashboardData';
+import {
+  mockDashboardData,
+  generateDashboardMetrics,
+  generateSystemStatus,
+  generateSentimentIntensity,
+} from '../../data/mockDashboardData';
 import {
   ChartContainer,
   DashboardCard,
@@ -23,8 +28,12 @@ import {
 
 export function DashboardExample() {
   const [metrics, setMetrics] = useState(mockDashboardData.metrics);
-  const [systemStatus, setSystemStatus] = useState(mockDashboardData.systemStatus);
-  const [sentimentIntensity, setSentimentIntensity] = useState(mockDashboardData.sentimentIntensity);
+  const [systemStatus, setSystemStatus] = useState(
+    mockDashboardData.systemStatus
+  );
+  const [sentimentIntensity, setSentimentIntensity] = useState(
+    mockDashboardData.sentimentIntensity
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   // 模拟实时数据更新
@@ -49,9 +58,14 @@ export function DashboardExample() {
         <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent mb-2">
           舆情分析监控大屏
         </h1>
-        <p className="text-muted-foreground text-lg">基于 Tailwind CSS 组件系统 · 实时数据监控</p>
-        <LiveIndicator status={isLoading ? "warning" : "online"} className="mt-4">
-          {isLoading ? "更新中..." : "LIVE"}
+        <p className="text-muted-foreground text-lg">
+          基于 Tailwind CSS 组件系统 · 实时数据监控
+        </p>
+        <LiveIndicator
+          status={isLoading ? 'warning' : 'online'}
+          className="mt-4"
+        >
+          {isLoading ? '更新中...' : 'LIVE'}
         </LiveIndicator>
       </div>
 
@@ -62,8 +76,14 @@ export function DashboardExample() {
             <div className="flex items-center justify-center mb-3">
               <MetricLabel>总监控数据</MetricLabel>
             </div>
-            <MetricValue variant="primary">{metrics.totalData.toLocaleString()}</MetricValue>
-            <TrendIndicator trend="up" value={metrics.trends.total} icon={<span>↗</span>} />
+            <MetricValue variant="primary">
+              {metrics.totalData.toLocaleString()}
+            </MetricValue>
+            <TrendIndicator
+              trend="up"
+              value={metrics.trends.total}
+              icon={<span>↗</span>}
+            />
           </BaseMetricCard>
         </DashboardCard>
 
@@ -72,8 +92,14 @@ export function DashboardExample() {
             <div className="flex items-center justify-center mb-3">
               <MetricLabel>正面情感</MetricLabel>
             </div>
-            <MetricValue variant="success">{metrics.positiveCount.toLocaleString()}</MetricValue>
-            <TrendIndicator trend="up" value={metrics.trends.positive} icon={<span>↗</span>} />
+            <MetricValue variant="success">
+              {metrics.positiveCount.toLocaleString()}
+            </MetricValue>
+            <TrendIndicator
+              trend="up"
+              value={metrics.trends.positive}
+              icon={<span>↗</span>}
+            />
           </BaseMetricCard>
         </DashboardCard>
 
@@ -82,8 +108,14 @@ export function DashboardExample() {
             <div className="flex items-center justify-center mb-3">
               <MetricLabel>中性情感</MetricLabel>
             </div>
-            <MetricValue variant="warning">{metrics.neutralCount.toLocaleString()}</MetricValue>
-            <TrendIndicator trend="neutral" value={metrics.trends.neutral} icon={<span>→</span>} />
+            <MetricValue variant="warning">
+              {metrics.neutralCount.toLocaleString()}
+            </MetricValue>
+            <TrendIndicator
+              trend="neutral"
+              value={metrics.trends.neutral}
+              icon={<span>→</span>}
+            />
           </BaseMetricCard>
         </DashboardCard>
 
@@ -92,8 +124,14 @@ export function DashboardExample() {
             <div className="flex items-center justify-center mb-3">
               <MetricLabel>负面情感</MetricLabel>
             </div>
-            <MetricValue variant="danger">{metrics.negativeCount.toLocaleString()}</MetricValue>
-            <TrendIndicator trend="down" value={metrics.trends.negative} icon={<span>↘</span>} />
+            <MetricValue variant="danger">
+              {metrics.negativeCount.toLocaleString()}
+            </MetricValue>
+            <TrendIndicator
+              trend="down"
+              value={metrics.trends.negative}
+              icon={<span>↘</span>}
+            />
           </BaseMetricCard>
         </DashboardCard>
       </div>
@@ -109,33 +147,67 @@ export function DashboardExample() {
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <SentimentBadge sentiment="very-positive">极正面</SentimentBadge>
-                <IntensityBar value={sentimentIntensity.veryPositive} intensity="very-positive" className="flex-1 mx-4" />
-                <span className="text-sm font-medium">{Math.round(sentimentIntensity.veryPositive * 100)}%</span>
+                <SentimentBadge sentiment="very-positive">
+                  极正面
+                </SentimentBadge>
+                <IntensityBar
+                  value={sentimentIntensity.veryPositive}
+                  intensity="very-positive"
+                  className="flex-1 mx-4"
+                />
+                <span className="text-sm font-medium">
+                  {Math.round(sentimentIntensity.veryPositive * 100)}%
+                </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <SentimentBadge sentiment="positive">正面</SentimentBadge>
-                <IntensityBar value={sentimentIntensity.positive} intensity="positive" className="flex-1 mx-4" />
-                <span className="text-sm font-medium">{Math.round(sentimentIntensity.positive * 100)}%</span>
+                <IntensityBar
+                  value={sentimentIntensity.positive}
+                  intensity="positive"
+                  className="flex-1 mx-4"
+                />
+                <span className="text-sm font-medium">
+                  {Math.round(sentimentIntensity.positive * 100)}%
+                </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <SentimentBadge sentiment="neutral">中性</SentimentBadge>
-                <IntensityBar value={sentimentIntensity.neutral} intensity="neutral" className="flex-1 mx-4" />
-                <span className="text-sm font-medium">{Math.round(sentimentIntensity.neutral * 100)}%</span>
+                <IntensityBar
+                  value={sentimentIntensity.neutral}
+                  intensity="neutral"
+                  className="flex-1 mx-4"
+                />
+                <span className="text-sm font-medium">
+                  {Math.round(sentimentIntensity.neutral * 100)}%
+                </span>
               </div>
 
               <div className="flex items-center justify-between">
                 <SentimentBadge sentiment="negative">负面</SentimentBadge>
-                <IntensityBar value={sentimentIntensity.negative} intensity="negative" className="flex-1 mx-4" />
-                <span className="text-sm font-medium">{Math.round(sentimentIntensity.negative * 100)}%</span>
+                <IntensityBar
+                  value={sentimentIntensity.negative}
+                  intensity="negative"
+                  className="flex-1 mx-4"
+                />
+                <span className="text-sm font-medium">
+                  {Math.round(sentimentIntensity.negative * 100)}%
+                </span>
               </div>
 
               <div className="flex items-center justify-between">
-                <SentimentBadge sentiment="very-negative">极负面</SentimentBadge>
-                <IntensityBar value={sentimentIntensity.veryNegative} intensity="very-negative" className="flex-1 mx-4" />
-                <span className="text-sm font-medium">{Math.round(sentimentIntensity.veryNegative * 100)}%</span>
+                <SentimentBadge sentiment="very-negative">
+                  极负面
+                </SentimentBadge>
+                <IntensityBar
+                  value={sentimentIntensity.veryNegative}
+                  intensity="very-negative"
+                  className="flex-1 mx-4"
+                />
+                <span className="text-sm font-medium">
+                  {Math.round(sentimentIntensity.veryNegative * 100)}%
+                </span>
               </div>
             </div>
           </div>
@@ -153,45 +225,92 @@ export function DashboardExample() {
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium flex items-center">
-                    <StatusDot status={systemStatus.dataCollection > 95 ? "online" : "warning"} />
+                    <StatusDot
+                      status={
+                        systemStatus.dataCollection > 95 ? 'online' : 'warning'
+                      }
+                    />
                     数据采集服务
                   </span>
-                  <span className="text-sm text-muted-foreground">{systemStatus.dataCollection}%</span>
+                  <span className="text-sm text-muted-foreground">
+                    {systemStatus.dataCollection}%
+                  </span>
                 </div>
-                <ProgressBar value={systemStatus.dataCollection} variant={systemStatus.dataCollection > 95 ? "success" : "warning"} />
+                <ProgressBar
+                  value={systemStatus.dataCollection}
+                  variant={
+                    systemStatus.dataCollection > 95 ? 'success' : 'warning'
+                  }
+                />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium flex items-center">
-                    <StatusDot status={systemStatus.sentimentAnalysis > 90 ? "online" : "warning"} />
+                    <StatusDot
+                      status={
+                        systemStatus.sentimentAnalysis > 90
+                          ? 'online'
+                          : 'warning'
+                      }
+                    />
                     情感分析引擎
                   </span>
-                  <span className="text-sm text-muted-foreground">{systemStatus.sentimentAnalysis}%</span>
+                  <span className="text-sm text-muted-foreground">
+                    {systemStatus.sentimentAnalysis}%
+                  </span>
                 </div>
-                <ProgressBar value={systemStatus.sentimentAnalysis} variant={systemStatus.sentimentAnalysis > 90 ? "success" : "warning"} />
+                <ProgressBar
+                  value={systemStatus.sentimentAnalysis}
+                  variant={
+                    systemStatus.sentimentAnalysis > 90 ? 'success' : 'warning'
+                  }
+                />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium flex items-center">
-                    <StatusDot status={systemStatus.realTimePush > 90 ? "online" : "warning"} />
+                    <StatusDot
+                      status={
+                        systemStatus.realTimePush > 90 ? 'online' : 'warning'
+                      }
+                    />
                     实时推送服务
                   </span>
-                  <span className="text-sm text-muted-foreground">{systemStatus.realTimePush}%</span>
+                  <span className="text-sm text-muted-foreground">
+                    {systemStatus.realTimePush}%
+                  </span>
                 </div>
-                <ProgressBar value={systemStatus.realTimePush} variant={systemStatus.realTimePush > 90 ? "primary" : "warning"} />
+                <ProgressBar
+                  value={systemStatus.realTimePush}
+                  variant={
+                    systemStatus.realTimePush > 90 ? 'primary' : 'warning'
+                  }
+                />
               </div>
 
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium flex items-center">
-                    <StatusDot status={systemStatus.backupService > 50 ? "online" : "offline"} />
+                    <StatusDot
+                      status={
+                        systemStatus.backupService > 50 ? 'online' : 'offline'
+                      }
+                    />
                     备份服务
                   </span>
-                  <span className="text-sm text-muted-foreground">{systemStatus.backupService}%</span>
+                  <span className="text-sm text-muted-foreground">
+                    {systemStatus.backupService}%
+                  </span>
                 </div>
-                <ProgressBar value={systemStatus.backupService} variant={systemStatus.backupService > 50 ? "primary" : "danger"} shine={systemStatus.backupService > 0} />
+                <ProgressBar
+                  value={systemStatus.backupService}
+                  variant={
+                    systemStatus.backupService > 50 ? 'primary' : 'danger'
+                  }
+                  shine={systemStatus.backupService > 0}
+                />
               </div>
             </div>
           </div>
@@ -200,7 +319,10 @@ export function DashboardExample() {
 
       {/* 热点词云 */}
       <DashboardCard size="lg">
-        <ChartContainer title="热点话题词云" subtitle="实时更新 · 数据来源：全网监控">
+        <ChartContainer
+          title="热点话题词云"
+          subtitle="实时更新 · 数据来源：全网监控"
+        >
           <WordcloudContainer>
             <WordcloudTag variant="primary" shine>
               人工智能
@@ -250,7 +372,12 @@ export function DashboardExample() {
               +15.2%
             </MetricValue>
             <MetricLabel>数据增长率</MetricLabel>
-            <TrendIndicator trend="up" value="持续上升" icon="📈" className="mt-2" />
+            <TrendIndicator
+              trend="up"
+              value="持续上升"
+              icon="📈"
+              className="mt-2"
+            />
           </div>
         </DashboardCard>
 
@@ -260,7 +387,12 @@ export function DashboardExample() {
               92.6%
             </MetricValue>
             <MetricLabel>服务可用性</MetricLabel>
-            <TrendIndicator trend="up" value="稳定运行" icon="✅" className="mt-2" />
+            <TrendIndicator
+              trend="up"
+              value="稳定运行"
+              icon="✅"
+              className="mt-2"
+            />
           </div>
         </DashboardCard>
 
@@ -270,7 +402,12 @@ export function DashboardExample() {
               2.8s
             </MetricValue>
             <MetricLabel>平均响应时间</MetricLabel>
-            <TrendIndicator trend="neutral" value="正常范围" icon="⏱" className="mt-2" />
+            <TrendIndicator
+              trend="neutral"
+              value="正常范围"
+              icon="⏱"
+              className="mt-2"
+            />
           </div>
         </DashboardCard>
       </div>

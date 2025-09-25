@@ -16,11 +16,15 @@ interface SentimentEventSearchFormProps {
   isSearching?: boolean;
 }
 
-export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> = ({
-  onSearch,
-  onClear,
-  isSearching = false,
-}) => {
+const FORM_STYLES = {
+  error: 'border-destructive focus:border-destructive',
+  inputBase:
+    'border-border focus:border-primary focus:ring-primary/20 transition-all duration-300',
+} as const;
+
+export const SentimentEventSearchForm: React.FC<
+  SentimentEventSearchFormProps
+> = ({ onSearch, onClear, isSearching = false }) => {
   const {
     register,
     handleSubmit,
@@ -39,14 +43,14 @@ export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> =
   });
 
   const watchedValues = watch();
-  const hasValues = Object.values(watchedValues).some(value => 
-    value !== undefined && value !== '' && value !== null
+  const hasValues = Object.values(watchedValues).some(
+    value => value !== undefined && value !== '' && value !== null
   );
 
   const handleFormSubmit = (data: QuerySentimentEventInput) => {
     // 过滤掉空值
     const filteredData: QuerySentimentEventInput = {};
-    
+
     if (data.title && data.title.trim()) {
       filteredData.title = data.title.trim();
     }
@@ -62,7 +66,7 @@ export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> =
     if (data.endTime) {
       filteredData.endTime = data.endTime;
     }
-    
+
     onSearch(filteredData);
   };
 
@@ -80,21 +84,25 @@ export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> =
   return (
     <DashboardCard className="mb-8">
       <div className="p-6">
-        
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-3 lg:col-span-3">
               <div className="flex items-center gap-2">
                 <Hash className="w-4 h-4 text-primary" />
-                <Label htmlFor="title" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="title"
+                  className="text-sm font-medium text-foreground"
+                >
                   🔍 标题关键词
                 </Label>
               </div>
               <Input
                 id="title"
                 placeholder="输入事件标题关键词进行模糊搜索"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.title ? 'border-destructive focus:border-destructive' : ''
+                className={`${FORM_STYLES.inputBase} ${
+                  errors.title
+                    ? 'border-destructive focus:border-destructive'
+                    : ''
                 }`}
                 {...register('title')}
               />
@@ -124,18 +132,23 @@ export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> =
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-primary" />
-                <Label htmlFor="startTime" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="startTime"
+                  className="text-sm font-medium text-foreground"
+                >
                   🗺️ 开始时间
                 </Label>
               </div>
               <Input
                 id="startTime"
                 type="datetime-local"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.startTime ? 'border-destructive focus:border-destructive' : ''
+                className={`${FORM_STYLES.inputBase} ${
+                  errors.startTime
+                    ? 'border-destructive focus:border-destructive'
+                    : ''
                 }`}
                 {...register('startTime', {
-                  setValueAs: value => value ? new Date(value) : undefined,
+                  setValueAs: value => (value ? new Date(value) : undefined),
                 })}
               />
               {errors.startTime && (
@@ -149,18 +162,23 @@ export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> =
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-primary" />
-                <Label htmlFor="endTime" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="endTime"
+                  className="text-sm font-medium text-foreground"
+                >
                   🗺️ 结束时间
                 </Label>
               </div>
               <Input
                 id="endTime"
                 type="datetime-local"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.endTime ? 'border-destructive focus:border-destructive' : ''
+                className={`${FORM_STYLES.inputBase} ${
+                  errors.endTime
+                    ? 'border-destructive focus:border-destructive'
+                    : ''
                 }`}
                 {...register('endTime', {
-                  setValueAs: value => value ? new Date(value) : undefined,
+                  setValueAs: value => (value ? new Date(value) : undefined),
                 })}
               />
               {errors.endTime && (
@@ -185,8 +203,8 @@ export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> =
                 清空条件
               </Button>
             )}
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isSearching}
               className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 transition-all duration-300"
             >

@@ -2,7 +2,10 @@ import { Button } from '@sker/ui';
 import { Plus, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { DashboardCard, LiveIndicator } from '../components/dashboard/DashboardComponents';
+import {
+  DashboardCard,
+  LiveIndicator,
+} from '../components/dashboard/DashboardComponents';
 import { SentimentEventDialog } from '../components/sentiment-event/SentimentEventDialog';
 import { SentimentEventList } from '../components/sentiment-event/SentimentEventList';
 import { SentimentEventSearchForm } from '../components/sentiment-event/SentimentEventSearchForm';
@@ -23,13 +26,18 @@ export const SentimentEventPage: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<SentimentEvent | null>(null);
 
-  const { searchParams, setSearchParams, clearSearchParams } = useSentimentEventStore();
+  const { searchParams, setSearchParams, clearSearchParams } =
+    useSentimentEventStore();
 
   console.log('当前搜索参数:', searchParams);
 
   // 始终使用搜索接口，即使没有搜索参数也调用搜索接口（会返回所有数据）
-  const { data: searchResults = [], isLoading, refetch } = useSearchSentimentEvents(searchParams);
-  
+  const {
+    data: searchResults = [],
+    isLoading,
+    refetch,
+  } = useSearchSentimentEvents(searchParams);
+
   // 转换搜索结果，添加 id 字段（实际应用中 API 应该返回带 id 的数据）
   const items: SentimentEvent[] = searchResults.map((item, index) => ({
     ...item,
@@ -102,7 +110,7 @@ export const SentimentEventPage: React.FC = () => {
   };
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
-  
+
   // 检查是否有搜索参数用于显示搜索结果提示
   const hasActiveSearch = Object.keys(searchParams).some(key => {
     const value = searchParams[key as keyof typeof searchParams];
@@ -121,23 +129,27 @@ export const SentimentEventPage: React.FC = () => {
             </h1>
             <div className="flex items-center gap-2">
               <LiveIndicator status="online" />
-              <span className="text-muted-foreground">事件数据管理 · 实时监控</span>
+              <span className="text-muted-foreground">
+                事件数据管理 · 实时监控
+              </span>
             </div>
           </div>
-          
+
           {/* 右侧：操作按钮 */}
           <div className="flex gap-4">
-            <Button 
-              variant="outline" 
-              onClick={handleRefresh} 
+            <Button
+              variant="outline"
+              onClick={handleRefresh}
               disabled={isLoading}
               className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5"
             >
-              <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              <RefreshCw
+                className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`}
+              />
               {isLoading ? '刷新中...' : '刷新数据'}
             </Button>
-            
-            <Button 
+
+            <Button
               onClick={handleCreate}
               className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:-translate-y-1"
             >
@@ -161,9 +173,9 @@ export const SentimentEventPage: React.FC = () => {
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                   🔍 搜索结果：共找到 {items.length} 条记录
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
+                <Button
+                  variant="ghost"
+                  size="sm"
                   onClick={handleClearSearch}
                   className="text-primary hover:bg-primary hover:text-white transition-all duration-300"
                 >

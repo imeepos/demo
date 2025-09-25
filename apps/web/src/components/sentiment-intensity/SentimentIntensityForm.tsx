@@ -46,7 +46,10 @@ export const SentimentIntensityForm: React.FC<SentimentIntensityFormProps> = ({
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <Hash className="w-4 h-4 text-primary" />
-            <Label htmlFor="title" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="title"
+              className="text-sm font-medium text-foreground"
+            >
               配置标题 <span className="text-destructive">*</span>
             </Label>
           </div>
@@ -70,7 +73,10 @@ export const SentimentIntensityForm: React.FC<SentimentIntensityFormProps> = ({
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <Zap className="w-4 h-4 text-primary" />
-            <Label htmlFor="intensity" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="intensity"
+              className="text-sm font-medium text-foreground"
+            >
               强度数值 <span className="text-destructive">*</span>
             </Label>
           </div>
@@ -83,7 +89,9 @@ export const SentimentIntensityForm: React.FC<SentimentIntensityFormProps> = ({
               step="0.01"
               placeholder="0.00 - 1.00"
               className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                errors.intensity ? 'border-destructive focus:border-destructive' : ''
+                errors.intensity
+                  ? 'border-destructive focus:border-destructive'
+                  : ''
               }`}
               {...register('intensity', {
                 setValueAs: value => parseFloat(value),
@@ -100,7 +108,9 @@ export const SentimentIntensityForm: React.FC<SentimentIntensityFormProps> = ({
             </p>
           )}
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
-            <p className="text-xs text-primary font-medium mb-1">📊 强度参考范围</p>
+            <p className="text-xs text-primary font-medium mb-1">
+              📊 强度参考范围
+            </p>
             <div className="grid grid-cols-5 gap-2 text-xs">
               <div className="text-center">
                 <div className="text-success font-semibold">0.0-0.2</div>
@@ -130,7 +140,10 @@ export const SentimentIntensityForm: React.FC<SentimentIntensityFormProps> = ({
         <div className="space-y-3">
           <div className="flex items-center gap-2">
             <FileText className="w-4 h-4 text-primary" />
-            <Label htmlFor="description" className="text-sm font-medium text-foreground">
+            <Label
+              htmlFor="description"
+              className="text-sm font-medium text-foreground"
+            >
               详细描述 <span className="text-muted-foreground">(可选)</span>
             </Label>
           </div>
@@ -152,28 +165,24 @@ export const SentimentIntensityForm: React.FC<SentimentIntensityFormProps> = ({
 
       {/* 操作按钮 */}
       <div className="flex justify-end gap-3 pt-6 border-t border-border">
-        <Button 
-          type="button" 
-          variant="outline" 
-          onClick={onCancel} 
+        <Button
+          type="button"
+          variant="outline"
+          onClick={onCancel}
           disabled={isSubmitting}
           className="border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-300"
         >
           <X className="w-4 h-4 mr-2" />
           取消操作
         </Button>
-        
-        <Button 
-          type="submit" 
+
+        <Button
+          type="submit"
           disabled={isSubmitting}
           className="bg-tech-gradient hover:shadow-tech text-white font-medium transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
         >
           <Save className="w-4 h-4 mr-2" />
-          {isSubmitting 
-            ? '正在保存...' 
-            : initialData 
-            ? '更新配置' 
-            : '创建配置'}
+          {isSubmitting ? '正在保存...' : initialData ? '更新配置' : '创建配置'}
         </Button>
       </div>
     </form>

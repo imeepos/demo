@@ -2,7 +2,13 @@ import { Button } from '@sker/ui';
 import { Plus, Settings, TrendingUp } from 'lucide-react';
 import React from 'react';
 import { toast } from 'react-hot-toast';
-import { DashboardCard, MetricCard, MetricValue, MetricLabel, LiveIndicator } from '../components/dashboard/DashboardComponents';
+import {
+  DashboardCard,
+  LiveIndicator,
+  MetricCard,
+  MetricLabel,
+  MetricValue,
+} from '../components/dashboard/DashboardComponents';
 import { SentimentIntensityDialog } from '../components/sentiment-intensity/SentimentIntensityDialog';
 import { SentimentIntensityList } from '../components/sentiment-intensity/SentimentIntensityList';
 import { SentimentIntensitySearchForm } from '../components/sentiment-intensity/SentimentIntensitySearchForm';
@@ -43,7 +49,8 @@ export const SentimentIntensityPage: React.FC = () => {
   } = useSentimentIntensityStore();
 
   // 查询
-  const { data: listData = [], isLoading: isListLoading } = useSentimentIntensityList();
+  const { data: listData = [], isLoading: isListLoading } =
+    useSentimentIntensityList();
 
   const searchParams = {
     title: searchTitle || undefined,
@@ -60,7 +67,11 @@ export const SentimentIntensityPage: React.FC = () => {
   const deleteMutation = useDeleteSentimentIntensity();
 
   // 判断是否在搜索模式
-  const isSearchMode = !!(searchTitle || searchMinIntensity !== null || searchMaxIntensity !== null);
+  const isSearchMode = !!(
+    searchTitle ||
+    searchMinIntensity !== null ||
+    searchMaxIntensity !== null
+  );
   const displayData = isSearchMode ? searchData : listData;
   const isLoading = isSearchMode ? isSearchLoading : isListLoading;
 
@@ -130,7 +141,9 @@ export const SentimentIntensityPage: React.FC = () => {
           </h1>
           <div className="flex items-center justify-center gap-2 mb-4">
             <LiveIndicator status="online" />
-            <span className="text-muted-foreground">配置参数管理 · 实时监控</span>
+            <span className="text-muted-foreground">
+              配置参数管理 · 实时监控
+            </span>
           </div>
         </div>
 
@@ -139,7 +152,9 @@ export const SentimentIntensityPage: React.FC = () => {
           <DashboardCard variant="primary" className="animate-card-float">
             <MetricCard variant="primary">
               <MetricLabel>总配置数量</MetricLabel>
-              <MetricValue variant="primary" size="lg" className="data-value">{displayData.length}</MetricValue>
+              <MetricValue variant="primary" size="lg" className="data-value">
+                {displayData.length}
+              </MetricValue>
               <div className="flex items-center gap-1 text-sm text-primary">
                 <Settings className="w-4 h-4" />
                 个配置项
@@ -150,7 +165,9 @@ export const SentimentIntensityPage: React.FC = () => {
           <DashboardCard variant="success">
             <MetricCard variant="success">
               <MetricLabel>活跃配置</MetricLabel>
-              <MetricValue variant="success" size="lg" className="data-value">{displayData.filter(item => item.isActive !== false).length}</MetricValue>
+              <MetricValue variant="success" size="lg" className="data-value">
+                {displayData.filter(item => item.isActive !== false).length}
+              </MetricValue>
               <div className="flex items-center gap-1 text-sm text-success">
                 <TrendingUp className="w-4 h-4" />
                 正在使用
@@ -173,7 +190,7 @@ export const SentimentIntensityPage: React.FC = () => {
 
         {/* 操作按钮 */}
         <div className="flex justify-center mb-8">
-          <Button 
+          <Button
             onClick={openCreateDialog}
             className="bg-tech-gradient hover:shadow-tech-lg text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:-translate-y-1"
           >
@@ -183,7 +200,10 @@ export const SentimentIntensityPage: React.FC = () => {
         </div>
 
         {/* 搜索表单 */}
-        <SentimentIntensitySearchForm onSearch={handleSearch} onClear={handleClearSearch} />
+        <SentimentIntensitySearchForm
+          onSearch={handleSearch}
+          onClear={handleClearSearch}
+        />
 
         {/* 搜索结果提示 */}
         {isSearchMode && (
@@ -197,17 +217,21 @@ export const SentimentIntensityPage: React.FC = () => {
                   </div>
                 ) : (
                   <>
-                    <div className="font-semibold mb-2">🔍 搜索结果：共找到 {displayData.length} 条记录</div>
+                    <div className="font-semibold mb-2">
+                      🔍 搜索结果：共找到 {displayData.length} 条记录
+                    </div>
                     <div className="text-xs text-muted-foreground space-y-1">
                       {searchTitle && <div>• 标题包含："{searchTitle}"</div>}
-                      {(searchMinIntensity !== null || searchMaxIntensity !== null) && (
+                      {(searchMinIntensity !== null ||
+                        searchMaxIntensity !== null) && (
                         <div>
                           • 强度范围：
-                          {searchMinIntensity !== null && searchMaxIntensity !== null
+                          {searchMinIntensity !== null &&
+                          searchMaxIntensity !== null
                             ? `${searchMinIntensity} - ${searchMaxIntensity}`
                             : searchMinIntensity !== null
-                            ? `≥ ${searchMinIntensity}`
-                            : `≤ ${searchMaxIntensity}`}
+                              ? `≥ ${searchMinIntensity}`
+                              : `≤ ${searchMaxIntensity}`}
                         </div>
                       )}
                     </div>

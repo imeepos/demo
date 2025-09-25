@@ -38,15 +38,21 @@ export const useSentimentIntensityList = () => {
 };
 
 // 搜索情感强度记录
-export const useSentimentIntensitySearch = (params: SearchSentimentIntensityInput) => {
+export const useSentimentIntensitySearch = (
+  params: SearchSentimentIntensityInput
+) => {
   return useQuery({
     queryKey: sentimentIntensityKeys.search(params),
     queryFn: async () => {
       const response = await sentimentIntensityControllerSearch({
         query: {
           ...(params.title && { title: params.title }),
-          ...(params.minIntensity !== undefined && { minIntensity: params.minIntensity }),
-          ...(params.maxIntensity !== undefined && { maxIntensity: params.maxIntensity }),
+          ...(params.minIntensity !== undefined && {
+            minIntensity: params.minIntensity,
+          }),
+          ...(params.maxIntensity !== undefined && {
+            maxIntensity: params.maxIntensity,
+          }),
         },
       });
       return response.data as SentimentIntensityItem[];
@@ -75,7 +81,9 @@ export const useCreateSentimentIntensity = () => {
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: sentimentIntensityKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: sentimentIntensityKeys.lists(),
+      });
     },
   });
 };
@@ -99,7 +107,9 @@ export const useUpdateSentimentIntensity = () => {
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: sentimentIntensityKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: sentimentIntensityKeys.lists(),
+      });
     },
   });
 };
@@ -115,7 +125,9 @@ export const useDeleteSentimentIntensity = () => {
       });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: sentimentIntensityKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: sentimentIntensityKeys.lists(),
+      });
     },
   });
 };

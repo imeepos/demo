@@ -27,6 +27,10 @@ interface SentimentEventFormProps {
   isSubmitting?: boolean;
 }
 
+const ERROR_STYLE = 'border-destructive focus:border-destructive';
+const INPUT_BASE_STYLE =
+  'border-border focus:border-primary focus:ring-primary/20 transition-all duration-300';
+
 export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
   initialData,
   onSubmit,
@@ -52,7 +56,9 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
       longitude: 116.4074,
       address: '',
       source: initialData?.source || '',
-      timestamp: initialData?.timestamp ? new Date(initialData.timestamp) : new Date(),
+      timestamp: initialData?.timestamp
+        ? new Date(initialData.timestamp)
+        : new Date(),
       hotness: 1,
     },
   });
@@ -86,8 +92,13 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
   };
 
   const getSentimentVariant = (
-    score: number,
-  ): 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative' => {
+    score: number
+  ):
+    | 'very-positive'
+    | 'positive'
+    | 'neutral'
+    | 'negative'
+    | 'very-negative' => {
     if (score >= 0.8) return 'very-positive';
     if (score >= 0.6) return 'positive';
     if (score >= 0.4) return 'neutral';
@@ -105,7 +116,10 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
 
   return (
     <div className="space-y-8">
-      <form onSubmit={handleSubmit(handleFormSubmit as any)} className="space-y-8">
+      <form
+        onSubmit={handleSubmit(handleFormSubmit as any)}
+        className="space-y-8"
+      >
         {/* 基本信息部分 */}
         <div className="space-y-6">
           <div className="flex items-center gap-2 mb-4">
@@ -117,15 +131,18 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <FileText className="w-4 h-4 text-primary" />
-                <Label htmlFor="title" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="title"
+                  className="text-sm font-medium text-foreground"
+                >
                   事件标题 <span className="text-destructive">*</span>
                 </Label>
               </div>
               <Input
                 id="title"
                 placeholder="输入舆情事件的标题"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.title ? 'border-destructive focus:border-destructive' : ''
+                className={`${INPUT_BASE_STYLE} ${
+                  errors.title ? ERROR_STYLE : ''
                 }`}
                 {...register('title')}
               />
@@ -140,15 +157,18 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Hash className="w-4 h-4 text-primary" />
-                <Label htmlFor="source" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="source"
+                  className="text-sm font-medium text-foreground"
+                >
                   信息来源 <span className="text-destructive">*</span>
                 </Label>
               </div>
               <Input
                 id="source"
                 placeholder="如：新浪微博、今日头条等"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.source ? 'border-destructive focus:border-destructive' : ''
+                className={`${INPUT_BASE_STYLE} ${
+                  errors.source ? ERROR_STYLE : ''
                 }`}
                 {...register('source')}
               />
@@ -164,15 +184,19 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <FileText className="w-4 h-4 text-primary" />
-              <Label htmlFor="content" className="text-sm font-medium text-foreground">
-                事件内容描述 <span className="text-muted-foreground">(可选)</span>
+              <Label
+                htmlFor="content"
+                className="text-sm font-medium text-foreground"
+              >
+                事件内容描述{' '}
+                <span className="text-muted-foreground">(可选)</span>
               </Label>
             </div>
             <Textarea
               id="content"
               rows={4}
               placeholder="请输入事件的详细内容描述..."
-              className="border-border focus:border-primary focus:ring-primary/20 resize-none transition-all duration-300"
+              className={`${INPUT_BASE_STYLE} resize-none`}
               {...register('content')}
             />
             {errors.content && (
@@ -195,7 +219,10 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Zap className="w-4 h-4 text-primary" />
-                <Label htmlFor="score" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="score"
+                  className="text-sm font-medium text-foreground"
+                >
                   情感分数 <span className="text-destructive">*</span>
                 </Label>
               </div>
@@ -207,8 +234,8 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
                   max="1"
                   step="0.01"
                   placeholder="0.00 - 1.00"
-                  className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                    errors.score ? 'border-destructive focus:border-destructive' : ''
+                  className={`${INPUT_BASE_STYLE} ${
+                    errors.score ? ERROR_STYLE : ''
                   }`}
                   {...register('score', {
                     setValueAs: value => parseFloat(value),
@@ -251,7 +278,10 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-primary" />
-                <Label htmlFor="hotness" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="hotness"
+                  className="text-sm font-medium text-foreground"
+                >
                   事件热度 <span className="text-muted-foreground">(1-10)</span>
                 </Label>
               </div>
@@ -261,9 +291,10 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
                 min="1"
                 max="10"
                 placeholder="热度等级"
-                className="border-border focus:border-primary focus:ring-primary/20 transition-all duration-300"
+                className={INPUT_BASE_STYLE}
                 {...register('hotness', {
-                  setValueAs: value => (value === '' ? undefined : parseInt(value)),
+                  setValueAs: value =>
+                    value === '' ? undefined : parseInt(value),
                 })}
               />
               {errors.hotness && (
@@ -277,15 +308,18 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-primary" />
-                <Label htmlFor="timestamp" className="text-sm font-medium text-foreground">
+                <Label
+                  htmlFor="timestamp"
+                  className="text-sm font-medium text-foreground"
+                >
                   事件时间 <span className="text-destructive">*</span>
                 </Label>
               </div>
               <Input
                 id="timestamp"
                 type="datetime-local"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.timestamp ? 'border-destructive focus:border-destructive' : ''
+                className={`${INPUT_BASE_STYLE} ${
+                  errors.timestamp ? ERROR_STYLE : ''
                 }`}
                 {...register('timestamp', {
                   setValueAs: value => new Date(value),
@@ -310,7 +344,10 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="latitude" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="latitude"
+                className="text-sm font-medium text-foreground"
+              >
                 纬度 <span className="text-destructive">*</span>
               </Label>
               <Input
@@ -318,8 +355,8 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
                 type="number"
                 step="0.000001"
                 placeholder="39.9042"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.latitude ? 'border-destructive focus:border-destructive' : ''
+                className={`${INPUT_BASE_STYLE} ${
+                  errors.latitude ? ERROR_STYLE : ''
                 }`}
                 {...register('latitude', {
                   setValueAs: value => parseFloat(value),
@@ -334,7 +371,10 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="longitude" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="longitude"
+                className="text-sm font-medium text-foreground"
+              >
                 经度 <span className="text-destructive">*</span>
               </Label>
               <Input
@@ -342,8 +382,8 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
                 type="number"
                 step="0.000001"
                 placeholder="116.4074"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.longitude ? 'border-destructive focus:border-destructive' : ''
+                className={`${INPUT_BASE_STYLE} ${
+                  errors.longitude ? ERROR_STYLE : ''
                 }`}
                 {...register('longitude', {
                   setValueAs: value => parseFloat(value),
@@ -358,13 +398,16 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="address" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="address"
+                className="text-sm font-medium text-foreground"
+              >
                 地址描述 <span className="text-muted-foreground">(可选)</span>
               </Label>
               <Input
                 id="address"
                 placeholder="如：北京市朝阳区某某路段"
-                className="border-border focus:border-primary focus:ring-primary/20 transition-all duration-300"
+                className={INPUT_BASE_STYLE}
                 {...register('address')}
               />
               {errors.address && (
@@ -391,7 +434,7 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
                 value={tagInput}
                 onChange={e => setTagInput(e.target.value)}
                 onKeyPress={handleTagKeyPress}
-                className="flex-1 border-border focus:border-primary focus:ring-primary/20 transition-all duration-300"
+                className={`flex-1 ${INPUT_BASE_STYLE}`}
               />
               <Button
                 type="button"
@@ -445,7 +488,11 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             className="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-2 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
             <Save className="w-4 h-4 mr-2" />
-            {isSubmitting ? '正在保存...' : initialData ? '更新事件' : '创建事件'}
+            {isSubmitting
+              ? '正在保存...'
+              : initialData
+                ? '更新事件'
+                : '创建事件'}
           </Button>
         </div>
       </form>

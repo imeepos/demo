@@ -13,7 +13,9 @@ describe('utils', () => {
   describe('cn', () => {
     it('should combine class names correctly', () => {
       expect(cn('class1', 'class2')).toBe('class1 class2');
-      expect(cn('class1', null, 'class2', false, undefined)).toBe('class1 class2');
+      expect(cn('class1', null, 'class2', false, undefined)).toBe(
+        'class1 class2'
+      );
       expect(cn()).toBe('');
     });
   });

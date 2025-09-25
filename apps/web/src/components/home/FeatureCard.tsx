@@ -1,4 +1,8 @@
-import { DashboardCard, MetricValue, TrendIndicator } from '../dashboard/DashboardComponents';
+import {
+  DashboardCard,
+  MetricValue,
+  TrendIndicator,
+} from '../dashboard/DashboardComponents';
 
 interface FeatureCardProps {
   title: string;
@@ -15,16 +19,16 @@ interface FeatureCardProps {
  * 舆情监控功能特性卡片组件
  * 职责：展示单个业务功能特性，集成数据展示
  */
-export function FeatureCard({ 
-  title, 
-  description, 
-  icon, 
+export function FeatureCard({
+  title,
+  description,
+  icon,
   color = 'primary',
-  metrics 
+  metrics,
 }: FeatureCardProps) {
   return (
-    <DashboardCard 
-      variant={color} 
+    <DashboardCard
+      variant={color}
       className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
     >
       <div className="space-y-4">
@@ -50,17 +54,19 @@ export function FeatureCard({
           <div className="pt-3 border-t border-border/50">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <MetricValue variant={color === 'default' ? 'primary' : color} size="sm" className="text-2xl">
+                <MetricValue
+                  variant={color === 'default' ? 'primary' : color}
+                  size="sm"
+                  className="text-2xl"
+                >
                   {metrics.value}
                 </MetricValue>
-                <p className="text-xs text-muted-foreground">
-                  {metrics.label}
-                </p>
+                <p className="text-xs text-muted-foreground">{metrics.label}</p>
               </div>
               <div className="text-right">
-                <TrendIndicator 
-                  trend="up" 
-                  value="实时" 
+                <TrendIndicator
+                  trend="up"
+                  value="实时"
                   icon={<span className="animate-pulse">●</span>}
                   className="text-xs"
                 />

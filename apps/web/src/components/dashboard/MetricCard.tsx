@@ -1,5 +1,8 @@
 import { forwardRef } from 'react';
-import type { MetricCardVariants, MetricValueVariants } from '../../lib/dashboard-variants';
+import type {
+  MetricCardVariants,
+  MetricValueVariants,
+} from '../../lib/dashboard-variants';
 import {
   MetricCard as BaseMetricCard,
   MetricLabel,
@@ -7,7 +10,9 @@ import {
   TrendIndicator,
 } from './DashboardComponents';
 
-interface MetricCardProps extends React.HTMLAttributes<HTMLDivElement>, MetricCardVariants {
+interface MetricCardProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    MetricCardVariants {
   title: string;
   value: string | number;
   trend?: 'up' | 'down' | 'neutral';
@@ -23,8 +28,17 @@ interface MetricCardProps extends React.HTMLAttributes<HTMLDivElement>, MetricCa
  */
 export const MetricCard = forwardRef<HTMLDivElement, MetricCardProps>(
   (
-    { title, value, trend, trendValue, icon, valueVariant = 'primary', className, ...props },
-    ref,
+    {
+      title,
+      value,
+      trend,
+      trendValue,
+      icon,
+      valueVariant = 'primary',
+      className,
+      ...props
+    },
+    ref
   ) => {
     const getTrendIcon = () => {
       switch (trend) {
@@ -48,10 +62,14 @@ export const MetricCard = forwardRef<HTMLDivElement, MetricCardProps>(
         <MetricValue variant={valueVariant}>{value}</MetricValue>
 
         {trend && trendValue && (
-          <TrendIndicator trend={trend} value={trendValue} icon={<span>{getTrendIcon()}</span>} />
+          <TrendIndicator
+            trend={trend}
+            value={trendValue}
+            icon={<span>{getTrendIcon()}</span>}
+          />
         )}
       </BaseMetricCard>
     );
-  },
+  }
 );
 MetricCard.displayName = 'MetricCard';

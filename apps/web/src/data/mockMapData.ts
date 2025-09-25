@@ -21,7 +21,8 @@ export const mockMapEvents: SentimentEvent[] = [
   {
     id: '2',
     title: '上海某服务平台系统故障影响用户体验',
-    content: '上海一家互联网公司的服务平台出现技术故障，导致部分用户无法正常使用',
+    content:
+      '上海一家互联网公司的服务平台出现技术故障，导致部分用户无法正常使用',
     sentiment: 'negative',
     score: -0.72,
     location: { lat: 31.2304, lng: 121.4737 }, // 上海

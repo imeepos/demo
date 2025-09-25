@@ -43,5 +43,5 @@ createRoot(container).render(
         {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
       </SearchProvider>
     </QueryClientProvider>
-  </StrictMode>,
+  </StrictMode>
 );

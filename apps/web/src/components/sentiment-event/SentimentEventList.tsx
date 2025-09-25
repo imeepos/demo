@@ -1,7 +1,22 @@
 import { Button } from '@sker/ui';
-import { Edit, MapPin, Trash2, Calendar, Database, FileX, TrendingUp, Activity, Hash } from 'lucide-react';
+import {
+  Edit,
+  MapPin,
+  Trash2,
+  Calendar,
+  Database,
+  FileX,
+  TrendingUp,
+  Activity,
+  Hash,
+} from 'lucide-react';
 import React from 'react';
-import { DashboardCard, ProgressBar, SentimentBadge, LiveIndicator } from '../dashboard/DashboardComponents';
+import {
+  DashboardCard,
+  ProgressBar,
+  SentimentBadge,
+  LiveIndicator,
+} from '../dashboard/DashboardComponents';
 import type { SentimentEvent } from '../../types/sentiment-event';
 
 interface SentimentEventListProps {
@@ -28,8 +43,12 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
             <Database className="w-6 h-6 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
           </div>
           <div className="text-center">
-            <div className="text-lg font-semibold text-foreground mb-1">数据加载中</div>
-            <div className="text-sm text-muted-foreground">正在获取舆情事件信息...</div>
+            <div className="text-lg font-semibold text-foreground mb-1">
+              数据加载中
+            </div>
+            <div className="text-sm text-muted-foreground">
+              正在获取舆情事件信息...
+            </div>
           </div>
         </div>
       </DashboardCard>
@@ -44,7 +63,9 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
             <FileX className="w-12 h-12 text-muted-foreground" />
           </div>
           <div className="text-center space-y-2">
-            <h3 className="text-lg font-semibold text-foreground">暂无事件数据</h3>
+            <h3 className="text-lg font-semibold text-foreground">
+              暂无事件数据
+            </h3>
             <p className="text-muted-foreground max-w-md">
               尚未创建任何舆情事件，点击&quot;新建舆情事件&quot;按钮开始创建第一个事件记录
             </p>
@@ -61,13 +82,23 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
   };
 
   // 安全转换经纬度为数字类型
-  const parseCoordinate = (coordinate: string | number | null | undefined): number | null => {
+  const parseCoordinate = (
+    coordinate: string | number | null | undefined
+  ): number | null => {
     if (coordinate === null || coordinate === undefined) return null;
-    const numCoordinate = typeof coordinate === 'string' ? parseFloat(coordinate) : coordinate;
+    const numCoordinate =
+      typeof coordinate === 'string' ? parseFloat(coordinate) : coordinate;
     return isNaN(numCoordinate) ? null : numCoordinate;
   };
 
-  const getSentimentVariant = (score: string | number): 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative' => {
+  const getSentimentVariant = (
+    score: string | number
+  ):
+    | 'very-positive'
+    | 'positive'
+    | 'neutral'
+    | 'negative'
+    | 'very-negative' => {
     const numScore = parseScore(score);
     if (numScore >= 0.8) return 'very-positive';
     if (numScore >= 0.6) return 'positive';
@@ -85,7 +116,9 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
     return '非常负面';
   };
 
-  const getProgressVariant = (score: string | number): 'success' | 'warning' | 'primary' | 'danger' => {
+  const getProgressVariant = (
+    score: string | number
+  ): 'success' | 'warning' | 'primary' | 'danger' => {
     const numScore = parseScore(score);
     if (numScore >= 0.7) return 'success';
     if (numScore >= 0.4) return 'warning';
@@ -105,7 +138,9 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
   };
 
   const truncateText = (text: string, maxLength: number) => {
-    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+    return text.length > maxLength
+      ? `${text.substring(0, maxLength)}...`
+      : text;
   };
 
   return (
@@ -113,9 +148,14 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
       {safeItems.map((item, index) => {
         const sentimentVariant = getSentimentVariant(item.score);
         const progressVariant = getProgressVariant(item.score);
-        
+
         return (
-          <DashboardCard key={item.id} variant="default" className="hover:shadow-tech-lg transition-all duration-300 animate-card-float" style={{ animationDelay: `${index * 100}ms` }}>
+          <DashboardCard
+            key={item.id}
+            variant="default"
+            className="hover:shadow-tech-lg transition-all duration-300 animate-card-float"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
             <div className="p-6">
               <div className="flex items-start justify-between gap-6">
                 <div className="flex-1 space-y-4">
@@ -131,13 +171,16 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                         </h3>
                         <LiveIndicator status="online" />
                       </div>
-                      
+
                       <div className="flex items-center gap-3 mb-2">
                         <SentimentBadge sentiment={sentimentVariant}>
                           {getSentimentLabel(item.score)}
                         </SentimentBadge>
                         <div className="text-sm text-muted-foreground">
-                          分数: <span className="data-value font-mono">{parseScore(item.score).toFixed(3)}</span>
+                          分数:{' '}
+                          <span className="data-value font-mono">
+                            {parseScore(item.score).toFixed(3)}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -154,10 +197,10 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                         {(parseScore(item.score) * 100).toFixed(1)}%
                       </div>
                     </div>
-                    
-                    <ProgressBar 
-                      value={parseScore(item.score) * 100} 
-                      variant={progressVariant} 
+
+                    <ProgressBar
+                      value={parseScore(item.score) * 100}
+                      variant={progressVariant}
                       className="h-2"
                     />
                   </div>
@@ -167,15 +210,19 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-muted-foreground" />
                       <span className="text-muted-foreground">时间:</span>
-                      <span className="font-medium text-foreground">{formatDate(item.timestamp)}</span>
+                      <span className="font-medium text-foreground">
+                        {formatDate(item.timestamp)}
+                      </span>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       <Hash className="w-4 h-4 text-muted-foreground" />
                       <span className="text-muted-foreground">来源:</span>
-                      <span className="font-medium text-foreground">{item.source}</span>
+                      <span className="font-medium text-foreground">
+                        {item.source}
+                      </span>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       <MapPin className="w-4 h-4 text-muted-foreground" />
                       <span className="text-muted-foreground">位置:</span>
@@ -183,11 +230,13 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                         {(() => {
                           const lat = parseCoordinate(item.latitude);
                           const lng = parseCoordinate(item.longitude);
-                          return lat && lng ? `${lat.toFixed(4)}, ${lng.toFixed(4)}` : '位置信息不可用';
+                          return lat && lng
+                            ? `${lat.toFixed(4)}, ${lng.toFixed(4)}`
+                            : '位置信息不可用';
                         })()}
                       </span>
                     </div>
-                    
+
                     <div className="flex items-center gap-2">
                       <Activity className="w-4 h-4 text-muted-foreground" />
                       <span className="text-muted-foreground">热度:</span>
@@ -224,14 +273,13 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                       )}
                     </div>
                   )}
-
                 </div>
 
                 {/* 操作按钮 */}
                 <div className="flex flex-col gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => onEdit(item)}
                     className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5"
                   >

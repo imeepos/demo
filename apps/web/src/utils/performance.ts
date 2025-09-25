@@ -59,12 +59,14 @@ export function usePerformanceDebug(componentName: string) {
  */
 export function withPerformanceTracking<P extends object>(
   Component: React.ComponentType<P>,
-  displayName?: string,
+  displayName?: string
 ) {
   const WrappedComponent = (props: P) => {
     const name = displayName || Component.displayName || Component.name;
 
-    return perf.measure(`${name} render`, () => React.createElement(Component, props));
+    return perf.measure(`${name} render`, () =>
+      React.createElement(Component, props)
+    );
   };
 
   WrappedComponent.displayName = `withPerformanceTracking(${

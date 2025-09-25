@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router';
-import { FeaturesGrid } from '../components/home/FeaturesGrid';
-import { WelcomeSection } from '../components/home/WelcomeSection';
 import { DataPreviewSection } from '../components/home/DataPreviewSection';
+import { FeaturesGrid } from '../components/home/FeaturesGrid';
 import { SystemStatusSection } from '../components/home/SystemStatusSection';
+import { WelcomeSection } from '../components/home/WelcomeSection';
 
 /**
  * 舆情监控系统首页
@@ -27,12 +27,14 @@ export function HomePage() {
         {/* 主要功能入口 */}
         <div className="text-center space-y-8">
           <div>
-            <h2 className="text-3xl font-bold text-foreground mb-4">开始使用</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">
+              开始使用
+            </h2>
             <p className="text-lg text-muted-foreground">
               选择合适的视图，开始您的舆情监控之旅
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
             <Link
               to="/dashboard-view"

@@ -40,7 +40,7 @@ export interface HotTopic {
 }
 
 // 生成随机数据的工具函数
-const randomBetween = (min: number, max: number) => 
+const randomBetween = (min: number, max: number) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
 
 const randomFloat = (min: number, max: number, decimals: number = 1) =>
@@ -49,8 +49,14 @@ const randomFloat = (min: number, max: number, decimals: number = 1) =>
 // 生成实时变化的指标数据
 export const generateDashboardMetrics = (): DashboardMetrics => {
   const total = randomBetween(2500, 3200);
-  const positive = randomBetween(Math.floor(total * 0.5), Math.floor(total * 0.7));
-  const negative = randomBetween(Math.floor(total * 0.1), Math.floor(total * 0.2));
+  const positive = randomBetween(
+    Math.floor(total * 0.5),
+    Math.floor(total * 0.7)
+  );
+  const negative = randomBetween(
+    Math.floor(total * 0.1),
+    Math.floor(total * 0.2)
+  );
   const neutral = total - positive - negative;
 
   return {
@@ -63,7 +69,7 @@ export const generateDashboardMetrics = (): DashboardMetrics => {
       positive: `+${randomFloat(5, 12)}%`,
       neutral: `±${randomFloat(1, 5)}%`,
       negative: `-${randomFloat(3, 8)}%`,
-    }
+    },
   };
 };
 

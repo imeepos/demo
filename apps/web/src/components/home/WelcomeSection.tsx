@@ -9,7 +9,7 @@ export function WelcomeSection() {
     <div className="relative">
       {/* 背景渐变效果 */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-secondary/5 rounded-2xl" />
-      
+
       <div className="relative text-center py-16 px-8">
         {/* 主标题 */}
         <div className="mb-6">
@@ -18,7 +18,9 @@ export function WelcomeSection() {
           </h1>
           <div className="flex items-center justify-center gap-2 mb-4">
             <StatusDot status="online" pulse />
-            <span className="text-sm font-medium text-muted-foreground">系统运行正常</span>
+            <span className="text-sm font-medium text-muted-foreground">
+              系统运行正常
+            </span>
           </div>
         </div>
 

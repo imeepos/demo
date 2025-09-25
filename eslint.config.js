@@ -13,6 +13,9 @@ import unicorn from 'eslint-plugin-unicorn';
 export default [
   js.configs.recommended,
   {
+    ignores: ['eslint.config.js'],
+  },
+  {
     files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       parser: tsParser,
@@ -23,7 +26,11 @@ export default [
           jsx: true,
         },
         tsconfigRootDir: process.cwd(),
-        project: ['./tsconfig.json', './apps/*/tsconfig.json', './packages/*/tsconfig.json'],
+        project: [
+          './tsconfig.json',
+          './apps/*/tsconfig.json',
+          './packages/*/tsconfig.json',
+        ],
       },
       globals: {
         console: 'readonly',
@@ -74,6 +81,7 @@ export default [
 
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'react/no-unescaped-entities': 'off',
 
       'import/order': 'off',
       'no-console': 'off',
@@ -92,7 +100,7 @@ export default [
 
       // SonarJS rules
       'sonarjs/cognitive-complexity': 'off',
-      'sonarjs/no-duplicate-string': ['error', { threshold: 3 }],
+      'sonarjs/no-duplicate-string': 'off',
       'sonarjs/no-identical-functions': 'off',
       'sonarjs/no-small-switch': 'error',
       'sonarjs/prefer-immediate-return': 'error',

@@ -7,8 +7,8 @@ interface SentimentEventStore {
   clearSearchParams: () => void;
 }
 
-export const useSentimentEventStore = create<SentimentEventStore>((set) => ({
+export const useSentimentEventStore = create<SentimentEventStore>(set => ({
   searchParams: {},
-  setSearchParams: (params) => set({ searchParams: params }),
+  setSearchParams: params => set({ searchParams: params }),
   clearSearchParams: () => set({ searchParams: {} }),
 }));

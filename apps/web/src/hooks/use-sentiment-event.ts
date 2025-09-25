@@ -43,7 +43,9 @@ export const useSearchSentimentEvents = (params: QuerySentimentEventInput) => {
           ...(params.title && { title: params.title }),
           ...(params.minScore !== undefined && { minScore: params.minScore }),
           ...(params.maxScore !== undefined && { maxScore: params.maxScore }),
-          ...(params.startTime && { startTime: params.startTime.toISOString() }),
+          ...(params.startTime && {
+            startTime: params.startTime.toISOString(),
+          }),
           ...(params.endTime && { endTime: params.endTime.toISOString() }),
         },
       });
@@ -101,7 +103,13 @@ export const useUpdateSentimentEvent = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, data }: { id: number; data: UpdateSentimentEventInput }) => {
+    mutationFn: async ({
+      id,
+      data,
+    }: {
+      id: number;
+      data: UpdateSentimentEventInput;
+    }) => {
       const response = await sentimentEventControllerUpdate({
         path: { id: id.toString() },
         body: {
@@ -121,7 +129,9 @@ export const useUpdateSentimentEvent = () => {
     },
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: sentimentEventKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: sentimentEventKeys.detail(id) });
+      queryClient.invalidateQueries({
+        queryKey: sentimentEventKeys.detail(id),
+      });
     },
   });
 };

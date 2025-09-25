@@ -1,16 +1,19 @@
 import { useState, useEffect } from 'react';
-import { 
-  DashboardCard, 
-  MetricCard, 
-  MetricLabel, 
-  MetricValue, 
-  TrendIndicator, 
+import {
+  DashboardCard,
+  MetricCard,
+  MetricLabel,
+  MetricValue,
+  TrendIndicator,
   ChartContainer,
   WordcloudContainer,
   WordcloudTag,
-  LiveIndicator
+  LiveIndicator,
 } from '../dashboard/DashboardComponents';
-import { mockDashboardData, generateDashboardMetrics } from '../../data/mockDashboardData';
+import {
+  mockDashboardData,
+  generateDashboardMetrics,
+} from '../../data/mockDashboardData';
 
 /**
  * 首页实时数据预览区域
@@ -34,8 +37,14 @@ export function DataPreviewSection() {
   }, []);
 
   const hotTopics = [
-    '人工智能', '数字化转型', '新能源汽车', '元宇宙', 
-    '智能制造', '碳中和', '区块链', '5G应用'
+    '人工智能',
+    '数字化转型',
+    '新能源汽车',
+    '元宇宙',
+    '智能制造',
+    '碳中和',
+    '区块链',
+    '5G应用',
   ];
 
   return (
@@ -44,8 +53,8 @@ export function DataPreviewSection() {
       <div className="text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <h2 className="text-3xl font-bold text-foreground">实时数据概览</h2>
-          <LiveIndicator status={isUpdating ? "warning" : "online"}>
-            {isUpdating ? "更新中" : "实时"}
+          <LiveIndicator status={isUpdating ? 'warning' : 'online'}>
+            {isUpdating ? '更新中' : '实时'}
           </LiveIndicator>
         </div>
         <p className="text-lg text-muted-foreground">
@@ -55,76 +64,94 @@ export function DataPreviewSection() {
 
       {/* 核心指标 */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <DashboardCard variant="primary" className="transition-all duration-500 hover:scale-[1.02]">
+        <DashboardCard
+          variant="primary"
+          className="transition-all duration-500 hover:scale-[1.02]"
+        >
           <MetricCard variant="primary">
             <MetricLabel>总监控数据</MetricLabel>
             <MetricValue variant="primary">
               {metrics.totalData.toLocaleString()}
             </MetricValue>
-            <TrendIndicator 
-              trend="up" 
-              value={metrics.trends.total} 
-              icon={<span>📊</span>} 
+            <TrendIndicator
+              trend="up"
+              value={metrics.trends.total}
+              icon={<span>📊</span>}
             />
           </MetricCard>
         </DashboardCard>
 
-        <DashboardCard variant="success" className="transition-all duration-500 hover:scale-[1.02]">
+        <DashboardCard
+          variant="success"
+          className="transition-all duration-500 hover:scale-[1.02]"
+        >
           <MetricCard variant="success">
             <MetricLabel>正面情感</MetricLabel>
             <MetricValue variant="success">
               {metrics.positiveCount.toLocaleString()}
             </MetricValue>
-            <TrendIndicator 
-              trend="up" 
-              value={metrics.trends.positive} 
-              icon={<span>😊</span>} 
+            <TrendIndicator
+              trend="up"
+              value={metrics.trends.positive}
+              icon={<span>😊</span>}
             />
           </MetricCard>
         </DashboardCard>
 
-        <DashboardCard variant="warning" className="transition-all duration-500 hover:scale-[1.02]">
+        <DashboardCard
+          variant="warning"
+          className="transition-all duration-500 hover:scale-[1.02]"
+        >
           <MetricCard variant="warning">
             <MetricLabel>中性情感</MetricLabel>
             <MetricValue variant="warning">
               {metrics.neutralCount.toLocaleString()}
             </MetricValue>
-            <TrendIndicator 
-              trend="neutral" 
-              value={metrics.trends.neutral} 
-              icon={<span>😐</span>} 
+            <TrendIndicator
+              trend="neutral"
+              value={metrics.trends.neutral}
+              icon={<span>😐</span>}
             />
           </MetricCard>
         </DashboardCard>
 
-        <DashboardCard variant="danger" className="transition-all duration-500 hover:scale-[1.02]">
+        <DashboardCard
+          variant="danger"
+          className="transition-all duration-500 hover:scale-[1.02]"
+        >
           <MetricCard variant="danger">
             <MetricLabel>负面情感</MetricLabel>
             <MetricValue variant="danger">
               {metrics.negativeCount.toLocaleString()}
             </MetricValue>
-            <TrendIndicator 
-              trend="down" 
-              value={metrics.trends.negative} 
-              icon={<span>😔</span>} 
+            <TrendIndicator
+              trend="down"
+              value={metrics.trends.negative}
+              icon={<span>😔</span>}
             />
           </MetricCard>
         </DashboardCard>
       </div>
 
       {/* 热点话题词云 */}
-      <DashboardCard size="lg" className="bg-gradient-to-br from-background to-muted/20">
-        <ChartContainer title="当前热点话题" subtitle="基于全网数据分析 · 每小时更新">
+      <DashboardCard
+        size="lg"
+        className="bg-gradient-to-br from-background to-muted/20"
+      >
+        <ChartContainer
+          title="当前热点话题"
+          subtitle="基于全网数据分析 · 每小时更新"
+        >
           <WordcloudContainer>
             {hotTopics.map((topic, index) => (
-              <WordcloudTag 
+              <WordcloudTag
                 key={topic}
-                variant={index % 2 === 0 ? "primary" : "secondary"}
+                variant={index % 2 === 0 ? 'primary' : 'secondary'}
                 shine
                 className="animate-pulse hover:animate-none"
                 style={{
                   animationDelay: `${index * 0.2}s`,
-                  animationDuration: '2s'
+                  animationDuration: '2s',
                 }}
               >
                 {topic}
@@ -141,7 +168,9 @@ export function DataPreviewSection() {
         </p>
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">
           <span className="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-          <span className="text-sm font-medium text-primary">数据源：全网平台实时采集</span>
+          <span className="text-sm font-medium text-primary">
+            数据源：全网平台实时采集
+          </span>
         </div>
       </div>
     </div>

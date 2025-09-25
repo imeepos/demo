@@ -24,12 +24,14 @@ export const SentimentIntensityWidget: React.FC = () => {
   const totalCount = items.length;
   const highIntensity = items.filter(item => item.intensity >= 0.7).length;
   const mediumIntensity = items.filter(
-    item => item.intensity >= 0.4 && item.intensity < 0.7,
+    item => item.intensity >= 0.4 && item.intensity < 0.7
   ).length;
   const lowIntensity = items.filter(item => item.intensity < 0.4).length;
 
   const avgIntensity =
-    totalCount > 0 ? items.reduce((sum, item) => sum + item.intensity, 0) / totalCount : 0;
+    totalCount > 0
+      ? items.reduce((sum, item) => sum + item.intensity, 0) / totalCount
+      : 0;
 
   const getIntensityIcon = (level: 'high' | 'medium' | 'low') => {
     switch (level) {
@@ -68,7 +70,9 @@ export const SentimentIntensityWidget: React.FC = () => {
             <div className="text-sm text-gray-600">总记录数</div>
           </div>
           <div className="text-center">
-            <div className="text-2xl font-bold text-purple-600">{avgIntensity.toFixed(2)}</div>
+            <div className="text-2xl font-bold text-purple-600">
+              {avgIntensity.toFixed(2)}
+            </div>
             <div className="text-sm text-gray-600">平均强度</div>
           </div>
         </div>
@@ -85,7 +89,9 @@ export const SentimentIntensityWidget: React.FC = () => {
                 {highIntensity}
               </Badge>
               <span className="text-xs text-gray-500">
-                {totalCount > 0 ? `${((highIntensity / totalCount) * 100).toFixed(1)}%` : '0%'}
+                {totalCount > 0
+                  ? `${((highIntensity / totalCount) * 100).toFixed(1)}%`
+                  : '0%'}
               </span>
             </div>
           </div>
@@ -100,7 +106,9 @@ export const SentimentIntensityWidget: React.FC = () => {
                 {mediumIntensity}
               </Badge>
               <span className="text-xs text-gray-500">
-                {totalCount > 0 ? `${((mediumIntensity / totalCount) * 100).toFixed(1)}%` : '0%'}
+                {totalCount > 0
+                  ? `${((mediumIntensity / totalCount) * 100).toFixed(1)}%`
+                  : '0%'}
               </span>
             </div>
           </div>
@@ -115,7 +123,9 @@ export const SentimentIntensityWidget: React.FC = () => {
                 {lowIntensity}
               </Badge>
               <span className="text-xs text-gray-500">
-                {totalCount > 0 ? `${((lowIntensity / totalCount) * 100).toFixed(1)}%` : '0%'}
+                {totalCount > 0
+                  ? `${((lowIntensity / totalCount) * 100).toFixed(1)}%`
+                  : '0%'}
               </span>
             </div>
           </div>

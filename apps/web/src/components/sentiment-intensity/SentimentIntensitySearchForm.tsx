@@ -15,11 +15,11 @@ interface SentimentIntensitySearchFormProps {
   onClear: () => void;
 }
 
-export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchFormProps> = ({
-  onSearch,
-  onClear,
-}) => {
-  const { searchTitle, searchMinIntensity, searchMaxIntensity } = useSentimentIntensityStore();
+export const SentimentIntensitySearchForm: React.FC<
+  SentimentIntensitySearchFormProps
+> = ({ onSearch, onClear }) => {
+  const { searchTitle, searchMinIntensity, searchMaxIntensity } =
+    useSentimentIntensityStore();
 
   const {
     register,
@@ -53,26 +53,34 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
           </div>
           <div>
             <h3 className="text-lg font-semibold text-foreground">高级搜索</h3>
-            <p className="text-sm text-muted-foreground">根据条件筛选情感强度配置</p>
+            <p className="text-sm text-muted-foreground">
+              根据条件筛选情感强度配置
+            </p>
           </div>
         </div>
-        
+
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="title" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="title"
+                className="text-sm font-medium text-foreground"
+              >
                 🔍 标题关键词
               </Label>
-              <Input 
-                id="title" 
-                placeholder="输入标题关键词进行模糊搜索" 
+              <Input
+                id="title"
+                placeholder="输入标题关键词进行模糊搜索"
                 className="border-border focus:border-primary focus:ring-primary/20"
-                {...register('title')} 
+                {...register('title')}
               />
             </div>
-            
+
             <div className="space-y-2">
-              <Label htmlFor="minIntensity" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="minIntensity"
+                className="text-sm font-medium text-foreground"
+              >
                 📉 最小强度值
               </Label>
               <Input
@@ -84,13 +92,17 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
                 placeholder="0.00 - 1.00"
                 className="border-border focus:border-primary focus:ring-primary/20"
                 {...register('minIntensity', {
-                  setValueAs: value => (value === '' ? undefined : parseFloat(value)),
+                  setValueAs: value =>
+                    value === '' ? undefined : parseFloat(value),
                 })}
               />
             </div>
-            
+
             <div className="space-y-2">
-              <Label htmlFor="maxIntensity" className="text-sm font-medium text-foreground">
+              <Label
+                htmlFor="maxIntensity"
+                className="text-sm font-medium text-foreground"
+              >
                 📈 最大强度值
               </Label>
               <Input
@@ -102,25 +114,26 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
                 placeholder="0.00 - 1.00"
                 className="border-border focus:border-primary focus:ring-primary/20"
                 {...register('maxIntensity', {
-                  setValueAs: value => (value === '' ? undefined : parseFloat(value)),
+                  setValueAs: value =>
+                    value === '' ? undefined : parseFloat(value),
                 })}
               />
             </div>
           </div>
-          
+
           <div className="flex gap-3 pt-4 border-t border-border">
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               disabled={isSubmitting}
               className="bg-tech-gradient hover:shadow-tech text-white font-medium px-6 py-2 transition-all duration-300 hover:-translate-y-0.5"
             >
               <Search className="w-4 h-4 mr-2" />
               {isSubmitting ? '搜索中...' : '开始搜索'}
             </Button>
-            
-            <Button 
-              type="button" 
-              variant="outline" 
+
+            <Button
+              type="button"
+              variant="outline"
               onClick={handleClear}
               className="border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-300"
             >

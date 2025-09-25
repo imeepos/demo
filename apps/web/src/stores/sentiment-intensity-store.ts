@@ -35,34 +35,41 @@ interface SentimentIntensityState {
   closeEditDialog: () => void;
 }
 
-export const useSentimentIntensityStore = create<SentimentIntensityState>(set => ({
-  // 初始状态
-  items: [],
-  isLoading: false,
-  error: null,
+export const useSentimentIntensityStore = create<SentimentIntensityState>(
+  set => ({
+    // 初始状态
+    items: [],
+    isLoading: false,
+    error: null,
 
-  searchTitle: '',
-  searchMinIntensity: null,
-  searchMaxIntensity: null,
+    searchTitle: '',
+    searchMinIntensity: null,
+    searchMaxIntensity: null,
 
-  isCreateDialogOpen: false,
-  isEditDialogOpen: false,
-  editingItem: null,
+    isCreateDialogOpen: false,
+    isEditDialogOpen: false,
+    editingItem: null,
 
-  // 基础 Actions
-  setItems: items => set({ items }),
-  setLoading: isLoading => set({ isLoading }),
-  setError: error => set({ error }),
+    // 基础 Actions
+    setItems: items => set({ items }),
+    setLoading: isLoading => set({ isLoading }),
+    setError: error => set({ error }),
 
-  // 搜索 Actions
-  setSearchTitle: searchTitle => set({ searchTitle }),
-  setSearchMinIntensity: searchMinIntensity => set({ searchMinIntensity }),
-  setSearchMaxIntensity: searchMaxIntensity => set({ searchMaxIntensity }),
-  clearSearch: () => set({ searchTitle: '', searchMinIntensity: null, searchMaxIntensity: null }),
+    // 搜索 Actions
+    setSearchTitle: searchTitle => set({ searchTitle }),
+    setSearchMinIntensity: searchMinIntensity => set({ searchMinIntensity }),
+    setSearchMaxIntensity: searchMaxIntensity => set({ searchMaxIntensity }),
+    clearSearch: () =>
+      set({
+        searchTitle: '',
+        searchMinIntensity: null,
+        searchMaxIntensity: null,
+      }),
 
-  // 弹窗 Actions
-  openCreateDialog: () => set({ isCreateDialogOpen: true }),
-  closeCreateDialog: () => set({ isCreateDialogOpen: false }),
-  openEditDialog: editingItem => set({ isEditDialogOpen: true, editingItem }),
-  closeEditDialog: () => set({ isEditDialogOpen: false, editingItem: null }),
-}));
+    // 弹窗 Actions
+    openCreateDialog: () => set({ isCreateDialogOpen: true }),
+    closeCreateDialog: () => set({ isCreateDialogOpen: false }),
+    openEditDialog: editingItem => set({ isEditDialogOpen: true, editingItem }),
+    closeEditDialog: () => set({ isEditDialogOpen: false, editingItem: null }),
+  })
+);
