@@ -15,7 +15,6 @@ import {
   DashboardCard,
   ProgressBar,
   SentimentBadge,
-  LiveIndicator,
 } from '../dashboard/DashboardComponents';
 import type { SentimentEvent } from '../../types/sentiment-event';
 
@@ -144,7 +143,7 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
   };
 
   return (
-    <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[70vh] overflow-y-auto pr-2">
       {safeItems.map((item, index) => {
         const sentimentVariant = getSentimentVariant(item.score);
         const progressVariant = getProgressVariant(item.score);
@@ -153,145 +152,140 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
           <DashboardCard
             key={item.id}
             variant="default"
-            className="hover:shadow-tech-lg transition-all duration-300 animate-card-float"
+            className="hover:shadow-tech-lg transition-all duration-300 animate-card-float min-h-[400px] flex flex-col"
             style={{ animationDelay: `${index * 100}ms` }}
           >
-            <div className="p-6">
-              <div className="flex items-start justify-between gap-6">
-                <div className="flex-1 space-y-4">
-                  {/* 标题和状态 */}
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg mt-1">
-                      <Activity className="w-5 h-5 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between gap-3 mb-2">
-                        <h3 className="text-lg font-bold text-foreground leading-tight">
-                          {truncateText(item.title, 80)}
-                        </h3>
-                        <LiveIndicator status="online" />
-                      </div>
-
-                      <div className="flex items-center gap-3 mb-2">
-                        <SentimentBadge sentiment={sentimentVariant}>
-                          {getSentimentLabel(item.score)}
-                        </SentimentBadge>
-                        <div className="text-sm text-muted-foreground">
-                          分数:{' '}
-                          <span className="data-value font-mono">
-                            {parseScore(item.score).toFixed(3)}
-                          </span>
-                        </div>
+            <div className="p-4 flex flex-col h-full">
+              <div className="space-y-3 flex-1 flex flex-col">
+                {/* 卡片头部 - 标题区域（固定高度）*/}
+                <div className="min-h-[4rem] flex items-start gap-3">
+                  <div className="p-1 bg-primary/10 rounded mt-1 flex-shrink-0">
+                    <Activity className="w-4 h-4 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0 flex flex-col justify-center h-full">
+                    <h3 className="text-base font-bold text-foreground leading-tight mb-2 line-clamp-2">
+                      {truncateText(item.title, 50)}
+                    </h3>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <SentimentBadge sentiment={sentimentVariant}>
+                        {getSentimentLabel(item.score)}
+                      </SentimentBadge>
+                      <div className="text-xs text-muted-foreground">
+                        <span className="data-value font-mono">
+                          {parseScore(item.score).toFixed(2)}
+                        </span>
                       </div>
                     </div>
                   </div>
+                </div>
 
-                  {/* 情感分数进度条 */}
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                        <TrendingUp className="w-4 h-4" />
-                        情感评级
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {(parseScore(item.score) * 100).toFixed(1)}%
-                      </div>
+                {/* 情感分数进度条 - 简化版 */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-muted-foreground">情感评级</span>
+                    <span className="font-medium">
+                      {(parseScore(item.score) * 100).toFixed(0)}%
+                    </span>
+                  </div>
+                  <ProgressBar
+                    value={parseScore(item.score) * 100}
+                    variant={progressVariant}
+                    className="h-1.5"
+                  />
+                </div>
+
+                {/* 关键信息 - 紧凑布局 */}
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                      <Calendar className="w-3 h-3" />
+                      <span>{formatDate(item.timestamp).split(' ')[0]}</span>
                     </div>
-
-                    <ProgressBar
-                      value={parseScore(item.score) * 100}
-                      variant={progressVariant}
-                      className="h-2"
-                    />
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                      <Hash className="w-3 h-3" />
+                      <span>{item.source}</span>
+                    </div>
                   </div>
 
-                  {/* 事件信息 - 基础信息始终显示 */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">时间:</span>
-                      <span className="font-medium text-foreground">
-                        {formatDate(item.timestamp)}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <Hash className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">来源:</span>
-                      <span className="font-medium text-foreground">
-                        {item.source}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">位置:</span>
-                      <span className="font-mono text-xs text-muted-foreground">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-muted-foreground">
+                      <MapPin className="w-3 h-3" />
+                      <span className="font-mono text-xs">
                         {(() => {
                           const lat = parseCoordinate(item.latitude);
                           const lng = parseCoordinate(item.longitude);
                           return lat && lng
-                            ? `${lat.toFixed(4)}, ${lng.toFixed(4)}`
-                            : '位置信息不可用';
+                            ? `${lat.toFixed(2)}, ${lng.toFixed(2)}`
+                            : '无位置';
                         })()}
                       </span>
                     </div>
-
-                    <div className="flex items-center gap-2">
-                      <Activity className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-muted-foreground">热度:</span>
-                      <span className="font-medium text-foreground">
-                        {item.hotness ? `${item.hotness}/10` : '未设置'}
-                      </span>
-                    </div>
+                    {item.hotness && (
+                      <div className="flex items-center gap-1">
+                        <TrendingUp className="w-3 h-3 text-orange-500" />
+                        <span className="text-orange-500 font-medium">
+                          {item.hotness}/10
+                        </span>
+                      </div>
+                    )}
                   </div>
+                </div>
 
-                  {/* 内容预览 - 仅在有数据时显示 */}
-                  {item.content && (
-                    <div className="p-3 bg-muted/30 rounded-lg border-l-4 border-primary/50">
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {truncateText(item.content, 150)}
-                      </p>
-                    </div>
+                {/* 内容预览区域 - 固定高度 */}
+                <div className="min-h-[2.5rem] p-2 bg-muted/20 rounded border-l-2 border-primary/30">
+                  {item.content ? (
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      {truncateText(item.content, 80)}
+                    </p>
+                  ) : (
+                    <p className="text-xs text-muted-foreground/50 italic">
+                      暂无内容预览
+                    </p>
                   )}
+                </div>
 
-                  {/* 标签 - 仅在有数据时显示 */}
-                  {item.tags && item.tags.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {item.tags.slice(0, 5).map((tag, tagIndex) => (
+                {/* 标签区域 - 固定高度 */}
+                <div className="min-h-[1.5rem] flex flex-wrap gap-1 items-start">
+                  {item.tags && item.tags.length > 0 ? (
+                    <>
+                      {item.tags.slice(0, 2).map((tag, tagIndex) => (
                         <span
                           key={tagIndex}
-                          className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium border border-primary/20"
+                          className="inline-flex items-center px-1.5 py-0.5 bg-primary/10 text-primary rounded text-xs font-medium"
                         >
                           {tag}
                         </span>
                       ))}
-                      {item.tags.length > 5 && (
-                        <span className="inline-flex items-center px-2 py-1 bg-muted text-muted-foreground rounded text-xs">
-                          +{item.tags.length - 5} 更多
+                      {item.tags.length > 2 && (
+                        <span className="inline-flex items-center px-1.5 py-0.5 bg-muted text-muted-foreground rounded text-xs">
+                          +{item.tags.length - 2}
                         </span>
                       )}
-                    </div>
+                    </>
+                  ) : (
+                    <span className="text-xs text-muted-foreground/50 italic">
+                      无标签
+                    </span>
                   )}
                 </div>
 
-                {/* 操作按钮 */}
-                <div className="flex flex-col gap-2">
+                {/* 操作按钮 - 底部横向布局 */}
+                <div className="flex items-center justify-end gap-1 pt-2 border-t border-border/50 mt-auto">
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={() => onEdit(item)}
-                    className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5"
+                    className="h-7 w-7 p-0 text-primary hover:bg-primary hover:text-white"
                   >
-                    <Edit className="w-4 h-4" />
+                    <Edit className="w-3 h-3" />
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="ghost"
                     size="sm"
                     onClick={() => onDelete(item)}
-                    className="border-destructive/50 text-destructive hover:bg-destructive hover:text-white transition-all duration-300 hover:-translate-y-0.5"
+                    className="h-7 w-7 p-0 text-destructive hover:bg-destructive hover:text-white"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3 h-3" />
                   </Button>
                 </div>
               </div>

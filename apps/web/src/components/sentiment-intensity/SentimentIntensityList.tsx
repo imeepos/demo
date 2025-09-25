@@ -1,11 +1,10 @@
-import { Badge, Button } from '@sker/ui';
-import { Edit, Trash2, Zap, TrendingUp, Database, FileX } from 'lucide-react';
+import { Button } from '@sker/ui';
+import { Edit, Trash2, Database, FileX } from 'lucide-react';
 import React from 'react';
 import {
   DashboardCard,
   ProgressBar,
-  SentimentBadge,
-  LiveIndicator,
+  MetricValue,
 } from '../dashboard/DashboardComponents';
 import type { SentimentIntensityItem } from '../../types/sentiment-intensity';
 
@@ -72,32 +71,8 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
     return isNaN(num) ? 0 : num;
   };
 
-  const getIntensityVariant = (
-    intensity: any
-  ):
-    | 'very-positive'
-    | 'positive'
-    | 'neutral'
-    | 'negative'
-    | 'very-negative' => {
-    const num = safeIntensity(intensity);
-    if (num >= 0.8) return 'very-positive';
-    if (num >= 0.6) return 'positive';
-    if (num >= 0.4) return 'neutral';
-    if (num >= 0.2) return 'negative';
-    return 'very-negative';
-  };
-
-  const getIntensityLabel = (intensity: any) => {
-    const num = safeIntensity(intensity);
-    if (num >= 0.8) return '极高强度';
-    if (num >= 0.6) return '高强度';
-    if (num >= 0.4) return '中等强度';
-    if (num >= 0.2) return '低强度';
-    return '极低强度';
-  };
-
-  const getProgressVariant = (
+  // 统一的颜色判断逻辑
+  const getVariant = (
     intensity: any
   ): 'success' | 'warning' | 'primary' | 'danger' => {
     const num = safeIntensity(intensity);
@@ -108,97 +83,68 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
   };
 
   return (
-    <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       {safeItems.map((item, index) => {
         const intensityValue = safeIntensity(item.intensity);
-        const progressVariant = getProgressVariant(item.intensity);
-        const sentimentVariant = getIntensityVariant(item.intensity);
+        const variant = getVariant(item.intensity);
 
         return (
           <DashboardCard
             key={item.id}
-            variant="default"
-            className="hover:shadow-tech-lg transition-all duration-300 animate-card-float"
+            variant={variant}
+            className="hover:shadow-tech-lg transition-all duration-300 animate-card-float group"
             style={{ animationDelay: `${index * 100}ms` }}
           >
             <div className="p-6">
-              <div className="flex items-start justify-between gap-6">
-                <div className="flex-1 space-y-4">
-                  {/* 标题和状态 */}
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <Zap className="w-5 h-5 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <h3 className="text-lg font-bold text-foreground">
-                          {item.title}
-                        </h3>
-                        <LiveIndicator status="online" />
-                      </div>
-                      <SentimentBadge sentiment={sentimentVariant}>
-                        {getIntensityLabel(item.intensity)}
-                      </SentimentBadge>
-                    </div>
-                  </div>
+              {/* 标题区域 */}
+              <div className="text-center space-y-3 mb-6">
+                <h3 className="text-lg font-bold text-foreground line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                  {item.title}
+                </h3>
+              </div>
 
-                  {/* 强度显示 */}
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                        <TrendingUp className="w-4 h-4" />
-                        强度数值
-                      </div>
-                      <div className="text-xl font-bold data-value text-primary">
-                        {intensityValue.toFixed(3)}
-                      </div>
-                    </div>
+              {/* 强度数据区域 */}
+              <div className="text-center space-y-4 mb-6">
+                <MetricValue size="sm" variant={variant}>
+                  {intensityValue.toFixed(3)}
+                </MetricValue>
 
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-xs text-muted-foreground">
-                        <span>0.000</span>
-                        <span className="font-medium">
-                          {(intensityValue * 100).toFixed(1)}%
-                        </span>
-                        <span>1.000</span>
-                      </div>
-                      <ProgressBar
-                        value={intensityValue * 100}
-                        variant={progressVariant}
-                        className="h-3"
-                      />
-                    </div>
-                  </div>
+                <ProgressBar
+                  value={intensityValue * 100}
+                  variant={variant}
+                  shine={true}
+                  className="h-3"
+                />
+              </div>
 
-                  {/* 描述信息 */}
-                  {item.description && (
-                    <div className="p-3 bg-muted/30 rounded-lg border-l-4 border-primary/50">
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  )}
+              {/* 描述信息 */}
+              {item.description && (
+                <div className="p-3 bg-muted/20 rounded-lg border-l-4 border-primary/50 mb-6 group-hover:bg-muted/30 transition-colors duration-300">
+                  <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                    {item.description}
+                  </p>
                 </div>
-
-                {/* 操作按钮 */}
-                <div className="flex flex-col gap-2">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onEdit(item)}
-                    className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => onDelete(item)}
-                    className="border-destructive/50 text-destructive hover:bg-destructive hover:text-white transition-all duration-300 hover:-translate-y-0.5"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
+              )}
+              {/* 操作按钮区域 */}
+              <div className="flex gap-2 pt-4 border-t border-border/50">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onEdit(item)}
+                  className="flex-1 border-primary/30 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-md"
+                >
+                  <Edit className="w-3 h-3 mr-1" />
+                  编辑
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => onDelete(item)}
+                  className="flex-1 border-destructive/30 text-destructive hover:bg-destructive hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-md"
+                >
+                  <Trash2 className="w-3 h-3 mr-1" />
+                  删除
+                </Button>
               </div>
             </div>
           </DashboardCard>
