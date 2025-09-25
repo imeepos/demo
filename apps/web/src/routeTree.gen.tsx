@@ -2,6 +2,7 @@ import { createRootRoute, createRoute } from '@tanstack/react-router';
 import { RootLayout } from './components/layouts/RootLayout';
 import { HomePage } from './pages/HomePage';
 import { SentimentDashboard } from './pages/SentimentDashboard';
+import { SentimentIntensityPage } from './pages/SentimentIntensityPage';
 
 /**
  * 路由配置
@@ -27,5 +28,16 @@ const dashboardRoute = createRoute({
   component: SentimentDashboard,
 });
 
+// 创建情感强度管理路由
+const sentimentIntensityRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/sentiment-intensity',
+  component: SentimentIntensityPage,
+});
+
 // 导出路由树
-export const routeTree = rootRoute.addChildren([indexRoute, dashboardRoute]);
+export const routeTree = rootRoute.addChildren([
+  indexRoute, 
+  dashboardRoute, 
+  sentimentIntensityRoute
+]);

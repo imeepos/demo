@@ -1,11 +1,5 @@
 import { Controller, Logger } from '@nestjs/common';
-import {
-  EventPattern,
-  MessagePattern,
-  Payload,
-  Ctx,
-  RmqContext,
-} from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload, Ctx, RmqContext } from '@nestjs/microservices';
 import type { Channel, Message } from 'amqplib';
 import { DataCleanerService } from './data-cleaner.service';
 import type { RawDataDto, CleanedDataDto } from './dto/data-cleaner.dto';
@@ -21,10 +15,7 @@ export class DataCleanerController {
    * 队列名称: raw_data_queue
    */
   @EventPattern('raw_data_received')
-  handleRawDataReceived(
-    @Payload() data: RawDataDto,
-    @Ctx() context: RmqContext,
-  ) {
+  handleRawDataReceived(@Payload() data: RawDataDto, @Ctx() context: RmqContext) {
     this.logger.log(`收到原始数据消息: ${data.id}`);
 
     try {
@@ -36,9 +27,7 @@ export class DataCleanerController {
       channel.ack(originalMsg);
 
       // 这里可以将清洗后的数据发送到下一个队列
-      this.logger.log(
-        `数据清洗完成: ${cleanedData.id}, 状态: ${cleanedData.status}`,
-      );
+      this.logger.log(`数据清洗完成: ${cleanedData.id}, 状态: ${cleanedData.status}`);
 
       // 可以在这里发布清洗完成的事件到其他队列
       // await this.publishCleanedData(cleanedData);
@@ -60,10 +49,7 @@ export class DataCleanerController {
    * 队列名称: batch_data_clean_queue
    */
   @EventPattern('batch_data_clean_requested')
-  handleBatchDataClean(
-    @Payload() data: RawDataDto[],
-    @Ctx() context: RmqContext,
-  ) {
+  handleBatchDataClean(@Payload() data: RawDataDto[], @Ctx() context: RmqContext) {
     this.logger.log(`收到批量数据清洗请求, 数量: ${data.length}`);
 
     try {
@@ -74,14 +60,9 @@ export class DataCleanerController {
       const originalMsg = context.getMessage() as Message;
       channel.ack(originalMsg);
 
-      this.logger.log(
-        `批量数据清洗完成: ${cleanedDataList.length}/${data.length}`,
-      );
+      this.logger.log(`批量数据清洗完成: ${cleanedDataList.length}/${data.length}`);
     } catch (error) {
-      this.logger.error(
-        `批量数据清洗失败`,
-        error instanceof Error ? error.stack : String(error),
-      );
+      this.logger.error(`批量数据清洗失败`, error instanceof Error ? error.stack : String(error));
 
       // 拒绝消息并重新排队
       const channel = context.getChannelRef() as Channel;

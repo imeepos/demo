@@ -4,7 +4,7 @@ export const formatDate = (date: Date): string => {
 
 export const debounce = <T extends (...args: unknown[]) => void>(
   fn: T,
-  delay: number
+  delay: number,
 ): ((...args: Parameters<T>) => void) => {
   let timeoutId: NodeJS.Timeout;
   return (...args: Parameters<T>) => {
@@ -13,8 +13,6 @@ export const debounce = <T extends (...args: unknown[]) => void>(
   };
 };
 
-export const cn = (
-  ...classes: (string | undefined | null | false)[]
-): string => {
+export const cn = (...classes: (string | undefined | null | false)[]): string => {
   return classes.filter(Boolean).join(' ');
 };

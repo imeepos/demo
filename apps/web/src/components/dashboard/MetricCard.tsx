@@ -10,13 +10,7 @@ interface MetricCardProps {
  * 指标卡片组件
  * 职责：展示单个核心指标数据
  */
-export function MetricCard({
-  title,
-  value,
-  trend,
-  trendValue,
-  icon,
-}: MetricCardProps) {
+export function MetricCard({ title, value, trend, trendValue, icon }: MetricCardProps) {
   const getTrendClass = () => {
     switch (trend) {
       case 'up':

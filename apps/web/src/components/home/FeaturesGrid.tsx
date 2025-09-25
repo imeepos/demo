@@ -23,11 +23,7 @@ export function FeaturesGrid() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {FEATURES.map(feature => (
-        <FeatureCard
-          key={feature.title}
-          title={feature.title}
-          description={feature.description}
-        />
+        <FeatureCard key={feature.title} title={feature.title} description={feature.description} />
       ))}
     </div>
   );

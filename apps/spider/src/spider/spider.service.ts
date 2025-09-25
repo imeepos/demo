@@ -1,10 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  CrawlTaskDto,
-  CrawlResultDto,
-  CrawlConfigDto,
-  BatchCrawlTaskDto,
-} from './dto/spider.dto';
+import { CrawlTaskDto, CrawlResultDto, CrawlConfigDto, BatchCrawlTaskDto } from './dto/spider.dto';
 
 @Injectable()
 export class SpiderService {
@@ -69,9 +64,7 @@ export class SpiderService {
         crawledAt: new Date(),
         status: 'failed',
         processingTime,
-        errors: [
-          `爬取过程发生错误: ${error instanceof Error ? error.message : String(error)}`,
-        ],
+        errors: [`爬取过程发生错误: ${error instanceof Error ? error.message : String(error)}`],
       };
     }
   }
@@ -98,7 +91,7 @@ export class SpiderService {
           `批量爬取中的任务失败: ${task.id}`,
           error instanceof Error ? error.stack : String(error),
         );
-        
+
         // 即使单个任务失败，也要继续处理其他任务
         results.push({
           id: `result_${task.id}_${Date.now()}`,
@@ -109,14 +102,12 @@ export class SpiderService {
           content: '',
           crawledAt: new Date(),
           status: 'failed',
-          errors: [
-            `任务执行失败: ${error instanceof Error ? error.message : String(error)}`,
-          ],
+          errors: [`任务执行失败: ${error instanceof Error ? error.message : String(error)}`],
         });
       }
     }
 
-    const successCount = results.filter((r) => r.status === 'success').length;
+    const successCount = results.filter(r => r.status === 'success').length;
     this.logger.log(`批量爬取完成: ${successCount}/${batchTask.tasks.length} 成功`);
 
     return results;
@@ -177,9 +168,9 @@ export class SpiderService {
   private async performCrawl(url: string, config: CrawlConfigDto): Promise<string> {
     // TODO: 实现具体的爬取逻辑
     // 可以使用 puppeteer, playwright, cheerio, axios 等库
-    
+
     this.logger.debug(`模拟爬取: ${url}`);
-    
+
     // 模拟延迟
     if (config.delay) {
       await this.delay(config.delay);
@@ -193,6 +184,6 @@ export class SpiderService {
    * 延迟函数
    */
   private delay(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }

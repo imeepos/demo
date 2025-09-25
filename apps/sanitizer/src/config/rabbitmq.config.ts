@@ -4,8 +4,7 @@ export const getRabbitMQConfig = () => {
   const rabbitMQHost = process.env.RABBITMQ_HOST || 'localhost';
   const rabbitMQPort = parseInt(process.env.RABBITMQ_PORT || '5672', 10);
   const rabbitMQUser = process.env.RABBITMQ_USER || 'sker_admin';
-  const rabbitMQPassword =
-    process.env.RABBITMQ_PASSWORD || 'sker_rabbitmq_password';
+  const rabbitMQPassword = process.env.RABBITMQ_PASSWORD || 'sker_rabbitmq_password';
   const rabbitMQVhost = process.env.RABBITMQ_VHOST || 'sker_vhost';
 
   const connectionUrl = `amqp://${rabbitMQUser}:${rabbitMQPassword}@${rabbitMQHost}:${rabbitMQPort}/${rabbitMQVhost}`;

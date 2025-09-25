@@ -1,9 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  CleanedDataDto,
-  DataCleaningConfigDto,
-  RawDataDto,
-} from './dto/data-cleaner.dto';
+import { CleanedDataDto, DataCleaningConfigDto, RawDataDto } from './dto/data-cleaner.dto';
 
 @Injectable()
 export class DataCleanerService {
@@ -75,10 +71,7 @@ export class DataCleanerService {
           if (!rule.pattern) continue;
           const regex = new RegExp(rule.pattern, 'gu');
           const beforeLength = cleanedContent.length;
-          cleanedContent = cleanedContent.replace(
-            regex,
-            rule.replacement || '',
-          );
+          cleanedContent = cleanedContent.replace(regex, rule.replacement || '');
 
           if (cleanedContent.length !== beforeLength) {
             appliedRules.push(rule.name);
@@ -149,9 +142,7 @@ export class DataCleanerService {
         metadata: rawData.metadata,
         processedAt: new Date(),
         status: 'failed',
-        errors: [
-          `清洗过程发生错误: ${error instanceof Error ? error.message : String(error)}`,
-        ],
+        errors: [`清洗过程发生错误: ${error instanceof Error ? error.message : String(error)}`],
       };
     }
   }
@@ -159,13 +150,10 @@ export class DataCleanerService {
   /**
    * 批量清洗数据
    */
-  cleanBatchData(
-    rawDataList: RawDataDto[],
-    config?: DataCleaningConfigDto,
-  ): CleanedDataDto[] {
+  cleanBatchData(rawDataList: RawDataDto[], config?: DataCleaningConfigDto): CleanedDataDto[] {
     this.logger.log(`开始批量清洗数据, 数量: ${rawDataList.length}`);
 
-    const results = rawDataList.map((data) => {
+    const results = rawDataList.map(data => {
       try {
         return {
           status: 'fulfilled' as const,
@@ -179,7 +167,7 @@ export class DataCleanerService {
       }
     });
 
-    const successCount = results.filter((r) => r.status === 'fulfilled').length;
+    const successCount = results.filter(r => r.status === 'fulfilled').length;
     this.logger.log(`批量清洗完成: ${successCount}/${rawDataList.length} 成功`);
 
     return results
@@ -187,7 +175,7 @@ export class DataCleanerService {
         (result): result is { status: 'fulfilled'; value: CleanedDataDto } =>
           result.status === 'fulfilled',
       )
-      .map((result) => result.value);
+      .map(result => result.value);
   }
 
   /**

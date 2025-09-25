@@ -1,18 +1,12 @@
 import { Controller, Logger } from '@nestjs/common';
-import {
-  EventPattern,
-  MessagePattern,
-  Payload,
-  Ctx,
-  RmqContext,
-} from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload, Ctx, RmqContext } from '@nestjs/microservices';
 import type { Channel, Message } from 'amqplib';
 import { SpiderService } from './spider.service';
-import type { 
-  CrawlTaskDto, 
-  CrawlResultDto, 
+import type {
+  CrawlTaskDto,
+  CrawlResultDto,
   BatchCrawlTaskDto,
-  CrawlConfigDto 
+  CrawlConfigDto,
 } from './dto/spider.dto';
 
 @Controller()
@@ -26,10 +20,7 @@ export class SpiderController {
    * 队列名称: crawl_task_queue
    */
   @EventPattern('crawl_task_received')
-  async handleCrawlTask(
-    @Payload() task: CrawlTaskDto,
-    @Ctx() context: RmqContext,
-  ) {
+  async handleCrawlTask(@Payload() task: CrawlTaskDto, @Ctx() context: RmqContext) {
     this.logger.log(`收到爬取任务消息: ${task.id} - ${task.url}`);
 
     try {
@@ -40,9 +31,7 @@ export class SpiderController {
       const originalMsg = context.getMessage() as Message;
       channel.ack(originalMsg);
 
-      this.logger.log(
-        `爬取任务完成: ${result.id}, 状态: ${result.status}`,
-      );
+      this.logger.log(`爬取任务完成: ${result.id}, 状态: ${result.status}`);
 
       // TODO: 可以在这里将爬取结果发送到下一个队列
       // await this.publishCrawlResult(result);
@@ -64,10 +53,7 @@ export class SpiderController {
    * 队列名称: batch_crawl_queue
    */
   @EventPattern('batch_crawl_requested')
-  async handleBatchCrawl(
-    @Payload() batchTask: BatchCrawlTaskDto,
-    @Ctx() context: RmqContext,
-  ) {
+  async handleBatchCrawl(@Payload() batchTask: BatchCrawlTaskDto, @Ctx() context: RmqContext) {
     this.logger.log(`收到批量爬取请求, 任务数量: ${batchTask.tasks.length}`);
 
     try {
@@ -79,17 +65,12 @@ export class SpiderController {
       channel.ack(originalMsg);
 
       const successCount = results.filter(r => r.status === 'success').length;
-      this.logger.log(
-        `批量爬取完成: ${successCount}/${batchTask.tasks.length}`,
-      );
+      this.logger.log(`批量爬取完成: ${successCount}/${batchTask.tasks.length}`);
 
       // TODO: 可以在这里将批量爬取结果发送到下一个队列
       // await this.publishBatchCrawlResults(results);
     } catch (error) {
-      this.logger.error(
-        `批量爬取失败`,
-        error instanceof Error ? error.stack : String(error),
-      );
+      this.logger.error(`批量爬取失败`, error instanceof Error ? error.stack : String(error));
 
       // 拒绝消息并重新排队
       const channel = context.getChannelRef() as Channel;
@@ -103,10 +84,7 @@ export class SpiderController {
    * 队列名称: priority_crawl_queue
    */
   @EventPattern('priority_crawl_task')
-  async handlePriorityCrawlTask(
-    @Payload() task: CrawlTaskDto,
-    @Ctx() context: RmqContext,
-  ) {
+  async handlePriorityCrawlTask(@Payload() task: CrawlTaskDto, @Ctx() context: RmqContext) {
     this.logger.log(`收到优先级爬取任务: ${task.id} - 优先级: ${task.priority || 1}`);
 
     try {
@@ -124,9 +102,7 @@ export class SpiderController {
       const originalMsg = context.getMessage() as Message;
       channel.ack(originalMsg);
 
-      this.logger.log(
-        `优先级爬取任务完成: ${result.id}, 状态: ${result.status}`,
-      );
+      this.logger.log(`优先级爬取任务完成: ${result.id}, 状态: ${result.status}`);
     } catch (error) {
       this.logger.error(
         `处理优先级爬取任务失败: ${task.id}`,

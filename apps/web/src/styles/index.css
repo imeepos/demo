@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @import '@sker/ui/styles';
+@import '@sker/map/styles';
 
 /* 字体文件加载 */
 @font-face {
@@ -167,8 +168,7 @@
   --shadow-2xl: var(--shadow-2xl);
 
   /* fonts */
-  --font-sans:
-    'Rubik', 'PingFang SC', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-sans: 'Rubik', 'PingFang SC', system-ui, Avenir, Helvetica, Arial, sans-serif;
   --font-mono: 'Rubik', 'PingFang SC', monospace;
   --font-serif: 'Rubik', 'PingFang SC', serif;
   --font-bricolage-grotesque: 'Rubik', 'PingFang SC', sans-serif;
@@ -181,8 +181,7 @@
   --animate-accordion-up: accordion-up 0.2s ease-out;
   --animate-marquee: marquee var(--duration) infinite linear;
   --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
-  --animate-ripple: ripple var(--duration, 2s) ease calc(var(--i, 0) * 0.2s)
-    infinite;
+  --animate-ripple: ripple var(--duration, 2s) ease calc(var(--i, 0) * 0.2s) infinite;
   --animate-pulse: pulse var(--duration) ease-out infinite;
   --animate-meteor: meteor 5s linear infinite;
   --animate-gradient: gradient 8s linear infinite;
@@ -328,8 +327,7 @@ body {
 }
 
 :root {
-  font-family:
-    'Rubik', 'PingFang SC', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Rubik', 'PingFang SC', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -345,23 +343,23 @@ body {
   --card-foreground: #1e293b;
   --popover: #ffffff;
   --popover-foreground: #1e293b;
-  
+
   /* 主色调：科技蓝，体现专业性 */
   --primary: #2563eb;
   --primary-foreground: #ffffff;
-  
+
   /* 次要色：温和蓝，用于次级元素 */
   --secondary: #e2e8f0;
   --secondary-foreground: #475569;
-  
+
   /* 静默色：浅灰，用于背景和分割 */
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
-  
+
   /* 强调色：现代青色，用于数据高亮 */
   --accent: #06b6d4;
   --accent-foreground: #ffffff;
-  
+
   /* 状态色系 */
   --success: #10b981;
   --success-foreground: #ffffff;
@@ -371,7 +369,7 @@ body {
   --destructive-foreground: #ffffff;
   --info: #3b82f6;
   --info-foreground: #ffffff;
-  
+
   /* 数据可视化专用色系 */
   --chart-1: #2563eb; /* 主数据蓝 */
   --chart-2: #06b6d4; /* 次数据青 */
@@ -379,18 +377,18 @@ body {
   --chart-4: #f59e0b; /* 中性橙 */
   --chart-5: #ef4444; /* 负面红 */
   --chart-6: #8b5cf6; /* 特殊紫 */
-  
+
   /* 界面元素 */
   --border: #e2e8f0;
   --input: #f8fafc;
   --ring: #2563eb;
   --radius: 0.75rem;
-  
+
   /* 大屏专用渐变 */
   --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
   --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  
+
   /* 阴影层次 */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -579,12 +577,6 @@ body,
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-.dashboard-card-content {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .metric-card {

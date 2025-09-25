@@ -24,11 +24,7 @@ class Logger {
     return level >= this.level;
   }
 
-  private formatMessage(
-    level: string,
-    message: string,
-    ...args: unknown[]
-  ): unknown[] {
+  private formatMessage(level: string, message: string, ...args: unknown[]): unknown[] {
     const timestamp = new Date().toISOString();
     const prefix = `[${timestamp}] ${level}:`;
     return [prefix, message, ...args];

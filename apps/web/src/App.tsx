@@ -26,9 +26,7 @@ function App() {
               <AvatarFallback>SK</AvatarFallback>
             </Avatar>
             <div>
-              <h1 className="text-4xl font-bold text-foreground mb-2">
-                Welcome to Sker
-              </h1>
+              <h1 className="text-4xl font-bold text-foreground mb-2">Welcome to Sker</h1>
               <Badge variant="secondary">基于 shadcn/ui 的现代化模板</Badge>
             </div>
           </div>
@@ -41,16 +39,11 @@ function App() {
           <Card>
             <CardHeader>
               <CardTitle>计数器示例</CardTitle>
-              <CardDescription>
-                使用 shadcn/ui Button 组件的计数器演示
-              </CardDescription>
+              <CardDescription>使用 shadcn/ui Button 组件的计数器演示</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-4">
-                <Button
-                  variant="destructive"
-                  onClick={() => setCount(count - 1)}
-                >
+                <Button variant="destructive" onClick={() => setCount(count - 1)}>
                   -
                 </Button>
                 <span className="text-2xl font-mono text-foreground min-w-[3rem] text-center">
@@ -87,9 +80,7 @@ function App() {
           <Card>
             <CardHeader>
               <CardTitle>组件展示</CardTitle>
-              <CardDescription>
-                shadcn/ui 组件库中的一些基础组件
-              </CardDescription>
+              <CardDescription>shadcn/ui 组件库中的一些基础组件</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">

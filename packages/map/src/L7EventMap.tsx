@@ -1,4 +1,11 @@
-import { GaodeMap, PointLayer, Popup, Scene, type ILayer, LayerPopup } from '@antv/l7';
+import {
+  GaodeMap,
+  LayerPopup,
+  PointLayer,
+  Popup,
+  Scene,
+  type ILayer,
+} from '@antv/l7';
 import { cn } from '@sker/ui';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
@@ -33,9 +40,7 @@ export interface L7MouseEvent {
     lat: number;
   };
   feature?: {
-    properties?: {
-      [key: string]: any;
-    };
+    properties?: Record<string, unknown>;
   };
 }
 
@@ -106,14 +111,16 @@ export function L7EventMap({
 
   // 创建弹窗内容函数 - 兼容LayerPopup格式
   const createPopupContent = useCallback(
-    (properties: any) => {
-      const sentimentText = {
-        positive: '正面',
-        negative: '负面',
-        neutral: '中性',
-      }[properties.sentiment] || '未知';
+    (properties: Record<string, unknown>) => {
+      const sentimentMap = new Map([
+        ['positive', '正面'],
+        ['negative', '负面'],
+        ['neutral', '中性'],
+      ]);
+      const sentiment = String(properties.sentiment || '');
+      const sentimentText = sentimentMap.get(sentiment) || '未知';
 
-      const sentimentColor = getSentimentColorOptimized(properties.sentiment);
+      const sentimentColor = getSentimentColorOptimized(properties.sentiment as SentimentEvent['sentiment']);
 
       return `
       <div style="padding: 12px; min-width: 280px; max-width: 320px; font-family: Arial, sans-serif;">
@@ -133,11 +140,11 @@ export function L7EventMap({
           <span>🕒 ${properties.timestamp || ''}</span>
         </div>
         ${
-          properties.tags && properties.tags.length > 0
+          Array.isArray(properties.tags) && properties.tags.length > 0
             ? `
           <div style="margin-top: 8px;">
             <div style="display: flex; flex-wrap: wrap; gap: 4px;">
-              ${properties.tags.map((tag: string) => `<span style="padding: 2px 6px; background-color: #e3f2fd; color: #1976d2; font-size: 12px; border-radius: 4px;">${tag}</span>`).join('')}
+              ${properties.tags.map((tag: unknown) => `<span style="padding: 2px 6px; background-color: #e3f2fd; color: #1976d2; font-size: 12px; border-radius: 4px;">${String(tag)}</span>`).join('')}
             </div>
           </div>
         `
@@ -183,8 +190,17 @@ export function L7EventMap({
     if (!containerRef.current) return;
     initScene();
     return () => {
+      if (layerPopupRef.current && sceneRef.current) {
+        sceneRef.current.removePopup(layerPopupRef.current);
+        layerPopupRef.current = null;
+      }
+      if (popupRef.current && sceneRef.current) {
+        sceneRef.current.removePopup(popupRef.current);
+        popupRef.current = null;
+      }
       if (sceneRef.current) {
         sceneRef.current.destroy();
+        sceneRef.current = null;
       }
     };
   }, []);
@@ -307,6 +323,124 @@ export function L7EventMap({
 
     // 添加图层到场景
     scene.addLayer(pointLayer);
+
+    // 创建并添加LayerPopup
+    if (layerPopupRef.current) {
+      scene.removePopup(layerPopupRef.current);
+    }
+
+    const layerPopupFields = (enableCluster && validEvents.length >= minClusterSize) ? [
+      // 聚合模式：根据point_count动态显示不同内容
+      {
+        field: 'point_count',
+        formatField: (properties: any) => {
+          const count = properties?.point_count || 0;
+          return count === 1 ? '事件标题' : '事件数量';
+        },
+        formatValue: (val: number, properties: any) => {
+          if (val === 1) {
+            // 单个事件：尝试显示标题，如果没有则显示提示
+            return properties?.title || '单个事件（放大查看详情）';
+          }
+          return `${val} 个事件`;
+        },
+      },
+      {
+        field: 'point_count',
+        formatField: (properties: any) => {
+          const count = properties?.point_count || 0;
+          return count === 1 ? '情感倾向' : '聚合类型';
+        },
+        formatValue: (val: number, properties: any) => {
+          if (val === 1) {
+            // 单个事件：显示情感，如果没有则显示未知
+            const sentiment = properties?.sentiment;
+            const sentimentMap = new Map([
+              ['positive', '正面'],
+              ['negative', '负面'],
+              ['neutral', '中性'],
+            ]);
+            return sentimentMap.get(sentiment) || '未知';
+          }
+          // 多个事件：显示聚合类型
+          if (val <= 3) return '小型聚合';
+          if (val <= 6) return '中型聚合';  
+          if (val <= 10) return '大型聚合';
+          return '超大聚合';
+        },
+      },
+      {
+        field: 'point_count',
+        formatField: () => '区域概览',
+        formatValue: (val: number) => {
+          const totalEvents = validEvents.length;
+          const percentage = ((val / totalEvents) * 100).toFixed(1);
+          return `包含该区域${percentage}%的事件`;
+        },
+      },
+      {
+        field: 'point_count',
+        formatField: () => '操作提示',
+        formatValue: (val: number) => {
+          return val === 1 
+            ? '放大地图查看完整事件详情' 
+            : `放大地图查看${val}个具体事件`;
+        },
+      },
+    ] : [
+      // 单点模式：显示详细信息
+      {
+        field: 'title',
+        formatField: () => '标题',
+      },
+      {
+        field: 'sentiment',
+        formatField: () => '情感',
+        formatValue: (val: string) => {
+          const sentimentMap = new Map([
+            ['positive', '正面'],
+            ['negative', '负面'],
+            ['neutral', '中性'],
+          ]);
+          return sentimentMap.get(val) || '未知';
+        },
+      },
+      {
+        field: 'content',
+        formatField: () => '内容',
+        formatValue: (val: string) => {
+          return val && val.length > 50 ? val.substring(0, 50) + '...' : val || '暂无内容';
+        },
+      },
+      {
+        field: 'source',
+        formatField: () => '来源',
+      },
+      {
+        field: 'address',
+        formatField: () => '地址',
+      },
+      {
+        field: 'hotness',
+        formatField: () => '热度',
+      },
+      {
+        field: 'timestamp',
+        formatField: () => '时间',
+      },
+    ];
+
+    const layerPopup = new LayerPopup({
+      items: [
+        {
+          layer: pointLayer,
+          fields: layerPopupFields,
+        },
+      ],
+    });
+
+    layerPopupRef.current = layerPopup;
+    scene.addPopup(layerPopup);
 
     // 如果启用聚合，添加单独的文本图层显示聚合数量
     if (enableCluster && validEvents.length >= minClusterSize) {

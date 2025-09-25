@@ -3,6 +3,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Toaster } from 'react-hot-toast';
 import './styles/index.css';
 
 // Import the generated route tree
@@ -27,9 +28,20 @@ createRoot(container).render(
     <QueryClientProvider client={queryClient}>
       <SearchProvider>
         <RouterProvider router={router} />
+        <Toaster 
+          position="top-right"
+          toastOptions={{
+            duration: 4000,
+            style: {
+              background: 'var(--card)',
+              color: 'var(--foreground)',
+              border: '1px solid var(--border)',
+            },
+          }}
+        />
         {/* 仅在开发环境中显示 React Query DevTools */}
         {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
       </SearchProvider>
     </QueryClientProvider>
-  </StrictMode>
+  </StrictMode>,
 );

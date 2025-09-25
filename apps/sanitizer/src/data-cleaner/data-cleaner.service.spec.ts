@@ -83,8 +83,7 @@ describe('DataCleanerService', () => {
       const rawData: RawDataDto = {
         id: 'test-5',
         source: 'test',
-        content:
-          'This is a very long content that exceeds the maximum length limit',
+        content: 'This is a very long content that exceeds the maximum length limit',
         timestamp: new Date(),
       };
 
@@ -153,9 +152,7 @@ describe('DataCleanerService', () => {
     it('should validate valid config', () => {
       const config = service.getDefaultConfig();
       // 暂时禁用表情符号规则以避免正则表达式问题
-      config.rules = config.rules.filter(
-        (rule) => rule.name !== 'removeEmojis',
-      );
+      config.rules = config.rules.filter(rule => rule.name !== 'removeEmojis');
 
       const validation = service.validateConfig(config);
 

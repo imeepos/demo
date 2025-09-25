@@ -32,7 +32,7 @@ export const setupReactDevTools = () => {
       window.__REACT_DEVTOOLS_GLOBAL_HOOK__?.onCommitFiberRoot = (
         id: number,
         root: unknown,
-        priorityLevel?: number
+        priorityLevel?: number,
       ) => {
         console.log('🔄 React render:', { id, root, priorityLevel });
       };
@@ -42,10 +42,7 @@ export const setupReactDevTools = () => {
 
 // Performance monitoring setup
 export const setupPerformanceMonitoring = () => {
-  if (
-    import.meta.env.DEV &&
-    import.meta.env.VITE_DEBUG_PERFORMANCE === 'true'
-  ) {
+  if (import.meta.env.DEV && import.meta.env.VITE_DEBUG_PERFORMANCE === 'true') {
     // Monitor LCP, FID, CLS
     if (typeof window !== 'undefined' && 'PerformanceObserver' in window) {
       try {
@@ -86,10 +83,7 @@ export const setupPerformanceMonitoring = () => {
 
 // Memory usage monitoring
 export const monitorMemoryUsage = () => {
-  if (
-    import.meta.env.DEV &&
-    import.meta.env.VITE_DEBUG_PERFORMANCE === 'true'
-  ) {
+  if (import.meta.env.DEV && import.meta.env.VITE_DEBUG_PERFORMANCE === 'true') {
     if ('memory' in performance) {
       setInterval(() => {
         const memory = (
