@@ -16,9 +16,12 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { EventType } from './EventType';
 
 /**
  * 情感倾向枚举
@@ -39,6 +42,8 @@ export enum SentimentType {
 @Index(['latitude', 'longitude']) // 地理空间索引：支持地理范围查询
 @Index(['source']) // 单列索引：支持按来源查询
 @Index(['hotness']) // 单列索引：支持按热度查询
+@Index(['eventTypeId']) // 单列索引：支持按事件类型查询
+@Index(['eventTypeId', 'timestamp']) // 复合索引：支持按事件类型和时间查询
 export class SentimentEvent {
   @PrimaryGeneratedColumn({ comment: '事件唯一标识符' })
   id: number;
@@ -140,6 +145,19 @@ export class SentimentEvent {
   @IsArray()
   @IsString({ each: true })
   tags?: string[];
+
+  @Column({
+    type: 'int',
+    nullable: true,
+    comment: '关联的事件类型ID',
+  })
+  @IsNumber()
+  @IsOptional()
+  eventTypeId?: number;
+
+  @ManyToOne(() => EventType)
+  @JoinColumn({ name: 'eventTypeId' })
+  eventType?: EventType;
 
   @CreateDateColumn({ comment: '记录创建时间' })
   createdAt: Date;

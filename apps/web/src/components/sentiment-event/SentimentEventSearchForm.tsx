@@ -1,10 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { AdvancedFilters } from '../common/AdvancedFilters';
 import { CompactSearchBar } from '../common/CompactSearchBar';
-import { QuickDateRange, type DateRange } from '../common/QuickDateRange';
-import { RangeSlider } from '../common/RangeSlider';
+import { Button, Input, Label } from '@sker/ui';
+import { ChevronDown, ChevronUp, X, Calendar, TrendingUp } from 'lucide-react';
 import {
   querySentimentEventSchema,
   type QuerySentimentEventInput,
@@ -21,7 +20,6 @@ export const SentimentEventSearchForm: React.FC<
 > = ({ onSearch, onClear, isSearching = false }) => {
   const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
   const [titleSearch, setTitleSearch] = useState('');
-  const [scoreRange, setScoreRange] = useState<[number, number]>([0, 1]);
 
   const {
     register,
@@ -74,7 +72,6 @@ export const SentimentEventSearchForm: React.FC<
 
   const handleClear = useCallback(() => {
     setTitleSearch('');
-    setScoreRange([0, 1]);
     reset({
       title: '',
       minScore: undefined,
@@ -93,34 +90,35 @@ export const SentimentEventSearchForm: React.FC<
     [setValue]
   );
 
-  const handleQuickDateSelect = useCallback(
-    (range: DateRange) => {
-      if (range.startTime) {
-        setValue('startTime', range.startTime);
-      } else {
-        setValue('startTime', undefined);
-      }
-      if (range.endTime) {
-        setValue('endTime', range.endTime);
-      } else {
-        setValue('endTime', undefined);
-      }
-    },
-    [setValue]
-  );
-
-  const handleScoreRangeChange = useCallback(
-    (range: [number, number]) => {
-      setScoreRange(range);
-      setValue('minScore', range[0] === 0 ? undefined : range[0]);
-      setValue('maxScore', range[1] === 1 ? undefined : range[1]);
-    },
-    [setValue]
-  );
-
   const handleSearch = useCallback(() => {
     handleSubmit(handleFormSubmit)();
   }, [handleSubmit]);
+
+  // 快捷时间选择
+  const handleQuickDateSelect = useCallback(
+    (type: 'today' | 'week' | 'month') => {
+      const now = new Date();
+      const start = new Date();
+
+      switch (type) {
+        case 'today':
+          start.setHours(0, 0, 0, 0);
+          break;
+        case 'week':
+          start.setDate(now.getDate() - 7);
+          start.setHours(0, 0, 0, 0);
+          break;
+        case 'month':
+          start.setMonth(now.getMonth() - 1);
+          start.setHours(0, 0, 0, 0);
+          break;
+      }
+
+      setValue('startTime', start);
+      setValue('endTime', now);
+    },
+    [setValue]
+  );
 
   return (
     <div className="space-y-4 mb-8">
@@ -137,29 +135,98 @@ export const SentimentEventSearchForm: React.FC<
         isSearching={isSearching}
       />
 
-      {/* 高级筛选区域 */}
-      <AdvancedFilters
-        isOpen={showAdvancedFilters}
-        onToggle={() => setShowAdvancedFilters(!showAdvancedFilters)}
-        register={register}
-        errors={errors}
-        onClear={handleClear}
-        hasActiveFilters={hasAdvancedFilters}
-      />
-
-      {/* 快捷时间选择和情感分数滑块 - 仅在展开时显示 */}
+      {/* 简化的高级筛选 */}
       {showAdvancedFilters && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <QuickDateRange onSelect={handleQuickDateSelect} />
-          <RangeSlider
-            label="情感分数范围"
-            min={0}
-            max={1}
-            step={0.01}
-            value={scoreRange}
-            onChange={handleScoreRangeChange}
-            formatValue={v => v.toFixed(2)}
-          />
+        <div className="bg-card border border-border rounded-lg p-4">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-sm font-medium text-foreground">
+              筛选条件
+            </span>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowAdvancedFilters(false)}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <X className="w-4 h-4" />
+            </Button>
+          </div>
+
+          <div className="space-y-4">
+            {/* 快捷时间选择 */}
+            <div>
+              <Label className="text-xs text-muted-foreground mb-2 block">
+                时间范围
+              </Label>
+              <div className="flex gap-2 flex-wrap">
+                {[
+                  { key: 'today', label: '今天' },
+                  { key: 'week', label: '近7天' },
+                  { key: 'month', label: '近30天' },
+                ].map(({ key, label }) => (
+                  <Button
+                    key={key}
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() =>
+                      handleQuickDateSelect(key as 'today' | 'week' | 'month')
+                    }
+                    className="text-xs h-7 px-3"
+                  >
+                    {label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+
+            {/* 情感分数 */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <Label
+                  htmlFor="minScore"
+                  className="text-xs text-muted-foreground"
+                >
+                  最小分数
+                </Label>
+                <Input
+                  id="minScore"
+                  type="number"
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  placeholder="0.0"
+                  className="mt-1 text-sm h-8"
+                  {...register('minScore', {
+                    setValueAs: value =>
+                      value === '' ? undefined : parseFloat(value),
+                  })}
+                />
+              </div>
+              <div>
+                <Label
+                  htmlFor="maxScore"
+                  className="text-xs text-muted-foreground"
+                >
+                  最大分数
+                </Label>
+                <Input
+                  id="maxScore"
+                  type="number"
+                  min={0}
+                  max={1}
+                  step={0.1}
+                  placeholder="1.0"
+                  className="mt-1 text-sm h-8"
+                  {...register('maxScore', {
+                    setValueAs: value =>
+                      value === '' ? undefined : parseFloat(value),
+                  })}
+                />
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
