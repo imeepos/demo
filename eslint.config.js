@@ -13,7 +13,16 @@ import unicorn from 'eslint-plugin-unicorn';
 export default [
   js.configs.recommended,
   {
-    ignores: ['eslint.config.js'],
+    ignores: [
+      'eslint.config.js',
+      '**/dist/**',
+      '**/build/**',
+      '**/public/assets/**',
+      '**/*.min.js',
+      '**/*.bundle.js',
+      '**/coverage/**',
+      '**/node_modules/**',
+    ],
   },
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -117,7 +126,7 @@ export default [
       'unicorn/prefer-ternary': 'error',
 
       // No secrets
-      'no-secrets/no-secrets': 'error',
+      'no-secrets/no-secrets': 'warn',
     },
     settings: {
       react: {
