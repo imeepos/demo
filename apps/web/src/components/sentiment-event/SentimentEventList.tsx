@@ -46,7 +46,7 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
           <div className="text-center space-y-2">
             <h3 className="text-lg font-semibold text-foreground">暂无事件数据</h3>
             <p className="text-muted-foreground max-w-md">
-              尚未创建任何舆情事件，点击"新建舆情事件"按钮开始创建第一个事件记录
+              尚未创建任何舆情事件，点击&quot;新建舆情事件&quot;按钮开始创建第一个事件记录
             </p>
           </div>
         </div>
@@ -54,26 +54,42 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
     );
   }
 
-  const getSentimentVariant = (score: number): 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative' => {
-    if (score >= 0.8) return 'very-positive';
-    if (score >= 0.6) return 'positive';
-    if (score >= 0.4) return 'neutral';
-    if (score >= 0.2) return 'negative';
+  // 安全转换 score 为数字类型
+  const parseScore = (score: string | number): number => {
+    const numScore = typeof score === 'string' ? parseFloat(score) : score;
+    return isNaN(numScore) ? 0 : numScore;
+  };
+
+  // 安全转换经纬度为数字类型
+  const parseCoordinate = (coordinate: string | number | null | undefined): number | null => {
+    if (coordinate === null || coordinate === undefined) return null;
+    const numCoordinate = typeof coordinate === 'string' ? parseFloat(coordinate) : coordinate;
+    return isNaN(numCoordinate) ? null : numCoordinate;
+  };
+
+  const getSentimentVariant = (score: string | number): 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative' => {
+    const numScore = parseScore(score);
+    if (numScore >= 0.8) return 'very-positive';
+    if (numScore >= 0.6) return 'positive';
+    if (numScore >= 0.4) return 'neutral';
+    if (numScore >= 0.2) return 'negative';
     return 'very-negative';
   };
 
-  const getSentimentLabel = (score: number) => {
-    if (score >= 0.8) return '非常正面';
-    if (score >= 0.6) return '正面';
-    if (score >= 0.4) return '中性';
-    if (score >= 0.2) return '负面';
+  const getSentimentLabel = (score: string | number) => {
+    const numScore = parseScore(score);
+    if (numScore >= 0.8) return '非常正面';
+    if (numScore >= 0.6) return '正面';
+    if (numScore >= 0.4) return '中性';
+    if (numScore >= 0.2) return '负面';
     return '非常负面';
   };
 
-  const getProgressVariant = (score: number): 'success' | 'warning' | 'primary' | 'danger' => {
-    if (score >= 0.7) return 'success';
-    if (score >= 0.4) return 'warning';
-    if (score >= 0.2) return 'primary';
+  const getProgressVariant = (score: string | number): 'success' | 'warning' | 'primary' | 'danger' => {
+    const numScore = parseScore(score);
+    if (numScore >= 0.7) return 'success';
+    if (numScore >= 0.4) return 'warning';
+    if (numScore >= 0.2) return 'primary';
     return 'danger';
   };
 
@@ -93,7 +109,7 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2">
       {safeItems.map((item, index) => {
         const sentimentVariant = getSentimentVariant(item.score);
         const progressVariant = getProgressVariant(item.score);
@@ -113,7 +129,7 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                         <h3 className="text-lg font-bold text-foreground leading-tight">
                           {truncateText(item.title, 80)}
                         </h3>
-                        <LiveIndicator status="online" size="sm" />
+                        <LiveIndicator status="online" />
                       </div>
                       
                       <div className="flex items-center gap-3 mb-2">
@@ -121,7 +137,7 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                           {getSentimentLabel(item.score)}
                         </SentimentBadge>
                         <div className="text-sm text-muted-foreground">
-                          分数: <span className="data-value font-mono">{item.score.toFixed(3)}</span>
+                          分数: <span className="data-value font-mono">{parseScore(item.score).toFixed(3)}</span>
                         </div>
                       </div>
                     </div>
@@ -135,18 +151,18 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                         情感评级
                       </div>
                       <div className="text-sm text-muted-foreground">
-                        {(item.score * 100).toFixed(1)}%
+                        {(parseScore(item.score) * 100).toFixed(1)}%
                       </div>
                     </div>
                     
                     <ProgressBar 
-                      value={item.score * 100} 
+                      value={parseScore(item.score) * 100} 
                       variant={progressVariant} 
                       className="h-2"
                     />
                   </div>
 
-                  {/* 事件信息 */}
+                  {/* 事件信息 - 基础信息始终显示 */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-muted-foreground" />
@@ -164,7 +180,11 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                       <MapPin className="w-4 h-4 text-muted-foreground" />
                       <span className="text-muted-foreground">位置:</span>
                       <span className="font-mono text-xs text-muted-foreground">
-                        {item.latitude ? `${item.latitude?.toFixed(4)}, ${item.longitude?.toFixed(4)}` : '位置信息不可用'}
+                        {(() => {
+                          const lat = parseCoordinate(item.latitude);
+                          const lng = parseCoordinate(item.longitude);
+                          return lat && lng ? `${lat.toFixed(4)}, ${lng.toFixed(4)}` : '位置信息不可用';
+                        })()}
                       </span>
                     </div>
                     
@@ -177,7 +197,7 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                     </div>
                   </div>
 
-                  {/* 内容预览 */}
+                  {/* 内容预览 - 仅在有数据时显示 */}
                   {item.content && (
                     <div className="p-3 bg-muted/30 rounded-lg border-l-4 border-primary/50">
                       <p className="text-sm text-muted-foreground leading-relaxed">
@@ -186,7 +206,7 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                     </div>
                   )}
 
-                  {/* 标签 */}
+                  {/* 标签 - 仅在有数据时显示 */}
                   {item.tags && item.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {item.tags.slice(0, 5).map((tag, tagIndex) => (
@@ -204,6 +224,7 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                       )}
                     </div>
                   )}
+
                 </div>
 
                 {/* 操作按钮 */}

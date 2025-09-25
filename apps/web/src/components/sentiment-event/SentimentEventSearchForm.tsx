@@ -1,9 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input, Label } from '@sker/ui';
-import { Search, X, Filter, Hash, TrendingUp, Calendar } from 'lucide-react';
+import { Search, X, Hash, TrendingUp, Calendar } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { DashboardCard } from '../dashboard/DashboardComponents';
+import { NumberRangeInput } from '../common/NumberRangeInput';
 import {
   querySentimentEventSchema,
   type QuerySentimentEventInput,
@@ -79,15 +80,6 @@ export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> =
   return (
     <DashboardCard className="mb-8">
       <div className="p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-primary/10 rounded-lg">
-            <Filter className="w-5 h-5 text-primary" />
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold text-foreground">高级搜索</h3>
-            <p className="text-sm text-muted-foreground">根据多个条件筛选舆情事件</p>
-          </div>
-        </div>
         
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -114,63 +106,20 @@ export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> =
               )}
             </div>
 
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-primary" />
-                <Label htmlFor="minScore" className="text-sm font-medium text-foreground">
-                  📉 最小情感分数
-                </Label>
-              </div>
-              <Input
-                id="minScore"
-                type="number"
-                min="0"
-                max="1"
-                step="0.01"
-                placeholder="0.00"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.minScore ? 'border-destructive focus:border-destructive' : ''
-                }`}
-                {...register('minScore', {
-                  setValueAs: value => value === '' ? undefined : parseFloat(value),
-                })}
-              />
-              {errors.minScore && (
-                <p className="text-sm text-destructive flex items-center gap-1">
-                  <X className="w-3 h-3" />
-                  {errors.minScore.message}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-primary" />
-                <Label htmlFor="maxScore" className="text-sm font-medium text-foreground">
-                  📈 最大情感分数
-                </Label>
-              </div>
-              <Input
-                id="maxScore"
-                type="number"
-                min="0"
-                max="1"
-                step="0.01"
-                placeholder="1.00"
-                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
-                  errors.maxScore ? 'border-destructive focus:border-destructive' : ''
-                }`}
-                {...register('maxScore', {
-                  setValueAs: value => value === '' ? undefined : parseFloat(value),
-                })}
-              />
-              {errors.maxScore && (
-                <p className="text-sm text-destructive flex items-center gap-1">
-                  <X className="w-3 h-3" />
-                  {errors.maxScore.message}
-                </p>
-              )}
-            </div>
+            <NumberRangeInput
+              label="📊 情感分数范围"
+              icon={TrendingUp}
+              minFieldName="minScore"
+              maxFieldName="maxScore"
+              min={0}
+              max={1}
+              step={0.01}
+              minPlaceholder="0.00"
+              maxPlaceholder="1.00"
+              register={register}
+              errors={errors}
+              className="lg:col-span-2"
+            />
 
             <div className="space-y-3">
               <div className="flex items-center gap-2">
@@ -239,7 +188,7 @@ export const SentimentEventSearchForm: React.FC<SentimentEventSearchFormProps> =
             <Button 
               type="submit" 
               disabled={isSearching}
-              className="bg-tech-gradient hover:shadow-tech text-white font-medium px-6 py-2 transition-all duration-300 hover:-translate-y-0.5"
+              className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 transition-all duration-300"
             >
               <Search className="w-4 h-4 mr-2" />
               {isSearching ? '搜索中...' : '开始搜索'}

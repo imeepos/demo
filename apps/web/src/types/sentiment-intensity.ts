@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import type { SentimentIntensityResponseDto, CreateSentimentIntensityDto } from '@sker/sdk';
 
 // 创建情感强度的表单验证 schema
 export const createSentimentIntensitySchema = z.object({
@@ -19,8 +20,7 @@ export type CreateSentimentIntensityInput = z.infer<typeof createSentimentIntens
 export type SearchSentimentIntensityInput = z.infer<typeof searchSentimentIntensitySchema>;
 
 // 情感强度响应类型（从 SDK 导入）
-export interface SentimentIntensityItem {
-  id: number;
-  title: string;
-  intensity: number;
-}
+export type SentimentIntensityItem = SentimentIntensityResponseDto & {
+  description?: string; // 可选的描述字段
+  isActive?: boolean;   // 可选的状态字段
+};

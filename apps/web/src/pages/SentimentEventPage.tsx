@@ -1,15 +1,15 @@
 import { Button } from '@sker/ui';
-import { Plus, RefreshCw, Calendar, BarChart3, Activity } from 'lucide-react';
+import { Plus, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { DashboardCard, MetricCard, MetricValue, MetricLabel, LiveIndicator } from '../components/dashboard/DashboardComponents';
+import { DashboardCard, LiveIndicator } from '../components/dashboard/DashboardComponents';
 import { SentimentEventDialog } from '../components/sentiment-event/SentimentEventDialog';
 import { SentimentEventList } from '../components/sentiment-event/SentimentEventList';
 import { SentimentEventSearchForm } from '../components/sentiment-event/SentimentEventSearchForm';
 import {
   useCreateSentimentEvent,
   useDeleteSentimentEvent,
-  useSentimentEvents,
+  useSearchSentimentEvents,
   useUpdateSentimentEvent,
 } from '../hooks/use-sentiment-event';
 import { useSentimentEventStore } from '../stores/sentiment-event-store';
@@ -25,16 +25,22 @@ export const SentimentEventPage: React.FC = () => {
 
   const { searchParams, setSearchParams, clearSearchParams } = useSentimentEventStore();
 
-  // 使用 findAll 而不是 search 以确保返回的数据包含 id
-  const { data: items = [], isLoading, refetch } = useSentimentEvents();
+  console.log('当前搜索参数:', searchParams);
+
+  // 始终使用搜索接口，即使没有搜索参数也调用搜索接口（会返回所有数据）
+  const { data: searchResults = [], isLoading, refetch } = useSearchSentimentEvents(searchParams);
+  
+  // 转换搜索结果，添加 id 字段（实际应用中 API 应该返回带 id 的数据）
+  const items: SentimentEvent[] = searchResults.map((item, index) => ({
+    ...item,
+    id: Date.now() + index, // 临时 ID，实际应该由 API 返回
+  }));
   const createMutation = useCreateSentimentEvent();
   const updateMutation = useUpdateSentimentEvent();
   const deleteMutation = useDeleteSentimentEvent();
 
   const handleSearch = (params: QuerySentimentEventInput) => {
-    // TODO: 搜索功能由于API类型不一致问题暂时禁用
-    console.log('Search functionality temporarily disabled due to API type inconsistency:', params);
-    // setSearchParams(params);
+    setSearchParams(params);
   };
 
   const handleClearSearch = () => {
@@ -96,81 +102,49 @@ export const SentimentEventPage: React.FC = () => {
   };
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
-  const hasSearchParams = Object.keys(searchParams).length > 0;
+  
+  // 检查是否有搜索参数用于显示搜索结果提示
+  const hasActiveSearch = Object.keys(searchParams).some(key => {
+    const value = searchParams[key as keyof typeof searchParams];
+    return value !== undefined && value !== '' && value !== null;
+  });
 
   return (
     <div className="dashboard-container min-h-screen p-8">
       <div className="max-w-7xl mx-auto space-y-8">
-        {/* 页面标题和状态 */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-black metric-highlight mb-4">
-            舆情事件管理系统
-          </h1>
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <LiveIndicator status="online" />
-            <span className="text-muted-foreground">事件数据管理 · 实时监控</span>
+        {/* 页面标题栏 - 左右布局 */}
+        <div className="flex items-center justify-between mb-8">
+          {/* 左侧：标题和简介 */}
+          <div>
+            <h1 className="text-2xl font-black metric-highlight mb-2">
+              舆情事件管理系统
+            </h1>
+            <div className="flex items-center gap-2">
+              <LiveIndicator status="online" />
+              <span className="text-muted-foreground">事件数据管理 · 实时监控</span>
+            </div>
           </div>
-        </div>
-
-        {/* 数据概览卡片 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <DashboardCard variant="primary" className="animate-card-float">
-            <MetricCard variant="primary">
-              <MetricLabel>事件总数</MetricLabel>
-              <MetricValue variant="primary" size="lg" className="data-value">{items.length}</MetricValue>
-              <div className="flex items-center gap-1 text-sm text-primary">
-                <Calendar className="w-4 h-4" />
-                个事件
-              </div>
-            </MetricCard>
-          </DashboardCard>
-
-          <DashboardCard variant="success">
-            <MetricCard variant="success">
-              <MetricLabel>正面事件</MetricLabel>
-              <MetricValue variant="success" size="lg" className="data-value">
-                {items.filter(item => (item.sentimentScore || 0) > 0.6).length}
-              </MetricValue>
-              <div className="flex items-center gap-1 text-sm text-success">
-                <BarChart3 className="w-4 h-4" />
-                高评分
-              </div>
-            </MetricCard>
-          </DashboardCard>
-
-          <DashboardCard variant="warning">
-            <MetricCard variant="warning">
-              <MetricLabel>待处理事件</MetricLabel>
-              <MetricValue variant="warning" size="lg" className="data-value">
-                {items.filter(item => (item.sentimentScore || 0) < 0.4).length}
-              </MetricValue>
-              <div className="flex items-center gap-1 text-sm text-warning">
-                <Activity className="w-4 h-4" />
-                需关注
-              </div>
-            </MetricCard>
-          </DashboardCard>
-        </div>
-
-        {/* 操作按钮区域 */}
-        <div className="flex justify-center gap-4 mb-8">
-          <Button 
-            variant="outline" 
-            onClick={handleRefresh} 
-            disabled={isLoading}
-            className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5"
-          >
-            <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-            {isLoading ? '刷新中...' : '刷新数据'}
-          </Button>
           
-          <Button 
-            onClick={handleCreate}
-            className="bg-tech-gradient hover:shadow-tech-lg text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:-translate-y-1"
-          >
-            <Plus className="w-5 h-5 mr-2" />
-            新建舆情事件
-          </Button>
+          {/* 右侧：操作按钮 */}
+          <div className="flex gap-4">
+            <Button 
+              variant="outline" 
+              onClick={handleRefresh} 
+              disabled={isLoading}
+              className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5"
+            >
+              <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
+              {isLoading ? '刷新中...' : '刷新数据'}
+            </Button>
+            
+            <Button 
+              onClick={handleCreate}
+              className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:-translate-y-1"
+            >
+              <Plus className="w-5 h-5 mr-2" />
+              新建舆情事件
+            </Button>
+          </div>
         </div>
 
         <SentimentEventSearchForm
@@ -179,7 +153,7 @@ export const SentimentEventPage: React.FC = () => {
           isSearching={isLoading}
         />
 
-        {hasSearchParams && (
+        {hasActiveSearch && (
           <DashboardCard className="mb-6">
             <div className="p-4 border-l-4 border-primary bg-primary/5">
               <div className="flex items-center justify-between">

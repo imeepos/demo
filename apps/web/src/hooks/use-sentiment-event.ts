@@ -49,13 +49,7 @@ export const useSearchSentimentEvents = (params: QuerySentimentEventInput) => {
       });
       return response.data;
     },
-    enabled: !!(
-      params.title ||
-      params.minScore !== undefined ||
-      params.maxScore !== undefined ||
-      params.startTime ||
-      params.endTime
-    ),
+    enabled: true, // 始终启用查询，即使没有搜索参数也调用搜索接口
   });
 };
 

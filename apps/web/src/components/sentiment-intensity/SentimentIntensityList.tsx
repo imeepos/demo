@@ -88,7 +88,7 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2">
       {safeItems.map((item, index) => {
         const intensityValue = safeIntensity(item.intensity);
         const progressVariant = getProgressVariant(item.intensity);
@@ -107,7 +107,7 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-1">
                         <h3 className="text-lg font-bold text-foreground">{item.title}</h3>
-                        <LiveIndicator status="online" size="sm" />
+                        <LiveIndicator status="online" />
                       </div>
                       <SentimentBadge sentiment={sentimentVariant}>
                         {getIntensityLabel(item.intensity)}

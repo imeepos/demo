@@ -1,6 +1,17 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input, Label, Textarea } from '@sker/ui';
-import { Plus, X, Save, Hash, FileText, Calendar, MapPin, Tag, TrendingUp, Zap } from 'lucide-react';
+import {
+  Calendar,
+  FileText,
+  Hash,
+  MapPin,
+  Plus,
+  Save,
+  Tag,
+  TrendingUp,
+  X,
+  Zap,
+} from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
@@ -74,7 +85,9 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
     }
   };
 
-  const getSentimentVariant = (score: number): 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative' => {
+  const getSentimentVariant = (
+    score: number,
+  ): 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative' => {
     if (score >= 0.8) return 'very-positive';
     if (score >= 0.6) return 'positive';
     if (score >= 0.4) return 'neutral';
@@ -99,7 +112,7 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             <Hash className="w-5 h-5 text-primary" />
             <h3 className="text-lg font-semibold text-foreground">基本信息</h3>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-3">
               <div className="flex items-center gap-2">
@@ -211,7 +224,7 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
                     {errors.score.message}
                   </p>
                 )}
-                
+
                 {/* 情感分数预览 */}
                 <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
                   <div className="text-xs font-medium text-primary mb-2">
@@ -220,11 +233,15 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
                   <div className="w-full bg-muted rounded-full h-2">
                     <div
                       className={`h-2 rounded-full transition-all duration-300 ${
-                        (score || 0) >= 0.7 ? 'bg-success' :
-                        (score || 0) >= 0.4 ? 'bg-warning' :
-                        (score || 0) >= 0.2 ? 'bg-primary' : 'bg-destructive'
+                        (score || 0) >= 0.7
+                          ? 'bg-success'
+                          : (score || 0) >= 0.4
+                            ? 'bg-warning'
+                            : (score || 0) >= 0.2
+                              ? 'bg-primary'
+                              : 'bg-destructive'
                       }`}
-                      style={{ width: `${((score || 0) * 100)}%` }}
+                      style={{ width: `${(score || 0) * 100}%` }}
                     />
                   </div>
                 </div>
@@ -376,9 +393,9 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
                 onKeyPress={handleTagKeyPress}
                 className="flex-1 border-border focus:border-primary focus:ring-primary/20 transition-all duration-300"
               />
-              <Button 
-                type="button" 
-                variant="outline" 
+              <Button
+                type="button"
+                variant="outline"
                 onClick={addTag}
                 className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300"
               >
@@ -386,7 +403,7 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
                 添加
               </Button>
             </div>
-            
+
             {tags.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {tags.map((tag, index) => (
@@ -411,28 +428,24 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
 
         {/* 操作按钮 */}
         <div className="flex justify-end gap-3 pt-8 border-t border-border">
-          <Button 
-            type="button" 
-            variant="outline" 
-            onClick={onCancel} 
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onCancel}
             disabled={isSubmitting}
             className="border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-300"
           >
             <X className="w-4 h-4 mr-2" />
             取消操作
           </Button>
-          
-          <Button 
-            type="submit" 
+
+          <Button
+            type="submit"
             disabled={isSubmitting}
-            className="bg-tech-gradient hover:shadow-tech text-white font-medium px-8 py-2 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-2 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
             <Save className="w-4 h-4 mr-2" />
-            {isSubmitting 
-              ? '正在保存...' 
-              : initialData 
-              ? '更新事件' 
-              : '创建事件'}
+            {isSubmitting ? '正在保存...' : initialData ? '更新事件' : '创建事件'}
           </Button>
         </div>
       </form>
