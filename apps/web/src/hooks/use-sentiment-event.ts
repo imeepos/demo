@@ -1,5 +1,4 @@
 import {
-  client,
   sentimentEventControllerCreate,
   sentimentEventControllerFindAll,
   sentimentEventControllerFindOne,
@@ -11,15 +10,8 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type {
   CreateSentimentEventInput,
   QuerySentimentEventInput,
-  SentimentEvent,
-  SentimentEventResponse,
   UpdateSentimentEventInput,
 } from '../types/sentiment-event';
-
-// 配置 SDK 客户端
-client.setConfig({
-  baseUrl: 'http://localhost:3011',
-});
 
 // Query Keys
 export const sentimentEventKeys = {
@@ -36,7 +28,7 @@ export const useSentimentEvents = () => {
     queryKey: sentimentEventKeys.lists(),
     queryFn: async () => {
       const response = await sentimentEventControllerFindAll();
-      return response.data as SentimentEventResponse[];
+      return response.data;
     },
   });
 };
@@ -55,7 +47,7 @@ export const useSearchSentimentEvents = (params: QuerySentimentEventInput) => {
           ...(params.endTime && { endTime: params.endTime.toISOString() }),
         },
       });
-      return response.data as SentimentEvent[];
+      return response.data;
     },
     enabled: !!(
       params.title ||
@@ -76,7 +68,7 @@ export const useSentimentEventById = (id: number | undefined) => {
       const response = await sentimentEventControllerFindOne({
         path: { id: id.toString() },
       });
-      return response.data as SentimentEvent;
+      return response.data;
     },
     enabled: !!id,
   });
@@ -95,7 +87,7 @@ export const useCreateSentimentEvent = () => {
           latitude: data.latitude,
           longitude: data.longitude,
           source: data.source,
-          timestamp: data.timestamp,
+          timestamp: data.timestamp.toISOString(),
           ...(data.content && { content: data.content }),
           ...(data.address && { address: data.address }),
           ...(data.hotness !== undefined && { hotness: data.hotness }),
@@ -124,7 +116,7 @@ export const useUpdateSentimentEvent = () => {
           ...(data.latitude !== undefined && { latitude: data.latitude }),
           ...(data.longitude !== undefined && { longitude: data.longitude }),
           ...(data.source && { source: data.source }),
-          ...(data.timestamp && { timestamp: data.timestamp }),
+          ...(data.timestamp && { timestamp: data.timestamp.toISOString() }),
           ...(data.content !== undefined && { content: data.content }),
           ...(data.address !== undefined && { address: data.address }),
           ...(data.hotness !== undefined && { hotness: data.hotness }),

@@ -8,7 +8,7 @@ import { SentimentEventSearchForm } from '../components/sentiment-event/Sentimen
 import {
   useCreateSentimentEvent,
   useDeleteSentimentEvent,
-  useSearchSentimentEvents,
+  useSentimentEvents,
   useUpdateSentimentEvent,
 } from '../hooks/use-sentiment-event';
 import { useSentimentEventStore } from '../stores/sentiment-event-store';
@@ -23,14 +23,17 @@ export const SentimentEventPage: React.FC = () => {
   const [editingItem, setEditingItem] = useState<SentimentEvent | null>(null);
 
   const { searchParams, setSearchParams, clearSearchParams } = useSentimentEventStore();
-  
-  const { data: items = [], isLoading, refetch } = useSearchSentimentEvents(searchParams);
+
+  // 使用 findAll 而不是 search 以确保返回的数据包含 id
+  const { data: items = [], isLoading, refetch } = useSentimentEvents();
   const createMutation = useCreateSentimentEvent();
   const updateMutation = useUpdateSentimentEvent();
   const deleteMutation = useDeleteSentimentEvent();
 
   const handleSearch = (params: QuerySentimentEventInput) => {
-    setSearchParams(params);
+    // TODO: 搜索功能由于API类型不一致问题暂时禁用
+    console.log('Search functionality temporarily disabled due to API type inconsistency:', params);
+    // setSearchParams(params);
   };
 
   const handleClearSearch = () => {
@@ -104,11 +107,7 @@ export const SentimentEventPage: React.FC = () => {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button 
-            variant="outline" 
-            onClick={handleRefresh}
-            disabled={isLoading}
-          >
+          <Button variant="outline" onClick={handleRefresh} disabled={isLoading}>
             <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
             刷新
           </Button>

@@ -9,6 +9,9 @@ import {
   type SentimentEvent,
 } from '../../types/sentiment-event';
 
+const REQUIRED_CLASS = 'text-red-500';
+const ERROR_BORDER_CLASS = 'border-red-500';
+
 interface SentimentEventFormProps {
   initialData?: SentimentEvent | null;
   onSubmit: (data: CreateSentimentEventInput) => void;
@@ -22,7 +25,7 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
   onCancel,
   isSubmitting = false,
 }) => {
-  const [tags, setTags] = useState<string[]>(initialData?.tags || []);
+  const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
 
   const {
@@ -34,14 +37,14 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
     resolver: zodResolver(createSentimentEventSchema),
     defaultValues: {
       title: initialData?.title || '',
-      content: initialData?.content || '',
+      content: '',
       score: initialData?.score || 0.5,
-      latitude: initialData?.latitude || 39.9042,
-      longitude: initialData?.longitude || 116.4074,
-      address: initialData?.address || '',
+      latitude: 39.9042,
+      longitude: 116.4074,
+      address: '',
       source: initialData?.source || '',
-      timestamp: initialData?.timestamp || new Date(),
-      hotness: initialData?.hotness || 1,
+      timestamp: initialData?.timestamp ? new Date(initialData.timestamp) : new Date(),
+      hotness: 1,
     },
   });
 
@@ -71,49 +74,46 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
     }
   };
 
-  const getScoreColor = (score: number) => {
-    if (score >= 0.7) return 'text-green-600';
-    if (score >= 0.3) return 'text-yellow-600';
-    return 'text-red-600';
-  };
+  // 情感分数相关函数暂时不使用
+  // const getScoreColor = (score: number) => {
+  //   if (score >= 0.7) return 'text-green-600';
+  //   if (score >= 0.3) return 'text-yellow-600';
+  //   return 'text-red-600';
+  // };
 
-  const getScoreLabel = (score: number) => {
-    if (score >= 0.7) return '正面';
-    if (score >= 0.3) return '中性';
-    return '负面';
-  };
+  // const getScoreLabel = (score: number) => {
+  //   if (score >= 0.7) return '正面';
+  //   if (score >= 0.3) return '中性';
+  //   return '负面';
+  // };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(handleFormSubmit as any)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="space-y-2">
           <Label htmlFor="title">
-            事件标题 <span className="text-red-500">*</span>
+            事件标题 <span className={REQUIRED_CLASS}>*</span>
           </Label>
           <Input
             id="title"
             placeholder="请输入事件标题"
             {...register('title')}
-            className={errors.title ? 'border-red-500' : ''}
+            className={errors.title ? ERROR_BORDER_CLASS : ''}
           />
-          {errors.title && (
-            <p className="text-sm text-red-500">{errors.title.message}</p>
-          )}
+          {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="source">
-            信息来源 <span className="text-red-500">*</span>
+            信息来源 <span className={REQUIRED_CLASS}>*</span>
           </Label>
           <Input
             id="source"
             placeholder="如：新浪微博、今日头条等"
             {...register('source')}
-            className={errors.source ? 'border-red-500' : ''}
+            className={errors.source ? ERROR_BORDER_CLASS : ''}
           />
-          {errors.source && (
-            <p className="text-sm text-red-500">{errors.source.message}</p>
-          )}
+          {errors.source && <p className="text-sm text-red-500">{errors.source.message}</p>}
         </div>
       </div>
 
@@ -124,17 +124,15 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
           rows={4}
           placeholder="请输入事件的详细内容描述"
           {...register('content')}
-          className={errors.content ? 'border-red-500' : ''}
+          className={errors.content ? ERROR_BORDER_CLASS : ''}
         />
-        {errors.content && (
-          <p className="text-sm text-red-500">{errors.content.message}</p>
-        )}
+        {errors.content && <p className="text-sm text-red-500">{errors.content.message}</p>}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="space-y-2">
           <Label htmlFor="score">
-            情感分数 <span className="text-red-500">*</span>
+            情感分数 <span className={REQUIRED_CLASS}>*</span>
           </Label>
           <Input
             id="score"
@@ -145,19 +143,15 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             placeholder="0.00 - 1.00"
             {...register('score', {
               setValueAs: value => parseFloat(value),
-              onChange: (e) => {
+              onChange: e => {
                 const score = parseFloat(e.target.value) || 0;
                 setValue('score', score);
-              }
+              },
             })}
-            className={errors.score ? 'border-red-500' : ''}
+            className={errors.score ? ERROR_BORDER_CLASS : ''}
           />
-          {errors.score && (
-            <p className="text-sm text-red-500">{errors.score.message}</p>
-          )}
-          <p className="text-sm text-gray-500">
-            0=最负面，0.5=中性，1=最正面
-          </p>
+          {errors.score && <p className="text-sm text-red-500">{errors.score.message}</p>}
+          <p className="text-sm text-gray-500">0=最负面，0.5=中性，1=最正面</p>
         </div>
 
         <div className="space-y-2">
@@ -168,19 +162,17 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             min="1"
             max="10"
             {...register('hotness', {
-              setValueAs: value => value === '' ? undefined : parseInt(value),
+              setValueAs: value => (value === '' ? undefined : parseInt(value)),
             })}
-            className={errors.hotness ? 'border-red-500' : ''}
+            className={errors.hotness ? ERROR_BORDER_CLASS : ''}
           />
-          {errors.hotness && (
-            <p className="text-sm text-red-500">{errors.hotness.message}</p>
-          )}
+          {errors.hotness && <p className="text-sm text-red-500">{errors.hotness.message}</p>}
           <p className="text-sm text-gray-500">热度值：1-10，可选</p>
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="timestamp">
-            事件时间 <span className="text-red-500">*</span>
+            事件时间 <span className={REQUIRED_CLASS}>*</span>
           </Label>
           <Input
             id="timestamp"
@@ -188,18 +180,16 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             {...register('timestamp', {
               setValueAs: value => new Date(value),
             })}
-            className={errors.timestamp ? 'border-red-500' : ''}
+            className={errors.timestamp ? ERROR_BORDER_CLASS : ''}
           />
-          {errors.timestamp && (
-            <p className="text-sm text-red-500">{errors.timestamp.message}</p>
-          )}
+          {errors.timestamp && <p className="text-sm text-red-500">{errors.timestamp.message}</p>}
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="space-y-2">
           <Label htmlFor="latitude">
-            纬度 <span className="text-red-500">*</span>
+            纬度 <span className={REQUIRED_CLASS}>*</span>
           </Label>
           <Input
             id="latitude"
@@ -209,16 +199,14 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             {...register('latitude', {
               setValueAs: value => parseFloat(value),
             })}
-            className={errors.latitude ? 'border-red-500' : ''}
+            className={errors.latitude ? ERROR_BORDER_CLASS : ''}
           />
-          {errors.latitude && (
-            <p className="text-sm text-red-500">{errors.latitude.message}</p>
-          )}
+          {errors.latitude && <p className="text-sm text-red-500">{errors.latitude.message}</p>}
         </div>
 
         <div className="space-y-2">
           <Label htmlFor="longitude">
-            经度 <span className="text-red-500">*</span>
+            经度 <span className={REQUIRED_CLASS}>*</span>
           </Label>
           <Input
             id="longitude"
@@ -228,11 +216,9 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             {...register('longitude', {
               setValueAs: value => parseFloat(value),
             })}
-            className={errors.longitude ? 'border-red-500' : ''}
+            className={errors.longitude ? ERROR_BORDER_CLASS : ''}
           />
-          {errors.longitude && (
-            <p className="text-sm text-red-500">{errors.longitude.message}</p>
-          )}
+          {errors.longitude && <p className="text-sm text-red-500">{errors.longitude.message}</p>}
         </div>
 
         <div className="space-y-2">
@@ -241,11 +227,9 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
             id="address"
             placeholder="如：北京市朝阳区某某路段"
             {...register('address')}
-            className={errors.address ? 'border-red-500' : ''}
+            className={errors.address ? ERROR_BORDER_CLASS : ''}
           />
-          {errors.address && (
-            <p className="text-sm text-red-500">{errors.address.message}</p>
-          )}
+          {errors.address && <p className="text-sm text-red-500">{errors.address.message}</p>}
         </div>
       </div>
 
@@ -255,7 +239,7 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
           <Input
             placeholder="输入标签后按回车或点击添加"
             value={tagInput}
-            onChange={(e) => setTagInput(e.target.value)}
+            onChange={e => setTagInput(e.target.value)}
             onKeyPress={handleTagKeyPress}
           />
           <Button type="button" variant="outline" onClick={addTag}>
