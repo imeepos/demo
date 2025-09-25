@@ -15,7 +15,7 @@ import type {
 
 // 配置 SDK 客户端
 client.setConfig({
-  baseUrl: 'http://localhost:3011',
+  baseURL: 'http://localhost:3011',
 });
 
 // Query Keys

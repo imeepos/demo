@@ -1,7 +1,8 @@
 import { Button } from '@sker/ui';
-import { Plus, RefreshCw } from 'lucide-react';
+import { Plus, RefreshCw, Calendar, BarChart3, Activity } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { DashboardCard, MetricCard, MetricValue, MetricLabel, LiveIndicator } from '../components/dashboard/DashboardComponents';
 import { SentimentEventDialog } from '../components/sentiment-event/SentimentEventDialog';
 import { SentimentEventList } from '../components/sentiment-event/SentimentEventList';
 import { SentimentEventSearchForm } from '../components/sentiment-event/SentimentEventSearchForm';
@@ -98,58 +99,123 @@ export const SentimentEventPage: React.FC = () => {
   const hasSearchParams = Object.keys(searchParams).length > 0;
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">舆情事件管理</h1>
-          <p className="text-gray-600 mt-1">
-            管理和监控舆情事件数据，支持创建、编辑、删除和搜索功能
-          </p>
+    <div className="dashboard-container min-h-screen p-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* 页面标题和状态 */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-black metric-highlight mb-4">
+            舆情事件管理系统
+          </h1>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <LiveIndicator status="online" />
+            <span className="text-muted-foreground">事件数据管理 · 实时监控</span>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" onClick={handleRefresh} disabled={isLoading}>
+
+        {/* 数据概览卡片 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <DashboardCard variant="primary" className="animate-card-float">
+            <MetricCard variant="primary">
+              <MetricLabel>事件总数</MetricLabel>
+              <MetricValue variant="primary" size="lg" className="data-value">{items.length}</MetricValue>
+              <div className="flex items-center gap-1 text-sm text-primary">
+                <Calendar className="w-4 h-4" />
+                个事件
+              </div>
+            </MetricCard>
+          </DashboardCard>
+
+          <DashboardCard variant="success">
+            <MetricCard variant="success">
+              <MetricLabel>正面事件</MetricLabel>
+              <MetricValue variant="success" size="lg" className="data-value">
+                {items.filter(item => (item.sentimentScore || 0) > 0.6).length}
+              </MetricValue>
+              <div className="flex items-center gap-1 text-sm text-success">
+                <BarChart3 className="w-4 h-4" />
+                高评分
+              </div>
+            </MetricCard>
+          </DashboardCard>
+
+          <DashboardCard variant="warning">
+            <MetricCard variant="warning">
+              <MetricLabel>待处理事件</MetricLabel>
+              <MetricValue variant="warning" size="lg" className="data-value">
+                {items.filter(item => (item.sentimentScore || 0) < 0.4).length}
+              </MetricValue>
+              <div className="flex items-center gap-1 text-sm text-warning">
+                <Activity className="w-4 h-4" />
+                需关注
+              </div>
+            </MetricCard>
+          </DashboardCard>
+        </div>
+
+        {/* 操作按钮区域 */}
+        <div className="flex justify-center gap-4 mb-8">
+          <Button 
+            variant="outline" 
+            onClick={handleRefresh} 
+            disabled={isLoading}
+            className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5"
+          >
             <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-            刷新
+            {isLoading ? '刷新中...' : '刷新数据'}
           </Button>
-          <Button onClick={handleCreate}>
-            <Plus className="w-4 h-4 mr-2" />
+          
+          <Button 
+            onClick={handleCreate}
+            className="bg-tech-gradient hover:shadow-tech-lg text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:-translate-y-1"
+          >
+            <Plus className="w-5 h-5 mr-2" />
             新建舆情事件
           </Button>
         </div>
+
+        <SentimentEventSearchForm
+          onSearch={handleSearch}
+          onClear={handleClearSearch}
+          isSearching={isLoading}
+        />
+
+        {hasSearchParams && (
+          <DashboardCard className="mb-6">
+            <div className="p-4 border-l-4 border-primary bg-primary/5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-sm font-medium text-primary">
+                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+                  🔍 搜索结果：共找到 {items.length} 条记录
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  onClick={handleClearSearch}
+                  className="text-primary hover:bg-primary hover:text-white transition-all duration-300"
+                >
+                  显示全部数据
+                </Button>
+              </div>
+            </div>
+          </DashboardCard>
+        )}
+
+        <SentimentEventList
+          items={items}
+          isLoading={isLoading}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+
+        <SentimentEventDialog
+          open={dialogOpen}
+          onClose={handleDialogClose}
+          onSubmit={handleSubmit}
+          initialData={editingItem}
+          isSubmitting={isSubmitting}
+          title={editingItem ? '编辑舆情事件' : '新建舆情事件'}
+        />
       </div>
-
-      <SentimentEventSearchForm
-        onSearch={handleSearch}
-        onClear={handleClearSearch}
-        isSearching={isLoading}
-      />
-
-      {hasSearchParams && (
-        <div className="flex items-center justify-between bg-blue-50 p-3 rounded-md">
-          <div className="text-sm text-blue-600">
-            当前显示搜索结果，共找到 {items.length} 条记录
-          </div>
-          <Button variant="ghost" size="sm" onClick={handleClearSearch}>
-            显示全部
-          </Button>
-        </div>
-      )}
-
-      <SentimentEventList
-        items={items}
-        isLoading={isLoading}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
-
-      <SentimentEventDialog
-        open={dialogOpen}
-        onClose={handleDialogClose}
-        onSubmit={handleSubmit}
-        initialData={editingItem}
-        isSubmitting={isSubmitting}
-        title={editingItem ? '编辑舆情事件' : '新建舆情事件'}
-      />
     </div>
   );
 };

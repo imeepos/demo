@@ -5,6 +5,7 @@ import { SentimentDashboard } from './pages/SentimentDashboard';
 import { DashboardPage } from './pages/DashboardPage';
 import { SentimentIntensityPage } from './pages/SentimentIntensityPage';
 import { SentimentEventPage } from './pages/SentimentEventPage';
+import { ColorSystemTestPage } from './pages/ColorSystemTestPage';
 
 /**
  * 路由配置
@@ -51,6 +52,13 @@ const sentimentEventRoute = createRoute({
   component: SentimentEventPage,
 });
 
+// 创建配色系统测试路由
+const colorSystemTestRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/color-test',
+  component: ColorSystemTestPage,
+});
+
 // 导出路由树
 export const routeTree = rootRoute.addChildren([
   indexRoute,
@@ -58,4 +66,5 @@ export const routeTree = rootRoute.addChildren([
   dashboardViewRoute,
   sentimentIntensityRoute,
   sentimentEventRoute,
+  colorSystemTestRoute,
 ]);

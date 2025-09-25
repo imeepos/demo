@@ -1,6 +1,7 @@
-import { Badge, Button, Card } from '@sker/ui';
-import { Edit, MapPin, Trash2, Calendar } from 'lucide-react';
+import { Button } from '@sker/ui';
+import { Edit, MapPin, Trash2, Calendar, Database, FileX, TrendingUp, Activity, Hash } from 'lucide-react';
 import React from 'react';
+import { DashboardCard, ProgressBar, SentimentBadge, LiveIndicator } from '../dashboard/DashboardComponents';
 import type { SentimentEvent } from '../../types/sentiment-event';
 
 interface SentimentEventListProps {
@@ -20,41 +21,61 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
 
   if (isLoading) {
     return (
-      <Card className="p-6">
-        <div className="text-center text-gray-500">加载中...</div>
-      </Card>
+      <DashboardCard className="p-8">
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="relative">
+            <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            <Database className="w-6 h-6 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+          </div>
+          <div className="text-center">
+            <div className="text-lg font-semibold text-foreground mb-1">数据加载中</div>
+            <div className="text-sm text-muted-foreground">正在获取舆情事件信息...</div>
+          </div>
+        </div>
+      </DashboardCard>
     );
   }
 
   if (safeItems.length === 0) {
     return (
-      <Card className="p-6">
-        <div className="text-center text-gray-500">
-          暂无舆情事件数据，点击&ldquo;新建舆情事件&rdquo;开始创建
+      <DashboardCard className="p-12">
+        <div className="flex flex-col items-center justify-center space-y-6">
+          <div className="p-4 bg-muted/30 rounded-full">
+            <FileX className="w-12 h-12 text-muted-foreground" />
+          </div>
+          <div className="text-center space-y-2">
+            <h3 className="text-lg font-semibold text-foreground">暂无事件数据</h3>
+            <p className="text-muted-foreground max-w-md">
+              尚未创建任何舆情事件，点击"新建舆情事件"按钮开始创建第一个事件记录
+            </p>
+          </div>
         </div>
-      </Card>
+      </DashboardCard>
     );
   }
 
-  const getScoreColor = (score: number) => {
-    if (score >= 0.7) return 'bg-green-100 text-green-800 border-green-300';
-    if (score >= 0.3) return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-    return 'bg-red-100 text-red-800 border-red-300';
+  const getSentimentVariant = (score: number): 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative' => {
+    if (score >= 0.8) return 'very-positive';
+    if (score >= 0.6) return 'positive';
+    if (score >= 0.4) return 'neutral';
+    if (score >= 0.2) return 'negative';
+    return 'very-negative';
   };
 
-  const getScoreLabel = (score: number) => {
-    if (score >= 0.7) return '正面';
-    if (score >= 0.3) return '中性';
-    return '负面';
+  const getSentimentLabel = (score: number) => {
+    if (score >= 0.8) return '非常正面';
+    if (score >= 0.6) return '正面';
+    if (score >= 0.4) return '中性';
+    if (score >= 0.2) return '负面';
+    return '非常负面';
   };
 
-  // 热度颜色函数暂时不使用，因为基础响应中不包含热度信息
-  // const getHotnessColor = (hotness?: number) => {
-  //   if (!hotness) return 'bg-gray-100 text-gray-600';
-  //   if (hotness >= 7) return 'bg-red-100 text-red-700';
-  //   if (hotness >= 4) return 'bg-orange-100 text-orange-700';
-  //   return 'bg-blue-100 text-blue-700';
-  // };
+  const getProgressVariant = (score: number): 'success' | 'warning' | 'primary' | 'danger' => {
+    if (score >= 0.7) return 'success';
+    if (score >= 0.4) return 'warning';
+    if (score >= 0.2) return 'primary';
+    return 'danger';
+  };
 
   const formatDate = (date: Date | string) => {
     const d = new Date(date);
@@ -67,73 +88,148 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
     });
   };
 
+  const truncateText = (text: string, maxLength: number) => {
+    return text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
+  };
+
   return (
-    <div className="space-y-4">
-      {safeItems.map(item => (
-        <Card key={item.id} className="p-6 hover:shadow-md transition-shadow">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <div className="flex items-start gap-3 mb-3">
-                <div className="flex-1">
-                  <h3 className="text-lg font-medium mb-2 line-clamp-2">{item.title}</h3>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge variant="outline" className={getScoreColor(item.score)}>
-                      {getScoreLabel(item.score)} ({item.score.toFixed(2)})
-                    </Badge>
-                    {/* 热度信息在基础响应中不可用 */}
+    <div className="space-y-6">
+      {safeItems.map((item, index) => {
+        const sentimentVariant = getSentimentVariant(item.score);
+        const progressVariant = getProgressVariant(item.score);
+        
+        return (
+          <DashboardCard key={item.id} variant="default" className="hover:shadow-tech-lg transition-all duration-300 animate-card-float" style={{ animationDelay: `${index * 100}ms` }}>
+            <div className="p-6">
+              <div className="flex items-start justify-between gap-6">
+                <div className="flex-1 space-y-4">
+                  {/* 标题和状态 */}
+                  <div className="flex items-start gap-3">
+                    <div className="p-2 bg-primary/10 rounded-lg mt-1">
+                      <Activity className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-start justify-between gap-3 mb-2">
+                        <h3 className="text-lg font-bold text-foreground leading-tight">
+                          {truncateText(item.title, 80)}
+                        </h3>
+                        <LiveIndicator status="online" size="sm" />
+                      </div>
+                      
+                      <div className="flex items-center gap-3 mb-2">
+                        <SentimentBadge sentiment={sentimentVariant}>
+                          {getSentimentLabel(item.score)}
+                        </SentimentBadge>
+                        <div className="text-sm text-muted-foreground">
+                          分数: <span className="data-value font-mono">{item.score.toFixed(3)}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+
+                  {/* 情感分数进度条 */}
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
+                        <TrendingUp className="w-4 h-4" />
+                        情感评级
+                      </div>
+                      <div className="text-sm text-muted-foreground">
+                        {(item.score * 100).toFixed(1)}%
+                      </div>
+                    </div>
+                    
+                    <ProgressBar 
+                      value={item.score * 100} 
+                      variant={progressVariant} 
+                      className="h-2"
+                    />
+                  </div>
+
+                  {/* 事件信息 */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">时间:</span>
+                      <span className="font-medium text-foreground">{formatDate(item.timestamp)}</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Hash className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">来源:</span>
+                      <span className="font-medium text-foreground">{item.source}</span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <MapPin className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">位置:</span>
+                      <span className="font-mono text-xs text-muted-foreground">
+                        {item.latitude ? `${item.latitude?.toFixed(4)}, ${item.longitude?.toFixed(4)}` : '位置信息不可用'}
+                      </span>
+                    </div>
+                    
+                    <div className="flex items-center gap-2">
+                      <Activity className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">热度:</span>
+                      <span className="font-medium text-foreground">
+                        {item.hotness ? `${item.hotness}/10` : '未设置'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* 内容预览 */}
+                  {item.content && (
+                    <div className="p-3 bg-muted/30 rounded-lg border-l-4 border-primary/50">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {truncateText(item.content, 150)}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* 标签 */}
+                  {item.tags && item.tags.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {item.tags.slice(0, 5).map((tag, tagIndex) => (
+                        <span
+                          key={tagIndex}
+                          className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary rounded text-xs font-medium border border-primary/20"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                      {item.tags.length > 5 && (
+                        <span className="inline-flex items-center px-2 py-1 bg-muted text-muted-foreground rounded text-xs">
+                          +{item.tags.length - 5} 更多
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* 操作按钮 */}
+                <div className="flex flex-col gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={() => onEdit(item)}
+                    className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => onDelete(item)}
+                    className="border-destructive/50 text-destructive hover:bg-destructive hover:text-white transition-all duration-300 hover:-translate-y-0.5"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
                 </div>
               </div>
-
-              {/* 内容在基础响应中不可用 */}
-
-              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500 mb-3">
-                <div className="flex items-center gap-1">
-                  <Calendar className="w-4 h-4" />
-                  {formatDate(item.timestamp)}
-                </div>
-                <div className="flex items-center gap-1">
-                  <MapPin className="w-4 h-4" />
-                  <span>位置信息不可用</span>
-                </div>
-                <Badge variant="secondary" className="text-xs">
-                  {item.source}
-                </Badge>
-              </div>
-
-              {/* 标签在基础响应中不可用 */}
-
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className={`h-2 rounded-full transition-all duration-300 ${
-                    item.score >= 0.7
-                      ? 'bg-green-500'
-                      : item.score >= 0.3
-                        ? 'bg-yellow-500'
-                        : 'bg-red-500'
-                  }`}
-                  style={{ width: `${item.score * 100}%` }}
-                />
-              </div>
-              <div className="text-xs text-gray-400 mt-1">情感分数: {item.score.toFixed(2)}</div>
             </div>
-
-            <div className="flex items-center gap-2 ml-4">
-              <Button variant="outline" size="sm" onClick={() => onEdit(item)}>
-                <Edit className="w-4 h-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onDelete(item)}
-                className="text-red-600 hover:text-red-700 hover:bg-red-50"
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
-            </div>
-          </div>
-        </Card>
-      ))}
+          </DashboardCard>
+        );
+      })}
     </div>
   );
 };

@@ -33,7 +33,7 @@ export function HomePage() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
             <Link
               to="/dashboard-view"
               className="group relative overflow-hidden bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-2xl p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
@@ -98,6 +98,23 @@ export function HomePage() {
                 </p>
                 <div className="flex items-center justify-center text-sm font-medium">
                   事件管理 →
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              to="/color-test"
+              className="group relative overflow-hidden bg-gradient-to-br from-accent to-accent/80 text-white rounded-2xl p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+            >
+              <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="relative space-y-3">
+                <div className="text-4xl">🎨</div>
+                <h3 className="text-xl font-bold">配色系统测试</h3>
+                <p className="text-white/80">
+                  查看亮色科技蓝配色方案的完整展示
+                </p>
+                <div className="flex items-center justify-center text-sm font-medium">
+                  配色预览 →
                 </div>
               </div>
             </Link>

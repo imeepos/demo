@@ -1,7 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Card, Input } from '@sker/ui';
+import { Button, Input, Label } from '@sker/ui';
+import { Search, Filter, X } from 'lucide-react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { DashboardCard } from '../dashboard/DashboardComponents';
 import { useSentimentIntensityStore } from '../../stores/sentiment-intensity-store';
 import {
   searchSentimentIntensitySchema,
@@ -43,57 +45,91 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
   };
 
   return (
-    <Card className="p-6 mb-6">
-      <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div>
-            <label htmlFor="title" className="block text-sm font-medium mb-2">
-              标题搜索
-            </label>
-            <Input id="title" placeholder="请输入标题关键词" {...register('title')} />
+    <DashboardCard className="mb-8">
+      <div className="p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <Filter className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <label htmlFor="minIntensity" className="block text-sm font-medium mb-2">
-              最小强度
-            </label>
-            <Input
-              id="minIntensity"
-              type="number"
-              min="0"
-              max="1"
-              step="0.01"
-              placeholder="最小值 (0-1)"
-              {...register('minIntensity', {
-                setValueAs: value => (value === '' ? undefined : parseFloat(value)),
-              })}
-            />
-          </div>
-          <div>
-            <label htmlFor="maxIntensity" className="block text-sm font-medium mb-2">
-              最大强度
-            </label>
-            <Input
-              id="maxIntensity"
-              type="number"
-              min="0"
-              max="1"
-              step="0.01"
-              placeholder="最大值 (0-1)"
-              {...register('maxIntensity', {
-                setValueAs: value => (value === '' ? undefined : parseFloat(value)),
-              })}
-            />
+            <h3 className="text-lg font-semibold text-foreground">高级搜索</h3>
+            <p className="text-sm text-muted-foreground">根据条件筛选情感强度配置</p>
           </div>
         </div>
-        <div className="flex gap-2">
-          <Button type="submit" disabled={isSubmitting}>
-            搜索
-          </Button>
-          <Button type="button" variant="outline" onClick={handleClear}>
-            清除
-          </Button>
-        </div>
-      </form>
-    </Card>
+        
+        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="title" className="text-sm font-medium text-foreground">
+                🔍 标题关键词
+              </Label>
+              <Input 
+                id="title" 
+                placeholder="输入标题关键词进行模糊搜索" 
+                className="border-border focus:border-primary focus:ring-primary/20"
+                {...register('title')} 
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="minIntensity" className="text-sm font-medium text-foreground">
+                📉 最小强度值
+              </Label>
+              <Input
+                id="minIntensity"
+                type="number"
+                min="0"
+                max="1"
+                step="0.01"
+                placeholder="0.00 - 1.00"
+                className="border-border focus:border-primary focus:ring-primary/20"
+                {...register('minIntensity', {
+                  setValueAs: value => (value === '' ? undefined : parseFloat(value)),
+                })}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="maxIntensity" className="text-sm font-medium text-foreground">
+                📈 最大强度值
+              </Label>
+              <Input
+                id="maxIntensity"
+                type="number"
+                min="0"
+                max="1"
+                step="0.01"
+                placeholder="0.00 - 1.00"
+                className="border-border focus:border-primary focus:ring-primary/20"
+                {...register('maxIntensity', {
+                  setValueAs: value => (value === '' ? undefined : parseFloat(value)),
+                })}
+              />
+            </div>
+          </div>
+          
+          <div className="flex gap-3 pt-4 border-t border-border">
+            <Button 
+              type="submit" 
+              disabled={isSubmitting}
+              className="bg-tech-gradient hover:shadow-tech text-white font-medium px-6 py-2 transition-all duration-300 hover:-translate-y-0.5"
+            >
+              <Search className="w-4 h-4 mr-2" />
+              {isSubmitting ? '搜索中...' : '开始搜索'}
+            </Button>
+            
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={handleClear}
+              className="border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-300"
+            >
+              <X className="w-4 h-4 mr-2" />
+              清空条件
+            </Button>
+          </div>
+        </form>
+      </div>
+    </DashboardCard>
   );
 };

@@ -1,7 +1,8 @@
-import { Button, Card } from '@sker/ui';
-import { Plus } from 'lucide-react';
+import { Button } from '@sker/ui';
+import { Plus, Settings, TrendingUp } from 'lucide-react';
 import React from 'react';
 import { toast } from 'react-hot-toast';
+import { DashboardCard, MetricCard, MetricValue, MetricLabel, LiveIndicator } from '../components/dashboard/DashboardComponents';
 import { SentimentIntensityDialog } from '../components/sentiment-intensity/SentimentIntensityDialog';
 import { SentimentIntensityList } from '../components/sentiment-intensity/SentimentIntensityList';
 import { SentimentIntensitySearchForm } from '../components/sentiment-intensity/SentimentIntensitySearchForm';
@@ -120,76 +121,130 @@ export const SentimentIntensityPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
-      {/* 页面标题和操作按钮 */}
-      <Card className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold mb-2">情感强度管理</h1>
-            <p className="text-gray-600">管理系统中的情感强度定义，用于情感分析和舆情监控。</p>
+    <div className="dashboard-container min-h-screen p-8">
+      <div className="max-w-7xl mx-auto space-y-8">
+        {/* 页面标题和操作区域 */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-black metric-highlight mb-4">
+            情感强度管理系统
+          </h1>
+          <div className="flex items-center justify-center gap-2 mb-4">
+            <LiveIndicator status="online" />
+            <span className="text-muted-foreground">配置参数管理 · 实时监控</span>
           </div>
-          <Button onClick={openCreateDialog}>
-            <Plus className="w-4 h-4 mr-2" />
-            新建情感强度
+        </div>
+
+        {/* 系统概览卡片 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <DashboardCard variant="primary" className="animate-card-float">
+            <MetricCard variant="primary">
+              <MetricLabel>总配置数量</MetricLabel>
+              <MetricValue variant="primary" size="lg" className="data-value">{displayData.length}</MetricValue>
+              <div className="flex items-center gap-1 text-sm text-primary">
+                <Settings className="w-4 h-4" />
+                个配置项
+              </div>
+            </MetricCard>
+          </DashboardCard>
+
+          <DashboardCard variant="success">
+            <MetricCard variant="success">
+              <MetricLabel>活跃配置</MetricLabel>
+              <MetricValue variant="success" size="lg" className="data-value">{displayData.filter(item => item.isActive !== false).length}</MetricValue>
+              <div className="flex items-center gap-1 text-sm text-success">
+                <TrendingUp className="w-4 h-4" />
+                正在使用
+              </div>
+            </MetricCard>
+          </DashboardCard>
+
+          <DashboardCard variant="warning">
+            <MetricCard variant="warning">
+              <MetricLabel>搜索结果</MetricLabel>
+              <MetricValue variant="warning" size="lg" className="data-value">
+                {isSearchMode ? displayData.length : '全部'}
+              </MetricValue>
+              <div className="flex items-center gap-1 text-sm text-warning">
+                <span>当前显示</span>
+              </div>
+            </MetricCard>
+          </DashboardCard>
+        </div>
+
+        {/* 操作按钮 */}
+        <div className="flex justify-center mb-8">
+          <Button 
+            onClick={openCreateDialog}
+            className="bg-tech-gradient hover:shadow-tech-lg text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:-translate-y-1"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            新建情感强度配置
           </Button>
         </div>
-      </Card>
 
-      {/* 搜索表单 */}
-      <SentimentIntensitySearchForm onSearch={handleSearch} onClear={handleClearSearch} />
+        {/* 搜索表单 */}
+        <SentimentIntensitySearchForm onSearch={handleSearch} onClear={handleClearSearch} />
 
-      {/* 搜索结果提示 */}
-      {isSearchMode && (
-        <Card className="p-4 bg-blue-50 border-blue-200">
-          <div className="text-sm text-blue-800">
-            {isSearchLoading ? (
-              '搜索中...'
-            ) : (
-              <>
-                搜索结果：共找到 {displayData.length} 条记录
-                {searchTitle && <span className="ml-2">标题包含&quot;{searchTitle}&quot;</span>}
-                {(searchMinIntensity !== null || searchMaxIntensity !== null) && (
-                  <span className="ml-2">
-                    强度范围：
-                    {searchMinIntensity !== null && searchMaxIntensity !== null
-                      ? `${searchMinIntensity} - ${searchMaxIntensity}`
-                      : searchMinIntensity !== null
-                      ? `≥ ${searchMinIntensity}`
-                      : `≤ ${searchMaxIntensity}`}
-                  </span>
+        {/* 搜索结果提示 */}
+        {isSearchMode && (
+          <DashboardCard className="mb-6">
+            <div className="p-4 border-l-4 border-primary bg-primary/5">
+              <div className="text-sm font-medium text-primary">
+                {isSearchLoading ? (
+                  <div className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    搜索中...
+                  </div>
+                ) : (
+                  <>
+                    <div className="font-semibold mb-2">🔍 搜索结果：共找到 {displayData.length} 条记录</div>
+                    <div className="text-xs text-muted-foreground space-y-1">
+                      {searchTitle && <div>• 标题包含："{searchTitle}"</div>}
+                      {(searchMinIntensity !== null || searchMaxIntensity !== null) && (
+                        <div>
+                          • 强度范围：
+                          {searchMinIntensity !== null && searchMaxIntensity !== null
+                            ? `${searchMinIntensity} - ${searchMaxIntensity}`
+                            : searchMinIntensity !== null
+                            ? `≥ ${searchMinIntensity}`
+                            : `≤ ${searchMaxIntensity}`}
+                        </div>
+                      )}
+                    </div>
+                  </>
                 )}
-              </>
-            )}
-          </div>
-        </Card>
-      )}
+              </div>
+            </div>
+          </DashboardCard>
+        )}
 
-      {/* 列表 */}
-      <SentimentIntensityList
-        items={displayData}
-        isLoading={isLoading}
-        onEdit={openEditDialog}
-        onDelete={handleDelete}
-      />
+        {/* 列表 */}
+        <SentimentIntensityList
+          items={displayData}
+          isLoading={isLoading}
+          onEdit={openEditDialog}
+          onDelete={handleDelete}
+        />
 
-      {/* 创建对话框 */}
-      <SentimentIntensityDialog
-        isOpen={isCreateDialogOpen}
-        onClose={closeCreateDialog}
-        onSubmit={handleCreate}
-        isSubmitting={createMutation.isPending}
-        title="新建情感强度"
-      />
+        {/* 创建对话框 */}
+        <SentimentIntensityDialog
+          isOpen={isCreateDialogOpen}
+          onClose={closeCreateDialog}
+          onSubmit={handleCreate}
+          isSubmitting={createMutation.isPending}
+          title="新建情感强度配置"
+        />
 
-      {/* 编辑对话框 */}
-      <SentimentIntensityDialog
-        isOpen={isEditDialogOpen}
-        onClose={closeEditDialog}
-        onSubmit={handleUpdate}
-        initialData={editingItem}
-        isSubmitting={updateMutation.isPending}
-        title="编辑情感强度"
-      />
+        {/* 编辑对话框 */}
+        <SentimentIntensityDialog
+          isOpen={isEditDialogOpen}
+          onClose={closeEditDialog}
+          onSubmit={handleUpdate}
+          initialData={editingItem}
+          isSubmitting={updateMutation.isPending}
+          title="编辑情感强度配置"
+        />
+      </div>
     </div>
   );
 };

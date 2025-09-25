@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:blog.fit2cloud.com)",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

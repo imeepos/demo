@@ -336,8 +336,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* 舆情分析监控大屏专业亮色主题 */
-  --background: #fafbfc;
+  /* 舆情分析监控大屏专业亮色科技蓝主题 */
+  --background: #f8fafc;
   --foreground: #0f172a;
   --card: #ffffff;
   --card-foreground: #0f172a;
@@ -348,7 +348,7 @@ body {
   --primary: #1e40af;
   --primary-foreground: #ffffff;
 
-  /* 次要色：优雅蓝灰，用于次级元素 */
+  /* 次要色：清新蓝灰，用于次级元素 */
   --secondary: #e2e8f0;
   --secondary-foreground: #334155;
 
@@ -356,11 +356,11 @@ body {
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
 
-  /* 强调色：现代青蓝，用于数据高亮 */
+  /* 强调色：清新青蓝，用于数据高亮和科技感 */
   --accent: #0ea5e9;
   --accent-foreground: #ffffff;
 
-  /* 舆情监控专用状态色系 */
+  /* 舆情监控专用状态色系（亮色主题优化） */
   --success: #059669;
   --success-foreground: #ffffff;
   --warning: #d97706;
@@ -370,73 +370,64 @@ body {
   --info: #0ea5e9;
   --info-foreground: #ffffff;
 
-  /* 舆情分析专用数据可视化色板 */
+  /* 舆情分析专用数据可视化色板（亮色科技蓝调优化） */
   --chart-1: #1e40af; /* 主要数据-深科技蓝 */
-  --chart-2: #0ea5e9; /* 次要数据-现代青蓝 */
+  --chart-2: #0ea5e9; /* 次要数据-清新青蓝 */
   --chart-3: #059669; /* 正面情感-翠绿色 */
   --chart-4: #d97706; /* 中性情感-琥珀色 */
   --chart-5: #dc2626; /* 负面情感-朱红色 */
-  --chart-6: #7c3aed; /* 特殊标记-深紫色 */
+  --chart-6: #3b82f6; /* 特殊标记-标准蓝色 */
   
-  /* 情感强度渐变色系 */
-  --sentiment-very-positive: #065f46;
+  /* 情感强度渐变色系（亮色主题优化） */
+  --sentiment-very-positive: #047857;
   --sentiment-positive: #059669;
   --sentiment-neutral: #d97706;
   --sentiment-negative: #dc2626;
-  --sentiment-very-negative: #991b1b;
+  --sentiment-very-negative: #b91c1c;
+  
+  /* 情感分析辅助色系 */
+  --sentiment-positive-bg: rgba(5, 150, 105, 0.1);
+  --sentiment-negative-bg: rgba(220, 38, 38, 0.1);
+  --sentiment-neutral-bg: rgba(217, 119, 6, 0.1);
 
-  /* 界面元素优化 */
+  /* 界面元素优化（亮色科技蓝主题） */
   --border: #e2e8f0;
   --input: #f8fafc;
   --ring: #1e40af;
   --radius: 0.75rem;
   
-  /* 大屏专用边框和分割线 */
+  /* 大屏专用边框和分割线（提升对比度） */
   --divider: #cbd5e1;
   --separator: #f1f5f9;
+  --card-border: #e2e8f0;
+  --hover-border: rgba(30, 64, 175, 0.2);
 
-  /* 舆情监控专用渐变配色 */
-  --gradient-primary: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  /* 舆情监控专用科技蓝渐变配色（亮色主题） */
+  --gradient-primary: linear-gradient(135deg, #1e40af 0%, #0ea5e9 100%);
   --gradient-secondary: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
   --gradient-success: linear-gradient(135deg, #059669 0%, #047857 100%);
   --gradient-warning: linear-gradient(135deg, #d97706 0%, #b45309 100%);
   --gradient-danger: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   
-  /* 数据卡片渐变背景 */
-  --gradient-card-primary: linear-gradient(135deg, #1e40af08 0%, #1e40af04 100%);
+  /* 数据卡片渐变背景（亮色优化） */
+  --gradient-card-primary: linear-gradient(135deg, #1e40af0a 0%, #0ea5e906 100%);
   --gradient-card-success: linear-gradient(135deg, #05966908 0%, #05966904 100%);
   --gradient-card-warning: linear-gradient(135deg, #d9770608 0%, #d9770604 100%);
   --gradient-card-danger: linear-gradient(135deg, #dc262608 0%, #dc262604 100%);
 
-  /* 阴影层次 */
+  /* 阴影层次（亮色主题优化） */
+  --shadow-2xs: 0 1px 1px 0 rgb(0 0 0 / 0.05);
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 }
 
-.dark {
-  --background: #000000;
-  --foreground: #ffffff;
-  --card: #000000;
-  --card-foreground: #ffffff;
-  --popover: #000000;
-  --popover-foreground: #ffffff;
-  --primary: #88f5fa;
-  --primary-foreground: #ffffff;
-  --secondary: #1e293b;
-  --secondary-foreground: #ffffff;
-  --muted: #1e293b;
-  --muted-foreground: #898a8b;
-  --accent: #1e293b;
-  --accent-foreground: #ffffff;
-  --destructive: #dc2626;
-  --destructive-foreground: #ffffff;
-  --border: #1e293b;
-  --input: #1e293b;
-  --ring: #88f5fa;
-}
+/* 暗色主题已禁用 - 仅使用亮色科技蓝主题 */
+/* 如需要暗色主题，请重新启用并重新设计 */
 
 /* 全局亮色背景优化 */
 html,
@@ -458,25 +449,22 @@ body,
   background: var(--background) !important;
 }
 
-/* 整个滚动条 */
+/* 亮色主题滚动条样式 */
 ::-webkit-scrollbar {
-  width: 6px; /* 滚动条宽度 */
+  width: 6px;
 }
 
-/* 滚动条轨道 */
 ::-webkit-scrollbar-track {
-  background: #000000; /* 轨道背景 */
+  background: var(--muted);
 }
 
-/* 滚动条滑块 */
 ::-webkit-scrollbar-thumb {
-  background: #88f5fa4d; /* 滑块颜色 */
-  border-radius: 10px; /* 滑块圆角 */
+  background: var(--primary);
+  border-radius: 10px;
 }
 
-/* 滚动条滑块悬停 */
 ::-webkit-scrollbar-thumb:hover {
-  background: #88f5fa4d; /* 悬停时的颜色 */
+  background: var(--accent);
 }
 
 /* 隐藏滚动条的工具类 */
@@ -499,42 +487,66 @@ body,
 
 /* 字体样式工具类 */
 .font-rubik {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', 'PingFang SC', sans-serif;
 }
 
 .font-rubik-light {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', 'PingFang SC', sans-serif;
   font-weight: 300;
 }
 
 .font-rubik-regular {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', 'PingFang SC', sans-serif;
   font-weight: 400;
 }
 
 .font-rubik-medium {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', 'PingFang SC', sans-serif;
   font-weight: 500;
 }
 
 .font-rubik-semibold {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', 'PingFang SC', sans-serif;
   font-weight: 600;
 }
 
 .font-rubik-bold {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', 'PingFang SC', sans-serif;
   font-weight: 700;
 }
 
 .font-rubik-extrabold {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', 'PingFang SC', sans-serif;
   font-weight: 800;
 }
 
 .font-rubik-black {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Rubik', 'PingFang SC', sans-serif;
   font-weight: 900;
+}
+
+/* 亮色主题专用工具类 */
+.bg-tech-gradient {
+  background: var(--gradient-primary);
+}
+
+.text-tech-gradient {
+  background: var(--gradient-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-tech {
+  border-color: var(--hover-border);
+}
+
+.shadow-tech {
+  box-shadow: 0 4px 6px -1px rgba(30, 64, 175, 0.1), 0 2px 4px -2px rgba(30, 64, 175, 0.1);
+}
+
+.shadow-tech-lg {
+  box-shadow: 0 10px 15px -3px rgba(30, 64, 175, 0.1), 0 4px 6px -4px rgba(30, 64, 175, 0.1);
 }
 
 /* 舆情监控大屏全局布局 - 使用Tailwind替代 */
@@ -577,7 +589,7 @@ body,
   animation: live-pulse 1.5s ease-in-out infinite;
 }
 
-/* 保留特殊动画效果 */
+/* 亮色主题特殊动画效果 */
 .animate-pulse-custom {
   animation: pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
@@ -587,18 +599,104 @@ body,
   50% { opacity: 0.5; }
 }
 
+/* 科技蓝光效动画 */
+.animate-tech-glow {
+  animation: tech-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes tech-glow {
+  0% { 
+    box-shadow: 0 0 5px rgba(30, 64, 175, 0.5), 0 0 10px rgba(30, 64, 175, 0.3); 
+  }
+  100% { 
+    box-shadow: 0 0 10px rgba(30, 64, 175, 0.8), 0 0 20px rgba(30, 64, 175, 0.4), 0 0 30px rgba(14, 165, 233, 0.2); 
+  }
+}
+
+/* 数据亮起动画 */
+.animate-data-highlight {
+  animation: data-highlight 2s ease-in-out infinite;
+}
+
+@keyframes data-highlight {
+  0%, 100% { 
+    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    transform: scale(1);
+  }
+  50% { 
+    background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+    transform: scale(1.02);
+  }
+}
+
 /* 数据卡片样式 - 使用Tailwind替代 */
 /* 已迁移到组件级样式变体系统 */
 
-/* 进度条光泽效果 - 保留动画 */
+/* 进度条光泽效果（亮色主题优化） */
 @keyframes progress-shine {
   0% { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
 
 .animate-progress-shine {
-  animation: progress-shine 2s linear infinite;
+  animation: progress-shine 2.5s linear infinite;
 }
 
-/* 响应式适配 - 使用Tailwind响应式前缀替代 */
-/* 已迁移到组件级Tailwind类组合 */
+/* 卡片浮现动画 */
+@keyframes card-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-2px); }
+}
+
+.animate-card-float {
+  animation: card-float 6s ease-in-out infinite;
+}
+
+/* 亮色主题响应式适配工具类 */
+.dashboard-container {
+  @apply min-h-screen bg-background transition-all duration-300;
+}
+
+.dashboard-card {
+  @apply bg-card border border-border rounded-xl shadow-md hover:shadow-lg transition-all duration-300;
+}
+
+.metric-highlight {
+  @apply font-bold;
+  background: var(--gradient-primary);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.status-online {
+  background-color: var(--success);
+  color: var(--success-foreground);
+}
+
+.status-warning {
+  background-color: var(--warning);
+  color: var(--warning-foreground);
+}
+
+.status-error {
+  background-color: var(--destructive);
+  color: var(--destructive-foreground);
+}
+
+/* 中文字体优化 */
+.text-zh {
+  font-family: 'Rubik', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 0.01em;
+}
+
+/* 数据展示优化 */
+.data-value {
+  @apply font-mono font-bold tabular-nums;
+}
+
+.data-label {
+  @apply text-muted-foreground font-medium;
+  font-family: 'Rubik', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  letter-spacing: 0.01em;
+}

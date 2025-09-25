@@ -1,6 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Input, Label, Textarea } from '@sker/ui';
-import { Plus, X } from 'lucide-react';
+import { Plus, X, Save, Hash, FileText, Calendar, MapPin, Tag, TrendingUp, Zap } from 'lucide-react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
@@ -8,9 +8,6 @@ import {
   type CreateSentimentEventInput,
   type SentimentEvent,
 } from '../../types/sentiment-event';
-
-const REQUIRED_CLASS = 'text-red-500';
-const ERROR_BORDER_CLASS = 'border-red-500';
 
 interface SentimentEventFormProps {
   initialData?: SentimentEvent | null;
@@ -32,6 +29,7 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<CreateSentimentEventInput>({
     resolver: zodResolver(createSentimentEventSchema),
@@ -47,6 +45,8 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
       hotness: 1,
     },
   });
+
+  const score = watch('score');
 
   const handleFormSubmit = (data: CreateSentimentEventInput) => {
     onSubmit({
@@ -74,207 +74,368 @@ export const SentimentEventForm: React.FC<SentimentEventFormProps> = ({
     }
   };
 
-  // 情感分数相关函数暂时不使用
-  // const getScoreColor = (score: number) => {
-  //   if (score >= 0.7) return 'text-green-600';
-  //   if (score >= 0.3) return 'text-yellow-600';
-  //   return 'text-red-600';
-  // };
+  const getSentimentVariant = (score: number): 'very-positive' | 'positive' | 'neutral' | 'negative' | 'very-negative' => {
+    if (score >= 0.8) return 'very-positive';
+    if (score >= 0.6) return 'positive';
+    if (score >= 0.4) return 'neutral';
+    if (score >= 0.2) return 'negative';
+    return 'very-negative';
+  };
 
-  // const getScoreLabel = (score: number) => {
-  //   if (score >= 0.7) return '正面';
-  //   if (score >= 0.3) return '中性';
-  //   return '负面';
-  // };
+  const getSentimentLabel = (score: number) => {
+    if (score >= 0.8) return '非常正面';
+    if (score >= 0.6) return '正面';
+    if (score >= 0.4) return '中性';
+    if (score >= 0.2) return '负面';
+    return '非常负面';
+  };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit as any)} className="space-y-6">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <Label htmlFor="title">
-            事件标题 <span className={REQUIRED_CLASS}>*</span>
-          </Label>
-          <Input
-            id="title"
-            placeholder="请输入事件标题"
-            {...register('title')}
-            className={errors.title ? ERROR_BORDER_CLASS : ''}
-          />
-          {errors.title && <p className="text-sm text-red-500">{errors.title.message}</p>}
+    <div className="space-y-8">
+      <form onSubmit={handleSubmit(handleFormSubmit as any)} className="space-y-8">
+        {/* 基本信息部分 */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Hash className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">基本信息</h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <FileText className="w-4 h-4 text-primary" />
+                <Label htmlFor="title" className="text-sm font-medium text-foreground">
+                  事件标题 <span className="text-destructive">*</span>
+                </Label>
+              </div>
+              <Input
+                id="title"
+                placeholder="输入舆情事件的标题"
+                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
+                  errors.title ? 'border-destructive focus:border-destructive' : ''
+                }`}
+                {...register('title')}
+              />
+              {errors.title && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <X className="w-3 h-3" />
+                  {errors.title.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Hash className="w-4 h-4 text-primary" />
+                <Label htmlFor="source" className="text-sm font-medium text-foreground">
+                  信息来源 <span className="text-destructive">*</span>
+                </Label>
+              </div>
+              <Input
+                id="source"
+                placeholder="如：新浪微博、今日头条等"
+                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
+                  errors.source ? 'border-destructive focus:border-destructive' : ''
+                }`}
+                {...register('source')}
+              />
+              {errors.source && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <X className="w-3 h-3" />
+                  {errors.source.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <FileText className="w-4 h-4 text-primary" />
+              <Label htmlFor="content" className="text-sm font-medium text-foreground">
+                事件内容描述 <span className="text-muted-foreground">(可选)</span>
+              </Label>
+            </div>
+            <Textarea
+              id="content"
+              rows={4}
+              placeholder="请输入事件的详细内容描述..."
+              className="border-border focus:border-primary focus:ring-primary/20 resize-none transition-all duration-300"
+              {...register('content')}
+            />
+            {errors.content && (
+              <p className="text-sm text-destructive flex items-center gap-1">
+                <X className="w-3 h-3" />
+                {errors.content.message}
+              </p>
+            )}
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="source">
-            信息来源 <span className={REQUIRED_CLASS}>*</span>
-          </Label>
-          <Input
-            id="source"
-            placeholder="如：新浪微博、今日头条等"
-            {...register('source')}
-            className={errors.source ? ERROR_BORDER_CLASS : ''}
-          />
-          {errors.source && <p className="text-sm text-red-500">{errors.source.message}</p>}
-        </div>
-      </div>
+        {/* 评分和时间部分 */}
+        <div className="space-y-6 border-t border-border pt-6">
+          <div className="flex items-center gap-2 mb-4">
+            <TrendingUp className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">评分设置</h3>
+          </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="content">事件内容</Label>
-        <Textarea
-          id="content"
-          rows={4}
-          placeholder="请输入事件的详细内容描述"
-          {...register('content')}
-          className={errors.content ? ERROR_BORDER_CLASS : ''}
-        />
-        {errors.content && <p className="text-sm text-red-500">{errors.content.message}</p>}
-      </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-primary" />
+                <Label htmlFor="score" className="text-sm font-medium text-foreground">
+                  情感分数 <span className="text-destructive">*</span>
+                </Label>
+              </div>
+              <div className="space-y-3">
+                <Input
+                  id="score"
+                  type="number"
+                  min="0"
+                  max="1"
+                  step="0.01"
+                  placeholder="0.00 - 1.00"
+                  className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
+                    errors.score ? 'border-destructive focus:border-destructive' : ''
+                  }`}
+                  {...register('score', {
+                    setValueAs: value => parseFloat(value),
+                    onChange: e => {
+                      const score = parseFloat(e.target.value) || 0;
+                      setValue('score', score);
+                    },
+                  })}
+                />
+                {errors.score && (
+                  <p className="text-sm text-destructive flex items-center gap-1">
+                    <X className="w-3 h-3" />
+                    {errors.score.message}
+                  </p>
+                )}
+                
+                {/* 情感分数预览 */}
+                <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
+                  <div className="text-xs font-medium text-primary mb-2">
+                    📊 当前情感评级: {getSentimentLabel(score || 0)}
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        (score || 0) >= 0.7 ? 'bg-success' :
+                        (score || 0) >= 0.4 ? 'bg-warning' :
+                        (score || 0) >= 0.2 ? 'bg-primary' : 'bg-destructive'
+                      }`}
+                      style={{ width: `${((score || 0) * 100)}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="space-y-2">
-          <Label htmlFor="score">
-            情感分数 <span className={REQUIRED_CLASS}>*</span>
-          </Label>
-          <Input
-            id="score"
-            type="number"
-            min="0"
-            max="1"
-            step="0.01"
-            placeholder="0.00 - 1.00"
-            {...register('score', {
-              setValueAs: value => parseFloat(value),
-              onChange: e => {
-                const score = parseFloat(e.target.value) || 0;
-                setValue('score', score);
-              },
-            })}
-            className={errors.score ? ERROR_BORDER_CLASS : ''}
-          />
-          {errors.score && <p className="text-sm text-red-500">{errors.score.message}</p>}
-          <p className="text-sm text-gray-500">0=最负面，0.5=中性，1=最正面</p>
-        </div>
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <TrendingUp className="w-4 h-4 text-primary" />
+                <Label htmlFor="hotness" className="text-sm font-medium text-foreground">
+                  事件热度 <span className="text-muted-foreground">(1-10)</span>
+                </Label>
+              </div>
+              <Input
+                id="hotness"
+                type="number"
+                min="1"
+                max="10"
+                placeholder="热度等级"
+                className="border-border focus:border-primary focus:ring-primary/20 transition-all duration-300"
+                {...register('hotness', {
+                  setValueAs: value => (value === '' ? undefined : parseInt(value)),
+                })}
+              />
+              {errors.hotness && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <X className="w-3 h-3" />
+                  {errors.hotness.message}
+                </p>
+              )}
+            </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="hotness">事件热度</Label>
-          <Input
-            id="hotness"
-            type="number"
-            min="1"
-            max="10"
-            {...register('hotness', {
-              setValueAs: value => (value === '' ? undefined : parseInt(value)),
-            })}
-            className={errors.hotness ? ERROR_BORDER_CLASS : ''}
-          />
-          {errors.hotness && <p className="text-sm text-red-500">{errors.hotness.message}</p>}
-          <p className="text-sm text-gray-500">热度值：1-10，可选</p>
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="timestamp">
-            事件时间 <span className={REQUIRED_CLASS}>*</span>
-          </Label>
-          <Input
-            id="timestamp"
-            type="datetime-local"
-            {...register('timestamp', {
-              setValueAs: value => new Date(value),
-            })}
-            className={errors.timestamp ? ERROR_BORDER_CLASS : ''}
-          />
-          {errors.timestamp && <p className="text-sm text-red-500">{errors.timestamp.message}</p>}
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="space-y-2">
-          <Label htmlFor="latitude">
-            纬度 <span className={REQUIRED_CLASS}>*</span>
-          </Label>
-          <Input
-            id="latitude"
-            type="number"
-            step="0.000001"
-            placeholder="如：39.9042"
-            {...register('latitude', {
-              setValueAs: value => parseFloat(value),
-            })}
-            className={errors.latitude ? ERROR_BORDER_CLASS : ''}
-          />
-          {errors.latitude && <p className="text-sm text-red-500">{errors.latitude.message}</p>}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="longitude">
-            经度 <span className={REQUIRED_CLASS}>*</span>
-          </Label>
-          <Input
-            id="longitude"
-            type="number"
-            step="0.000001"
-            placeholder="如：116.4074"
-            {...register('longitude', {
-              setValueAs: value => parseFloat(value),
-            })}
-            className={errors.longitude ? ERROR_BORDER_CLASS : ''}
-          />
-          {errors.longitude && <p className="text-sm text-red-500">{errors.longitude.message}</p>}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-primary" />
+                <Label htmlFor="timestamp" className="text-sm font-medium text-foreground">
+                  事件时间 <span className="text-destructive">*</span>
+                </Label>
+              </div>
+              <Input
+                id="timestamp"
+                type="datetime-local"
+                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
+                  errors.timestamp ? 'border-destructive focus:border-destructive' : ''
+                }`}
+                {...register('timestamp', {
+                  setValueAs: value => new Date(value),
+                })}
+              />
+              {errors.timestamp && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <X className="w-3 h-3" />
+                  {errors.timestamp.message}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="address">地址描述</Label>
-          <Input
-            id="address"
-            placeholder="如：北京市朝阳区某某路段"
-            {...register('address')}
-            className={errors.address ? ERROR_BORDER_CLASS : ''}
-          />
-          {errors.address && <p className="text-sm text-red-500">{errors.address.message}</p>}
-        </div>
-      </div>
+        {/* 地理位置部分 */}
+        <div className="space-y-6 border-t border-border pt-6">
+          <div className="flex items-center gap-2 mb-4">
+            <MapPin className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">地理位置</h3>
+          </div>
 
-      <div className="space-y-2">
-        <Label>事件标签</Label>
-        <div className="flex gap-2 mb-2">
-          <Input
-            placeholder="输入标签后按回车或点击添加"
-            value={tagInput}
-            onChange={e => setTagInput(e.target.value)}
-            onKeyPress={handleTagKeyPress}
-          />
-          <Button type="button" variant="outline" onClick={addTag}>
-            <Plus className="w-4 h-4" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="space-y-3">
+              <Label htmlFor="latitude" className="text-sm font-medium text-foreground">
+                纬度 <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="latitude"
+                type="number"
+                step="0.000001"
+                placeholder="39.9042"
+                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
+                  errors.latitude ? 'border-destructive focus:border-destructive' : ''
+                }`}
+                {...register('latitude', {
+                  setValueAs: value => parseFloat(value),
+                })}
+              />
+              {errors.latitude && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <X className="w-3 h-3" />
+                  {errors.latitude.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              <Label htmlFor="longitude" className="text-sm font-medium text-foreground">
+                经度 <span className="text-destructive">*</span>
+              </Label>
+              <Input
+                id="longitude"
+                type="number"
+                step="0.000001"
+                placeholder="116.4074"
+                className={`border-border focus:border-primary focus:ring-primary/20 transition-all duration-300 ${
+                  errors.longitude ? 'border-destructive focus:border-destructive' : ''
+                }`}
+                {...register('longitude', {
+                  setValueAs: value => parseFloat(value),
+                })}
+              />
+              {errors.longitude && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <X className="w-3 h-3" />
+                  {errors.longitude.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-3">
+              <Label htmlFor="address" className="text-sm font-medium text-foreground">
+                地址描述 <span className="text-muted-foreground">(可选)</span>
+              </Label>
+              <Input
+                id="address"
+                placeholder="如：北京市朝阳区某某路段"
+                className="border-border focus:border-primary focus:ring-primary/20 transition-all duration-300"
+                {...register('address')}
+              />
+              {errors.address && (
+                <p className="text-sm text-destructive flex items-center gap-1">
+                  <X className="w-3 h-3" />
+                  {errors.address.message}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* 标签部分 */}
+        <div className="space-y-6 border-t border-border pt-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Tag className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold text-foreground">事件标签</h3>
+          </div>
+
+          <div className="space-y-4">
+            <div className="flex gap-3">
+              <Input
+                placeholder="输入标签后按回车或点击添加"
+                value={tagInput}
+                onChange={e => setTagInput(e.target.value)}
+                onKeyPress={handleTagKeyPress}
+                className="flex-1 border-border focus:border-primary focus:ring-primary/20 transition-all duration-300"
+              />
+              <Button 
+                type="button" 
+                variant="outline" 
+                onClick={addTag}
+                className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                添加
+              </Button>
+            </div>
+            
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-lg text-sm font-medium border border-primary/20"
+                  >
+                    {tag}
+                    <button
+                      type="button"
+                      onClick={() => removeTag(index)}
+                      className="text-primary hover:text-destructive transition-colors duration-300"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* 操作按钮 */}
+        <div className="flex justify-end gap-3 pt-8 border-t border-border">
+          <Button 
+            type="button" 
+            variant="outline" 
+            onClick={onCancel} 
+            disabled={isSubmitting}
+            className="border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-300"
+          >
+            <X className="w-4 h-4 mr-2" />
+            取消操作
+          </Button>
+          
+          <Button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="bg-tech-gradient hover:shadow-tech text-white font-medium px-8 py-2 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+          >
+            <Save className="w-4 h-4 mr-2" />
+            {isSubmitting 
+              ? '正在保存...' 
+              : initialData 
+              ? '更新事件' 
+              : '创建事件'}
           </Button>
         </div>
-        {tags.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-sm"
-              >
-                {tag}
-                <button
-                  type="button"
-                  onClick={() => removeTag(index)}
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  <X className="w-3 h-3" />
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="flex justify-end gap-2 pt-4">
-        <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
-          取消
-        </Button>
-        <Button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? '保存中...' : initialData ? '更新事件' : '创建事件'}
-        </Button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };

@@ -17,7 +17,7 @@
     "clean": "rm -rf dist build node_modules/.cache"
   },
   "dependencies": {
-    "@hookform/resolvers": "^5.2.2",
+    "@hookform/resolvers": "^3.10.0",
     "@sker/map": "workspace:^",
     "@sker/sdk": "workspace:^",
     "@sker/ui": "workspace:^",
@@ -29,7 +29,7 @@
     "react-dom": "^19.1.1",
     "react-hook-form": "^7.55.1",
     "react-hot-toast": "^2.4.1",
-    "zod": "^4.1.11",
+    "zod": "^3.23.8",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
