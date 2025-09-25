@@ -7,6 +7,8 @@ import { AppService } from './app.service';
 import { SentimentIntensityModule } from './sentiment-intensity/sentiment-intensity.module';
 import { SentimentModule } from './sentiment/sentiment.module';
 import { SentimentEventModule } from './sentiment-event/sentiment-event.module';
+import { EventTypeModule } from './event-type/event-type.module';
+import { MediaTypeModule } from './media-type/media-type.module';
 
 @Module({
   imports: [
@@ -21,6 +23,8 @@ import { SentimentEventModule } from './sentiment-event/sentiment-event.module';
     SentimentModule,
     SentimentIntensityModule,
     SentimentEventModule,
+    EventTypeModule,
+    MediaTypeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

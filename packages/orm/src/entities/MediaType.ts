@@ -70,7 +70,7 @@ export class MediaType {
   color?: string;
 
   @Column({
-    type: 'tinyint',
+    type: 'int',
     default: 5,
     comment: '可信度等级 1-10，数值越高可信度越高',
   })
@@ -95,6 +95,15 @@ export class MediaType {
   @IsNumber()
   @Min(0)
   sortOrder: number;
+
+  @Column({
+    type: 'int',
+    nullable: true,
+    comment: '父级媒体类型ID，支持层级分类',
+  })
+  @IsNumber()
+  @IsOptional()
+  parentId?: number;
 
   @CreateDateColumn({ comment: '创建时间' })
   createdAt: Date;
