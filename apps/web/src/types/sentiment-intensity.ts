@@ -10,7 +10,8 @@ export const createSentimentIntensitySchema = z.object({
 // 搜索表单验证 schema
 export const searchSentimentIntensitySchema = z.object({
   title: z.string().optional(),
-  intensity: z.number().min(0).max(1).optional(),
+  minIntensity: z.number().min(0).max(1).optional(),
+  maxIntensity: z.number().min(0).max(1).optional(),
 });
 
 // 类型定义

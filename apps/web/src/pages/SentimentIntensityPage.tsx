@@ -22,14 +22,16 @@ export const SentimentIntensityPage: React.FC = () => {
   const {
     // 状态
     searchTitle,
-    searchIntensity,
+    searchMinIntensity,
+    searchMaxIntensity,
     isCreateDialogOpen,
     isEditDialogOpen,
     editingItem,
 
     // 搜索 Actions
     setSearchTitle,
-    setSearchIntensity,
+    setSearchMinIntensity,
+    setSearchMaxIntensity,
     clearSearch,
 
     // 对话框 Actions
@@ -44,7 +46,8 @@ export const SentimentIntensityPage: React.FC = () => {
 
   const searchParams = {
     title: searchTitle || undefined,
-    intensity: searchIntensity || undefined,
+    minIntensity: searchMinIntensity || undefined,
+    maxIntensity: searchMaxIntensity || undefined,
   };
 
   const { data: searchData = [], isLoading: isSearchLoading } =
@@ -56,14 +59,15 @@ export const SentimentIntensityPage: React.FC = () => {
   const deleteMutation = useDeleteSentimentIntensity();
 
   // 判断是否在搜索模式
-  const isSearchMode = !!(searchTitle || searchIntensity !== null);
+  const isSearchMode = !!(searchTitle || searchMinIntensity !== null || searchMaxIntensity !== null);
   const displayData = isSearchMode ? searchData : listData;
   const isLoading = isSearchMode ? isSearchLoading : isListLoading;
 
   // 处理搜索
   const handleSearch = (params: SearchSentimentIntensityInput) => {
     setSearchTitle(params.title || '');
-    setSearchIntensity(params.intensity ?? null);
+    setSearchMinIntensity(params.minIntensity ?? null);
+    setSearchMaxIntensity(params.maxIntensity ?? null);
   };
 
   // 处理清除搜索
@@ -144,8 +148,15 @@ export const SentimentIntensityPage: React.FC = () => {
               <>
                 搜索结果：共找到 {displayData.length} 条记录
                 {searchTitle && <span className="ml-2">标题包含&quot;{searchTitle}&quot;</span>}
-                {searchIntensity !== null && (
-                  <span className="ml-2">强度值为{searchIntensity}</span>
+                {(searchMinIntensity !== null || searchMaxIntensity !== null) && (
+                  <span className="ml-2">
+                    强度范围：
+                    {searchMinIntensity !== null && searchMaxIntensity !== null
+                      ? `${searchMinIntensity} - ${searchMaxIntensity}`
+                      : searchMinIntensity !== null
+                      ? `≥ ${searchMinIntensity}`
+                      : `≤ ${searchMaxIntensity}`}
+                  </span>
                 )}
               </>
             )}

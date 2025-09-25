@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SentimentIntensity } from '@sker/orm';
-import { Like, Repository } from 'typeorm';
+import {
+  Like,
+  Repository,
+  Between,
+  MoreThanOrEqual,
+  LessThanOrEqual,
+} from 'typeorm';
 import { CreateSentimentIntensityDto } from './dto/create-sentiment-intensity.dto';
 import { QuerySentimentIntensityDto } from './dto/query-sentiment-intensity.dto';
 import { SentimentIntensityResponseDto } from './dto/sentiment-intensity-response.dto';
@@ -47,8 +53,18 @@ export class SentimentIntensityService {
       where.title = Like(`%${querySentimentIntensityDto.title}%`);
     }
 
-    if (querySentimentIntensityDto.intensity !== undefined) {
-      where.intensity = querySentimentIntensityDto.intensity;
+    // 处理强度区间搜索
+    const { minIntensity, maxIntensity } = querySentimentIntensityDto;
+
+    if (minIntensity !== undefined && maxIntensity !== undefined) {
+      // 同时提供最小值和最大值，使用区间搜索
+      where.intensity = Between(minIntensity, maxIntensity);
+    } else if (minIntensity !== undefined) {
+      // 仅提供最小值，搜索大于等于最小值的记录
+      where.intensity = MoreThanOrEqual(minIntensity);
+    } else if (maxIntensity !== undefined) {
+      // 仅提供最大值，搜索小于等于最大值的记录
+      where.intensity = LessThanOrEqual(maxIntensity);
     }
 
     return await this.sentimentIntensityRepository.find({ where });

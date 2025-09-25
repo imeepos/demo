@@ -9,7 +9,8 @@ interface SentimentIntensityState {
 
   // 搜索状态
   searchTitle: string;
-  searchIntensity: number | null;
+  searchMinIntensity: number | null;
+  searchMaxIntensity: number | null;
 
   // 弹窗状态
   isCreateDialogOpen: boolean;
@@ -23,7 +24,8 @@ interface SentimentIntensityState {
 
   // 搜索 Actions
   setSearchTitle: (title: string) => void;
-  setSearchIntensity: (intensity: number | null) => void;
+  setSearchMinIntensity: (minIntensity: number | null) => void;
+  setSearchMaxIntensity: (maxIntensity: number | null) => void;
   clearSearch: () => void;
 
   // 弹窗 Actions
@@ -40,7 +42,8 @@ export const useSentimentIntensityStore = create<SentimentIntensityState>(set =>
   error: null,
 
   searchTitle: '',
-  searchIntensity: null,
+  searchMinIntensity: null,
+  searchMaxIntensity: null,
 
   isCreateDialogOpen: false,
   isEditDialogOpen: false,
@@ -53,8 +56,9 @@ export const useSentimentIntensityStore = create<SentimentIntensityState>(set =>
 
   // 搜索 Actions
   setSearchTitle: searchTitle => set({ searchTitle }),
-  setSearchIntensity: searchIntensity => set({ searchIntensity }),
-  clearSearch: () => set({ searchTitle: '', searchIntensity: null }),
+  setSearchMinIntensity: searchMinIntensity => set({ searchMinIntensity }),
+  setSearchMaxIntensity: searchMaxIntensity => set({ searchMaxIntensity }),
+  clearSearch: () => set({ searchTitle: '', searchMinIntensity: null, searchMaxIntensity: null }),
 
   // 弹窗 Actions
   openCreateDialog: () => set({ isCreateDialogOpen: true }),

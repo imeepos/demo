@@ -45,12 +45,17 @@ export const useSentimentIntensitySearch = (params: SearchSentimentIntensityInpu
       const response = await sentimentIntensityControllerSearch({
         query: {
           ...(params.title && { title: params.title }),
-          ...(params.intensity !== undefined && { intensity: params.intensity }),
+          ...(params.minIntensity !== undefined && { minIntensity: params.minIntensity }),
+          ...(params.maxIntensity !== undefined && { maxIntensity: params.maxIntensity }),
         },
       });
       return response.data as SentimentIntensityItem[];
     },
-    enabled: !!(params.title || params.intensity !== undefined),
+    enabled: !!(
+      params.title ||
+      params.minIntensity !== undefined ||
+      params.maxIntensity !== undefined
+    ),
   });
 };
 

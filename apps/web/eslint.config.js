@@ -122,6 +122,10 @@ export default [
       // SonarJS rules
       'sonarjs/cognitive-complexity': 'off',
       'sonarjs/no-identical-functions': 'off',
+      'sonarjs/no-duplicate-string': 'off',
+
+      // Unicorn rules
+      'unicorn/prefer-ternary': 'off',
     },
     settings: {
       react: {

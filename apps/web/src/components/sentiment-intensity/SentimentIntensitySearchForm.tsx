@@ -1,12 +1,12 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Card, Input } from '@sker/ui';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input, Card } from '@sker/ui';
+import { useSentimentIntensityStore } from '../../stores/sentiment-intensity-store';
 import {
   searchSentimentIntensitySchema,
   type SearchSentimentIntensityInput,
 } from '../../types/sentiment-intensity';
-import { useSentimentIntensityStore } from '../../stores/sentiment-intensity-store';
 
 interface SentimentIntensitySearchFormProps {
   onSearch: (params: SearchSentimentIntensityInput) => void;
@@ -17,7 +17,7 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
   onSearch,
   onClear,
 }) => {
-  const { searchTitle, searchIntensity } = useSentimentIntensityStore();
+  const { searchTitle, searchMinIntensity, searchMaxIntensity } = useSentimentIntensityStore();
 
   const {
     register,
@@ -28,7 +28,8 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
     resolver: zodResolver(searchSentimentIntensitySchema),
     defaultValues: {
       title: searchTitle,
-      intensity: searchIntensity || undefined,
+      minIntensity: searchMinIntensity || undefined,
+      maxIntensity: searchMaxIntensity || undefined,
     },
   });
 
@@ -37,14 +38,14 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
   };
 
   const handleClear = () => {
-    reset({ title: '', intensity: undefined });
+    reset({ title: '', minIntensity: undefined, maxIntensity: undefined });
     onClear();
   };
 
   return (
     <Card className="p-6 mb-6">
       <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div>
             <label htmlFor="title" className="block text-sm font-medium mb-2">
               标题搜索
@@ -52,17 +53,33 @@ export const SentimentIntensitySearchForm: React.FC<SentimentIntensitySearchForm
             <Input id="title" placeholder="请输入标题关键词" {...register('title')} />
           </div>
           <div>
-            <label htmlFor="intensity" className="block text-sm font-medium mb-2">
-              强度值
+            <label htmlFor="minIntensity" className="block text-sm font-medium mb-2">
+              最小强度
             </label>
             <Input
-              id="intensity"
+              id="minIntensity"
               type="number"
               min="0"
               max="1"
               step="0.01"
-              placeholder="请输入强度值 (0-1)"
-              {...register('intensity', {
+              placeholder="最小值 (0-1)"
+              {...register('minIntensity', {
+                setValueAs: value => (value === '' ? undefined : parseFloat(value)),
+              })}
+            />
+          </div>
+          <div>
+            <label htmlFor="maxIntensity" className="block text-sm font-medium mb-2">
+              最大强度
+            </label>
+            <Input
+              id="maxIntensity"
+              type="number"
+              min="0"
+              max="1"
+              step="0.01"
+              placeholder="最大值 (0-1)"
+              {...register('maxIntensity', {
                 setValueAs: value => (value === '' ? undefined : parseFloat(value)),
               })}
             />

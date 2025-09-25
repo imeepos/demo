@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SentimentIntensityModule } from './sentiment-intensity/sentiment-intensity.module';
 import { SentimentModule } from './sentiment/sentiment.module';
+import { SentimentEventModule } from './sentiment-event/sentiment-event.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { SentimentModule } from './sentiment/sentiment.module';
     }),
     SentimentModule,
     SentimentIntensityModule,
+    SentimentEventModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -1,10 +1,10 @@
-import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@sker/ui';
-import { SentimentIntensityForm } from './SentimentIntensityForm';
+import React from 'react';
 import type {
   CreateSentimentIntensityInput,
   SentimentIntensityItem,
 } from '../../types/sentiment-intensity';
+import { SentimentIntensityForm } from './SentimentIntensityForm';
 
 interface SentimentIntensityDialogProps {
   isOpen: boolean;

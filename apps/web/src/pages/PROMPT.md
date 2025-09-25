@@ -5,8 +5,8 @@
 ## 需求说明：
 
 - 使用@sker/sdk提供的接口
-- 后端接口文件：apps\api\src\sentiment-intensity\sentiment-intensity.controller.ts
-- 开发SentimentIntensity情感定义的管理页面
+- 后端接口文件：apps\api\src\sentiment-event\sentiment-event.controller.ts
+- 开发sentiment-event舆情事件相关的管理页面
 - 第一步：开发业务组件，列表页面/form表单/检索组件
 - 第二步：组装业务组件开发页面组件
 - 第三步：添加到路由配置

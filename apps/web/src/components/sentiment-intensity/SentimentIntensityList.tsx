@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button, Card, Badge } from '@sker/ui';
+import { Badge, Button, Card } from '@sker/ui';
 import { Edit, Trash2 } from 'lucide-react';
+import React from 'react';
 import type { SentimentIntensityItem } from '../../types/sentiment-intensity';
 
 interface SentimentIntensityListProps {
@@ -18,7 +18,7 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
 }) => {
   // 确保 items 是数组
   const safeItems = Array.isArray(items) ? items : [];
-  
+
   if (isLoading) {
     return (
       <Card className="p-6">
@@ -30,7 +30,9 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
   if (safeItems.length === 0) {
     return (
       <Card className="p-6">
-        <div className="text-center text-gray-500">暂无数据，点击"新建情感强度"开始创建</div>
+        <div className="text-center text-gray-500">
+          暂无数据，点击&quot;新建情感强度&quot;开始创建
+        </div>
       </Card>
     );
   }
@@ -67,7 +69,9 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
                   {getIntensityLabel(item.intensity)}
                 </Badge>
               </div>
-              <div className="text-sm text-gray-600">强度值: {safeIntensity(item.intensity).toFixed(2)}</div>
+              <div className="text-sm text-gray-600">
+                强度值: {safeIntensity(item.intensity).toFixed(2)}
+              </div>
               <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
                 <div
                   className="bg-blue-500 h-2 rounded-full transition-all duration-300"

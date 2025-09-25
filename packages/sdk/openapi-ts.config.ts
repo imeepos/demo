@@ -1,18 +1,13 @@
 import { defineConfig } from '@hey-api/openapi-ts';
 
 export default defineConfig({
-  client: '@hey-api/client-axios',
-  input: 'http://localhost:3000/api/openapi.json',
+  input: 'http://localhost:3011/api/openapi.json',
   output: 'src/generated',
   plugins: [
+    '@hey-api/typescript',
     {
-      asClass: false,
-      include: '^(?!.*(test|spec|mock)).*$',
-      name: '@hey-api/typescript',
-    },
-    {
-      asClass: false,
       name: '@hey-api/sdk',
+      client: '@hey-api/client-axios',
     },
   ],
 });

@@ -1,12 +1,12 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button, Input, Label, Textarea } from '@sker/ui';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input, Textarea, Label } from '@sker/ui';
+import type { SentimentIntensityItem } from '../../types/sentiment-intensity';
 import {
   createSentimentIntensitySchema,
   type CreateSentimentIntensityInput,
 } from '../../types/sentiment-intensity';
-import type { SentimentIntensityItem } from '../../types/sentiment-intensity';
 
 interface SentimentIntensityFormProps {
   initialData?: SentimentIntensityItem | null | undefined;

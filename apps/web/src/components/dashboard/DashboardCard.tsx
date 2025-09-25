@@ -1,21 +1,15 @@
-import { Card, CardContent } from '@sker/ui';
-import { ReactNode } from 'react';
+import { forwardRef } from 'react';
+import type { DashboardCardVariants } from '../../lib/dashboard-variants';
+import { DashboardCard as BaseDashboardCard } from './DashboardComponents';
 
-interface DashboardCardProps {
-  children: ReactNode;
-  className?: string;
-}
+interface DashboardCardProps extends React.HTMLAttributes<HTMLDivElement>, DashboardCardVariants {}
 
 /**
- * 大屏卡片组件
- * 职责：提供统一的卡片容器样式
+ * 大屏卡片组件 (重构版)
+ * 基于 Tailwind CSS 变体系统实现
+ * 职责：提供统一的卡片容器样式，支持多种变体和状态
  */
-export function DashboardCard({ children, className = '' }: DashboardCardProps) {
-  return (
-    <Card
-      className={`transition-all relative duration-300 hover:shadow-lg hover:-translate-y-0.5 flex flex-col border-0 p-0 ${className}`}
-    >
-      <CardContent className="relative flex-1 p-0">{children}</CardContent>
-    </Card>
-  );
-}
+export const DashboardCard = forwardRef<HTMLDivElement, DashboardCardProps>((props, ref) => {
+  return <BaseDashboardCard ref={ref} {...props} />;
+});
+DashboardCard.displayName = 'DashboardCard';

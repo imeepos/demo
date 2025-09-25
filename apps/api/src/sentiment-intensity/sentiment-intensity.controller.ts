@@ -87,7 +87,7 @@ export class SentimentIntensityController {
   @Get('search')
   @ApiOperation({
     summary: '搜索情感强度记录',
-    description: '根据标题和/或强度值搜索情感强度记录',
+    description: '根据标题和/或强度区间搜索情感强度记录',
   })
   @ApiQuery({
     name: 'title',
@@ -96,10 +96,16 @@ export class SentimentIntensityController {
     example: '积极',
   })
   @ApiQuery({
-    name: 'intensity',
+    name: 'minIntensity',
     required: false,
-    description: '按情感强度值精确搜索',
-    example: 0.85,
+    description: '情感强度最小值（区间搜索）',
+    example: 0.3,
+  })
+  @ApiQuery({
+    name: 'maxIntensity',
+    required: false,
+    description: '情感强度最大值（区间搜索）',
+    example: 0.8,
   })
   @ApiResponse({
     status: 200,

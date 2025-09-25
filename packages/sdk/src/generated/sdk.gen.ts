@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AppControllerGetHelloData, AppControllerGetHelloResponses, SentimentControllerGetAllEventsData, SentimentControllerGetAllEventsResponses, SentimentControllerGetEventByIdData, SentimentControllerGetEventByIdErrors, SentimentControllerGetEventByIdResponses, SentimentControllerGetHotWordsData, SentimentControllerGetHotWordsResponses, SentimentControllerGetMetricsData, SentimentControllerGetMetricsResponses, SentimentControllerGetSentimentTableDataData, SentimentControllerGetSentimentTableDataResponses, SentimentIntensityControllerCreateData, SentimentIntensityControllerCreateErrors, SentimentIntensityControllerCreateResponses, SentimentIntensityControllerFindAllData, SentimentIntensityControllerFindAllResponses, SentimentIntensityControllerRemoveData, SentimentIntensityControllerRemoveErrors, SentimentIntensityControllerRemoveResponses, SentimentIntensityControllerSearchData, SentimentIntensityControllerSearchResponses, SentimentIntensityControllerUpdateData, SentimentIntensityControllerUpdateErrors, SentimentIntensityControllerUpdateResponses } from './types.gen';
+import type { AppControllerGetHelloData, AppControllerGetHelloResponses, SentimentControllerGetAllEventsData, SentimentControllerGetAllEventsResponses, SentimentControllerGetEventByIdData, SentimentControllerGetEventByIdErrors, SentimentControllerGetEventByIdResponses, SentimentControllerGetHotWordsData, SentimentControllerGetHotWordsResponses, SentimentControllerGetMetricsData, SentimentControllerGetMetricsResponses, SentimentControllerGetSentimentTableDataData, SentimentControllerGetSentimentTableDataResponses, SentimentEventControllerCreateData, SentimentEventControllerCreateErrors, SentimentEventControllerCreateResponses, SentimentEventControllerFindAllData, SentimentEventControllerFindAllResponses, SentimentEventControllerFindOneData, SentimentEventControllerFindOneErrors, SentimentEventControllerFindOneResponses, SentimentEventControllerRemoveData, SentimentEventControllerRemoveErrors, SentimentEventControllerRemoveResponses, SentimentEventControllerSearchData, SentimentEventControllerSearchResponses, SentimentEventControllerUpdateData, SentimentEventControllerUpdateErrors, SentimentEventControllerUpdateResponses, SentimentIntensityControllerCreateData, SentimentIntensityControllerCreateErrors, SentimentIntensityControllerCreateResponses, SentimentIntensityControllerFindAllData, SentimentIntensityControllerFindAllResponses, SentimentIntensityControllerRemoveData, SentimentIntensityControllerRemoveErrors, SentimentIntensityControllerRemoveResponses, SentimentIntensityControllerSearchData, SentimentIntensityControllerSearchResponses, SentimentIntensityControllerUpdateData, SentimentIntensityControllerUpdateErrors, SentimentIntensityControllerUpdateResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -31,6 +31,7 @@ export const appControllerGetHello = <ThrowOnError extends boolean = false>(opti
  */
 export const sentimentControllerGetAllEvents = <ThrowOnError extends boolean = false>(options?: Options<SentimentControllerGetAllEventsData, ThrowOnError>) => {
     return (options?.client ?? client).get<SentimentControllerGetAllEventsResponses, unknown, ThrowOnError>({
+        responseType: 'json',
         url: '/api/sentiment/events',
         ...options
     });
@@ -42,6 +43,7 @@ export const sentimentControllerGetAllEvents = <ThrowOnError extends boolean = f
  */
 export const sentimentControllerGetEventById = <ThrowOnError extends boolean = false>(options: Options<SentimentControllerGetEventByIdData, ThrowOnError>) => {
     return (options.client ?? client).get<SentimentControllerGetEventByIdResponses, SentimentControllerGetEventByIdErrors, ThrowOnError>({
+        responseType: 'json',
         url: '/api/sentiment/events/{id}',
         ...options
     });
@@ -53,6 +55,7 @@ export const sentimentControllerGetEventById = <ThrowOnError extends boolean = f
  */
 export const sentimentControllerGetMetrics = <ThrowOnError extends boolean = false>(options?: Options<SentimentControllerGetMetricsData, ThrowOnError>) => {
     return (options?.client ?? client).get<SentimentControllerGetMetricsResponses, unknown, ThrowOnError>({
+        responseType: 'json',
         url: '/api/sentiment/metrics',
         ...options
     });
@@ -64,6 +67,7 @@ export const sentimentControllerGetMetrics = <ThrowOnError extends boolean = fal
  */
 export const sentimentControllerGetHotWords = <ThrowOnError extends boolean = false>(options?: Options<SentimentControllerGetHotWordsData, ThrowOnError>) => {
     return (options?.client ?? client).get<SentimentControllerGetHotWordsResponses, unknown, ThrowOnError>({
+        responseType: 'json',
         url: '/api/sentiment/hotwords',
         ...options
     });
@@ -75,6 +79,7 @@ export const sentimentControllerGetHotWords = <ThrowOnError extends boolean = fa
  */
 export const sentimentControllerGetSentimentTableData = <ThrowOnError extends boolean = false>(options?: Options<SentimentControllerGetSentimentTableDataData, ThrowOnError>) => {
     return (options?.client ?? client).get<SentimentControllerGetSentimentTableDataResponses, unknown, ThrowOnError>({
+        responseType: 'json',
         url: '/api/sentiment/table',
         ...options
     });
@@ -86,6 +91,7 @@ export const sentimentControllerGetSentimentTableData = <ThrowOnError extends bo
  */
 export const sentimentIntensityControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<SentimentIntensityControllerFindAllData, ThrowOnError>) => {
     return (options?.client ?? client).get<SentimentIntensityControllerFindAllResponses, unknown, ThrowOnError>({
+        responseType: 'json',
         url: '/api/sentiment-intensity',
         ...options
     });
@@ -97,6 +103,7 @@ export const sentimentIntensityControllerFindAll = <ThrowOnError extends boolean
  */
 export const sentimentIntensityControllerCreate = <ThrowOnError extends boolean = false>(options: Options<SentimentIntensityControllerCreateData, ThrowOnError>) => {
     return (options.client ?? client).post<SentimentIntensityControllerCreateResponses, SentimentIntensityControllerCreateErrors, ThrowOnError>({
+        responseType: 'json',
         url: '/api/sentiment-intensity',
         ...options,
         headers: {
@@ -108,10 +115,11 @@ export const sentimentIntensityControllerCreate = <ThrowOnError extends boolean 
 
 /**
  * 搜索情感强度记录
- * 根据标题和/或强度值搜索情感强度记录
+ * 根据标题和/或强度区间搜索情感强度记录
  */
 export const sentimentIntensityControllerSearch = <ThrowOnError extends boolean = false>(options?: Options<SentimentIntensityControllerSearchData, ThrowOnError>) => {
     return (options?.client ?? client).get<SentimentIntensityControllerSearchResponses, unknown, ThrowOnError>({
+        responseType: 'json',
         url: '/api/sentiment-intensity/search',
         ...options
     });
@@ -134,7 +142,87 @@ export const sentimentIntensityControllerRemove = <ThrowOnError extends boolean 
  */
 export const sentimentIntensityControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<SentimentIntensityControllerUpdateData, ThrowOnError>) => {
     return (options.client ?? client).patch<SentimentIntensityControllerUpdateResponses, SentimentIntensityControllerUpdateErrors, ThrowOnError>({
+        responseType: 'json',
         url: '/api/sentiment-intensity/{id}',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
+    });
+};
+
+/**
+ * 获取所有舆情事件记录
+ * 获取系统中所有舆情事件记录，返回简化数据（仅包含id、title、score、source、timestamp字段），用于下拉选择等场景
+ */
+export const sentimentEventControllerFindAll = <ThrowOnError extends boolean = false>(options?: Options<SentimentEventControllerFindAllData, ThrowOnError>) => {
+    return (options?.client ?? client).get<SentimentEventControllerFindAllResponses, unknown, ThrowOnError>({
+        responseType: 'json',
+        url: '/api/sentiment-event',
+        ...options
+    });
+};
+
+/**
+ * 创建舆情事件记录
+ * 创建新的舆情事件记录，包含事件标题、内容、情感分数、地理位置等信息
+ */
+export const sentimentEventControllerCreate = <ThrowOnError extends boolean = false>(options: Options<SentimentEventControllerCreateData, ThrowOnError>) => {
+    return (options.client ?? client).post<SentimentEventControllerCreateResponses, SentimentEventControllerCreateErrors, ThrowOnError>({
+        responseType: 'json',
+        url: '/api/sentiment-event',
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            ...options.headers
+        }
+    });
+};
+
+/**
+ * 搜索舆情事件记录
+ * 根据标题、情感分数区间、事件时间区间等条件搜索舆情事件记录
+ */
+export const sentimentEventControllerSearch = <ThrowOnError extends boolean = false>(options?: Options<SentimentEventControllerSearchData, ThrowOnError>) => {
+    return (options?.client ?? client).get<SentimentEventControllerSearchResponses, unknown, ThrowOnError>({
+        responseType: 'json',
+        url: '/api/sentiment-event/search',
+        ...options
+    });
+};
+
+/**
+ * 删除舆情事件记录
+ * 根据ID删除指定的舆情事件记录
+ */
+export const sentimentEventControllerRemove = <ThrowOnError extends boolean = false>(options: Options<SentimentEventControllerRemoveData, ThrowOnError>) => {
+    return (options.client ?? client).delete<SentimentEventControllerRemoveResponses, SentimentEventControllerRemoveErrors, ThrowOnError>({
+        url: '/api/sentiment-event/{id}',
+        ...options
+    });
+};
+
+/**
+ * 获取单个舆情事件记录
+ * 根据ID获取指定舆情事件的完整信息
+ */
+export const sentimentEventControllerFindOne = <ThrowOnError extends boolean = false>(options: Options<SentimentEventControllerFindOneData, ThrowOnError>) => {
+    return (options.client ?? client).get<SentimentEventControllerFindOneResponses, SentimentEventControllerFindOneErrors, ThrowOnError>({
+        responseType: 'json',
+        url: '/api/sentiment-event/{id}',
+        ...options
+    });
+};
+
+/**
+ * 更新舆情事件记录
+ * 根据ID更新指定的舆情事件记录信息
+ */
+export const sentimentEventControllerUpdate = <ThrowOnError extends boolean = false>(options: Options<SentimentEventControllerUpdateData, ThrowOnError>) => {
+    return (options.client ?? client).patch<SentimentEventControllerUpdateResponses, SentimentEventControllerUpdateErrors, ThrowOnError>({
+        responseType: 'json',
+        url: '/api/sentiment-event/{id}',
         ...options,
         headers: {
             'Content-Type': 'application/json',

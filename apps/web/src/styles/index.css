@@ -336,58 +336,77 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* 舆情分析大屏亮色主题变量 */
-  --background: #f8fafc;
-  --foreground: #1e293b;
+  /* 舆情分析监控大屏专业亮色主题 */
+  --background: #fafbfc;
+  --foreground: #0f172a;
   --card: #ffffff;
-  --card-foreground: #1e293b;
+  --card-foreground: #0f172a;
   --popover: #ffffff;
-  --popover-foreground: #1e293b;
+  --popover-foreground: #0f172a;
 
-  /* 主色调：科技蓝，体现专业性 */
-  --primary: #2563eb;
+  /* 主色调：深度科技蓝，体现专业监控感 */
+  --primary: #1e40af;
   --primary-foreground: #ffffff;
 
-  /* 次要色：温和蓝，用于次级元素 */
+  /* 次要色：优雅蓝灰，用于次级元素 */
   --secondary: #e2e8f0;
-  --secondary-foreground: #475569;
+  --secondary-foreground: #334155;
 
-  /* 静默色：浅灰，用于背景和分割 */
+  /* 静默色：极浅蓝灰，用于背景分割 */
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
 
-  /* 强调色：现代青色，用于数据高亮 */
-  --accent: #06b6d4;
+  /* 强调色：现代青蓝，用于数据高亮 */
+  --accent: #0ea5e9;
   --accent-foreground: #ffffff;
 
-  /* 状态色系 */
-  --success: #10b981;
+  /* 舆情监控专用状态色系 */
+  --success: #059669;
   --success-foreground: #ffffff;
-  --warning: #f59e0b;
+  --warning: #d97706;
   --warning-foreground: #ffffff;
-  --destructive: #ef4444;
+  --destructive: #dc2626;
   --destructive-foreground: #ffffff;
-  --info: #3b82f6;
+  --info: #0ea5e9;
   --info-foreground: #ffffff;
 
-  /* 数据可视化专用色系 */
-  --chart-1: #2563eb; /* 主数据蓝 */
-  --chart-2: #06b6d4; /* 次数据青 */
-  --chart-3: #10b981; /* 正面绿 */
-  --chart-4: #f59e0b; /* 中性橙 */
-  --chart-5: #ef4444; /* 负面红 */
-  --chart-6: #8b5cf6; /* 特殊紫 */
+  /* 舆情分析专用数据可视化色板 */
+  --chart-1: #1e40af; /* 主要数据-深科技蓝 */
+  --chart-2: #0ea5e9; /* 次要数据-现代青蓝 */
+  --chart-3: #059669; /* 正面情感-翠绿色 */
+  --chart-4: #d97706; /* 中性情感-琥珀色 */
+  --chart-5: #dc2626; /* 负面情感-朱红色 */
+  --chart-6: #7c3aed; /* 特殊标记-深紫色 */
+  
+  /* 情感强度渐变色系 */
+  --sentiment-very-positive: #065f46;
+  --sentiment-positive: #059669;
+  --sentiment-neutral: #d97706;
+  --sentiment-negative: #dc2626;
+  --sentiment-very-negative: #991b1b;
 
-  /* 界面元素 */
+  /* 界面元素优化 */
   --border: #e2e8f0;
   --input: #f8fafc;
-  --ring: #2563eb;
+  --ring: #1e40af;
   --radius: 0.75rem;
+  
+  /* 大屏专用边框和分割线 */
+  --divider: #cbd5e1;
+  --separator: #f1f5f9;
 
-  /* 大屏专用渐变 */
-  --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-  --gradient-secondary: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
-  --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  /* 舆情监控专用渐变配色 */
+  --gradient-primary: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  --gradient-secondary: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+  --gradient-success: linear-gradient(135deg, #059669 0%, #047857 100%);
+  --gradient-warning: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  --gradient-danger: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  
+  /* 数据卡片渐变背景 */
+  --gradient-card-primary: linear-gradient(135deg, #1e40af08 0%, #1e40af04 100%);
+  --gradient-card-success: linear-gradient(135deg, #05966908 0%, #05966904 100%);
+  --gradient-card-warning: linear-gradient(135deg, #d9770608 0%, #d9770604 100%);
+  --gradient-card-danger: linear-gradient(135deg, #dc262608 0%, #dc262604 100%);
 
   /* 阴影层次 */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
@@ -419,7 +438,7 @@ body {
   --ring: #88f5fa;
 }
 
-/* 全局黑色背景强制设置 */
+/* 全局亮色背景优化 */
 html,
 body,
 #root {
@@ -518,191 +537,68 @@ body,
   font-weight: 900;
 }
 
-/* 舆情分析大屏专用样式 */
-.dashboard-layout {
-  background: var(--background);
-  color: var(--foreground);
-  min-height: 100vh;
-  overflow: hidden;
+/* 舆情监控大屏全局布局 - 使用Tailwind替代 */
+/* 这些样式已迁移到组件中使用Tailwind原子化类 */
+
+/* 仪表盘卡片样式 - 使用Tailwind替代 */
+/* 已迁移到组件级样式变体系统 */
+
+/* 指标卡片样式 - 使用Tailwind替代 */
+/* 已迁移到组件级样式变体系统 */
+
+/* 趋势指示器样式 - 使用Tailwind替代 */
+/* 已迁移到组件级样式变体系统 */
+
+/* 图表容器样式 - 使用Tailwind替代 */
+/* 已迁移到组件级样式变体系统 */
+
+/* 情感分析样式 - 使用Tailwind替代 */
+/* 已迁移到组件级样式变体系统 */
+
+/* 数据表格样式 - 使用Tailwind替代 */
+/* 已迁移到组件级样式变体系统 */
+
+/* 词云标签样式 - 使用Tailwind替代 */
+/* 已迁移到组件级样式变体系统 */
+
+/* 数据可视化颜色 - 通过Tailwind arbitrary values使用 */
+/* 例如: text-[var(--chart-1)] bg-[var(--chart-1)] */
+
+/* 情感强度条 - 使用Tailwind替代 */
+/* 已迁移到组件级样式变体系统 */
+
+/* 实时指示器 - 保留动画，其他用Tailwind替代 */
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
 }
 
-.dashboard-header {
-  background: var(--gradient-primary);
-  color: white;
-  padding: 1rem 2rem;
-  box-shadow: var(--shadow-lg);
+.animate-live-pulse {
+  animation: live-pulse 1.5s ease-in-out infinite;
 }
 
-.dashboard-title {
-  font-size: 1.75rem;
-  font-weight: 700;
-  text-align: center;
+/* 保留特殊动画效果 */
+.animate-pulse-custom {
+  animation: pulse-custom 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.dashboard-subtitle {
-  font-size: 0.875rem;
-  opacity: 0.9;
-  text-align: center;
-  margin-top: 0.25rem;
+@keyframes pulse-custom {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
-.dashboard-grid {
-  display: grid;
-  gap: 1.5rem;
-  padding: 1.5rem;
-  height: calc(100vh - 120px);
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: auto 1fr 1fr;
+/* 数据卡片样式 - 使用Tailwind替代 */
+/* 已迁移到组件级样式变体系统 */
+
+/* 进度条光泽效果 - 保留动画 */
+@keyframes progress-shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
-.dashboard-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
-  padding: 1.5rem;
-  transition: all 0.3s ease;
+.animate-progress-shine {
+  animation: progress-shine 2s linear infinite;
 }
 
-.dashboard-card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
-}
-
-.dashboard-card-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: var(--foreground);
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.metric-card {
-  text-align: center;
-  padding: 2rem 1rem;
-}
-
-.metric-value {
-  font-size: 2.5rem;
-  font-weight: 700;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 0.5rem;
-}
-
-.metric-label {
-  color: var(--muted-foreground);
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.trend-indicator {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-  padding: 0.25rem 0.5rem;
-  border-radius: 9999px;
-  margin-top: 0.5rem;
-}
-
-.trend-up {
-  background: rgb(16 185 129 / 0.1);
-  color: var(--success);
-}
-
-.trend-down {
-  background: rgb(239 68 68 / 0.1);
-  color: var(--destructive);
-}
-
-.trend-neutral {
-  background: rgb(245 158 11 / 0.1);
-  color: var(--warning);
-}
-
-/* 图表容器样式 */
-.chart-container {
-  width: 100%;
-  height: 300px;
-  position: relative;
-}
-
-.sentiment-positive {
-  color: var(--success);
-}
-
-.sentiment-negative {
-  color: var(--destructive);
-}
-
-.sentiment-neutral {
-  color: var(--warning);
-}
-
-/* 数据表格样式 */
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.875rem;
-}
-
-.data-table th,
-.data-table td {
-  padding: 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid var(--border);
-}
-
-.data-table th {
-  background: var(--muted);
-  color: var(--muted-foreground);
-  font-weight: 600;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.data-table tbody tr:hover {
-  background: var(--muted);
-}
-
-/* 热点词云样式 */
-.wordcloud-tag {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  margin: 0.25rem;
-  background: var(--primary);
-  color: var(--primary-foreground);
-  border-radius: 9999px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  opacity: 0.8;
-  transition: all 0.2s ease;
-}
-
-.wordcloud-tag:hover {
-  opacity: 1;
-  transform: scale(1.05);
-}
-
-/* 响应式适配 */
-@media (max-width: 1400px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1rem;
-  }
-}
-
-@media (max-width: 1024px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    padding: 1rem;
-  }
-}
+/* 响应式适配 - 使用Tailwind响应式前缀替代 */
+/* 已迁移到组件级Tailwind类组合 */
