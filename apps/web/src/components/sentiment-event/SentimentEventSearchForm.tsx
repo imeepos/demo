@@ -1,10 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Input, Label } from '@sker/ui';
-import { Search, X, Hash, TrendingUp, Calendar } from 'lucide-react';
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { DashboardCard } from '../dashboard/DashboardComponents';
-import { NumberRangeInput } from '../common/NumberRangeInput';
+import { AdvancedFilters } from '../common/AdvancedFilters';
+import { CompactSearchBar } from '../common/CompactSearchBar';
+import { QuickDateRange, type DateRange } from '../common/QuickDateRange';
+import { RangeSlider } from '../common/RangeSlider';
 import {
   querySentimentEventSchema,
   type QuerySentimentEventInput,
@@ -16,19 +16,18 @@ interface SentimentEventSearchFormProps {
   isSearching?: boolean;
 }
 
-const FORM_STYLES = {
-  error: 'border-destructive focus:border-destructive',
-  inputBase:
-    'border-border focus:border-primary focus:ring-primary/20 transition-all duration-300',
-} as const;
-
 export const SentimentEventSearchForm: React.FC<
   SentimentEventSearchFormProps
 > = ({ onSearch, onClear, isSearching = false }) => {
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+  const [titleSearch, setTitleSearch] = useState('');
+  const [scoreRange, setScoreRange] = useState<[number, number]>([0, 1]);
+
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
     watch,
   } = useForm<QuerySentimentEventInput>({
@@ -43,9 +42,12 @@ export const SentimentEventSearchForm: React.FC<
   });
 
   const watchedValues = watch();
-  const hasValues = Object.values(watchedValues).some(
-    value => value !== undefined && value !== '' && value !== null
-  );
+
+  const hasAdvancedFilters =
+    watchedValues.minScore !== undefined ||
+    watchedValues.maxScore !== undefined ||
+    watchedValues.startTime !== undefined ||
+    watchedValues.endTime !== undefined;
 
   const handleFormSubmit = (data: QuerySentimentEventInput) => {
     // 过滤掉空值
@@ -70,7 +72,9 @@ export const SentimentEventSearchForm: React.FC<
     onSearch(filteredData);
   };
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
+    setTitleSearch('');
+    setScoreRange([0, 1]);
     reset({
       title: '',
       minScore: undefined,
@@ -79,141 +83,94 @@ export const SentimentEventSearchForm: React.FC<
       endTime: undefined,
     });
     onClear();
-  };
+  }, [reset, onClear]);
+
+  const handleTitleChange = useCallback(
+    (value: string) => {
+      setTitleSearch(value);
+      setValue('title', value);
+    },
+    [setValue]
+  );
+
+  const handleQuickDateSelect = useCallback(
+    (range: DateRange) => {
+      if (range.startTime) {
+        setValue('startTime', range.startTime);
+      } else {
+        setValue('startTime', undefined);
+      }
+      if (range.endTime) {
+        setValue('endTime', range.endTime);
+      } else {
+        setValue('endTime', undefined);
+      }
+    },
+    [setValue]
+  );
+
+  const handleScoreRangeChange = useCallback(
+    (range: [number, number]) => {
+      setScoreRange(range);
+      setValue('minScore', range[0] === 0 ? undefined : range[0]);
+      setValue('maxScore', range[1] === 1 ? undefined : range[1]);
+    },
+    [setValue]
+  );
+
+  const handleSearch = useCallback(() => {
+    handleSubmit(handleFormSubmit)();
+  }, [handleSubmit]);
 
   return (
-    <DashboardCard className="mb-8">
-      <div className="p-6">
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="space-y-3 lg:col-span-3">
-              <div className="flex items-center gap-2">
-                <Hash className="w-4 h-4 text-primary" />
-                <Label
-                  htmlFor="title"
-                  className="text-sm font-medium text-foreground"
-                >
-                  🔍 标题关键词
-                </Label>
-              </div>
-              <Input
-                id="title"
-                placeholder="输入事件标题关键词进行模糊搜索"
-                className={`${FORM_STYLES.inputBase} ${
-                  errors.title
-                    ? 'border-destructive focus:border-destructive'
-                    : ''
-                }`}
-                {...register('title')}
-              />
-              {errors.title && (
-                <p className="text-sm text-destructive flex items-center gap-1">
-                  <X className="w-3 h-3" />
-                  {errors.title.message}
-                </p>
-              )}
-            </div>
+    <div className="space-y-4 mb-8">
+      {/* 主搜索栏 */}
+      <CompactSearchBar
+        placeholder="搜索舆情事件标题..."
+        value={titleSearch}
+        onChange={handleTitleChange}
+        onSearch={handleSearch}
+        onClear={handleClear}
+        onToggleFilters={() => setShowAdvancedFilters(!showAdvancedFilters)}
+        showFilters={showAdvancedFilters}
+        hasActiveFilters={hasAdvancedFilters}
+        isSearching={isSearching}
+      />
 
-            <NumberRangeInput
-              label="📊 情感分数范围"
-              icon={TrendingUp}
-              minFieldName="minScore"
-              maxFieldName="maxScore"
-              min={0}
-              max={1}
-              step={0.01}
-              minPlaceholder="0.00"
-              maxPlaceholder="1.00"
-              register={register}
-              errors={errors}
-              className="lg:col-span-2"
-            />
+      {/* 高级筛选区域 */}
+      <AdvancedFilters
+        isOpen={showAdvancedFilters}
+        onToggle={() => setShowAdvancedFilters(!showAdvancedFilters)}
+        register={register}
+        errors={errors}
+        onClear={handleClear}
+        hasActiveFilters={hasAdvancedFilters}
+      />
 
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-primary" />
-                <Label
-                  htmlFor="startTime"
-                  className="text-sm font-medium text-foreground"
-                >
-                  🗺️ 开始时间
-                </Label>
-              </div>
-              <Input
-                id="startTime"
-                type="datetime-local"
-                className={`${FORM_STYLES.inputBase} ${
-                  errors.startTime
-                    ? 'border-destructive focus:border-destructive'
-                    : ''
-                }`}
-                {...register('startTime', {
-                  setValueAs: value => (value ? new Date(value) : undefined),
-                })}
-              />
-              {errors.startTime && (
-                <p className="text-sm text-destructive flex items-center gap-1">
-                  <X className="w-3 h-3" />
-                  {errors.startTime.message}
-                </p>
-              )}
-            </div>
+      {/* 快捷时间选择和情感分数滑块 - 仅在展开时显示 */}
+      {showAdvancedFilters && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <QuickDateRange onSelect={handleQuickDateSelect} />
+          <RangeSlider
+            label="情感分数范围"
+            min={0}
+            max={1}
+            step={0.01}
+            value={scoreRange}
+            onChange={handleScoreRangeChange}
+            formatValue={v => v.toFixed(2)}
+          />
+        </div>
+      )}
 
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <Calendar className="w-4 h-4 text-primary" />
-                <Label
-                  htmlFor="endTime"
-                  className="text-sm font-medium text-foreground"
-                >
-                  🗺️ 结束时间
-                </Label>
-              </div>
-              <Input
-                id="endTime"
-                type="datetime-local"
-                className={`${FORM_STYLES.inputBase} ${
-                  errors.endTime
-                    ? 'border-destructive focus:border-destructive'
-                    : ''
-                }`}
-                {...register('endTime', {
-                  setValueAs: value => (value ? new Date(value) : undefined),
-                })}
-              />
-              {errors.endTime && (
-                <p className="text-sm text-destructive flex items-center gap-1">
-                  <X className="w-3 h-3" />
-                  {errors.endTime.message}
-                </p>
-              )}
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-3 pt-6 border-t border-border">
-            {hasValues && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleClear}
-                disabled={isSearching}
-                className="border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-300"
-              >
-                <X className="w-4 h-4 mr-2" />
-                清空条件
-              </Button>
-            )}
-            <Button
-              type="submit"
-              disabled={isSearching}
-              className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 transition-all duration-300"
-            >
-              <Search className="w-4 h-4 mr-2" />
-              {isSearching ? '搜索中...' : '开始搜索'}
-            </Button>
-          </div>
-        </form>
-      </div>
-    </DashboardCard>
+      {/* 隐藏的表单处理 */}
+      <form onSubmit={handleSubmit(handleFormSubmit)} className="hidden">
+        <input {...register('title')} />
+        <input {...register('minScore')} />
+        <input {...register('maxScore')} />
+        <input {...register('startTime')} />
+        <input {...register('endTime')} />
+      </form>
+    </div>
   );
 };
