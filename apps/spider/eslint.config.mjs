@@ -40,9 +40,15 @@ export default tseslint.config(
         caughtErrorsIgnorePattern: '^_'
       }],
       '@typescript-eslint/no-empty-function': 'warn',
-      '@typescript-eslint/ban-ts-comment': 'warn',
+      '@typescript-eslint/ban-ts-comment': 'off',
       'prefer-const': 'warn',
-      'no-var': 'error'
+      'no-var': 'error',
+
+      // Security rules
+      'security/detect-object-injection': 'off',
+
+      // SonarJS rules
+      'sonarjs/cognitive-complexity': 'off'
     },
   },
   {

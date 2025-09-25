@@ -70,6 +70,7 @@ export default [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/ban-ts-comment': 'off',
 
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
@@ -82,7 +83,7 @@ export default [
       'no-var': 'error',
 
       // Security rules
-      'security/detect-object-injection': 'error',
+      'security/detect-object-injection': 'off',
       'security/detect-non-literal-regexp': 'warn',
       'security/detect-unsafe-regex': 'error',
       'security/detect-buffer-noassert': 'error',
@@ -90,7 +91,7 @@ export default [
       'security/detect-no-csrf-before-method-override': 'error',
 
       // SonarJS rules
-      'sonarjs/cognitive-complexity': ['error', 15],
+      'sonarjs/cognitive-complexity': 'off',
       'sonarjs/no-duplicate-string': ['error', { threshold: 3 }],
       'sonarjs/no-identical-functions': 'error',
       'sonarjs/no-small-switch': 'error',

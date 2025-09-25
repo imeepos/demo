@@ -1,0 +1,49 @@
+{
+  "name": "@sker/map",
+  "version": "0.1.0",
+  "description": "Map component library based on L7",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles": "./dist/index.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src --ext .ts,.tsx",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@antv/l7": "^2.20.15",
+    "@tailwindcss/vite": "^4.1.13"
+  },
+  "devDependencies": {
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7",
+    "tailwindcss": "^4.1.13",
+    "tailwindcss-animate": "^1.0.7",
+    "vite-plugin-dts": "^4.5.4"
+  },
+  "peerDependencies": {
+    "@antv/l7": "^2.23.0",
+    "@sker/ui": "workspace:*",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}
