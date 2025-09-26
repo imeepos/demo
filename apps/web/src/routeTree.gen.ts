@@ -8,87 +8,87 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root';
-import { Route as SentimentIntensityRouteImport } from './routes/sentiment-intensity';
-import { Route as SentimentEventRouteImport } from './routes/sentiment-event';
-import { Route as DashboardViewRouteImport } from './routes/dashboard-view';
-import { Route as DashboardRouteImport } from './routes/dashboard';
-import { Route as ColorTestRouteImport } from './routes/color-test';
-import { Route as IndexRouteImport } from './routes/index';
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as SentimentIntensityRouteImport } from './routes/sentiment-intensity'
+import { Route as SentimentEventRouteImport } from './routes/sentiment-event'
+import { Route as DashboardViewRouteImport } from './routes/dashboard-view'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as ColorTestRouteImport } from './routes/color-test'
+import { Route as IndexRouteImport } from './routes/index'
 
 const SentimentIntensityRoute = SentimentIntensityRouteImport.update({
   id: '/sentiment-intensity',
   path: '/sentiment-intensity',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const SentimentEventRoute = SentimentEventRouteImport.update({
   id: '/sentiment-event',
   path: '/sentiment-event',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DashboardViewRoute = DashboardViewRouteImport.update({
   id: '/dashboard-view',
   path: '/dashboard-view',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const ColorTestRoute = ColorTestRouteImport.update({
   id: '/color-test',
   path: '/color-test',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute;
-  '/color-test': typeof ColorTestRoute;
-  '/dashboard': typeof DashboardRoute;
-  '/dashboard-view': typeof DashboardViewRoute;
-  '/sentiment-event': typeof SentimentEventRoute;
-  '/sentiment-intensity': typeof SentimentIntensityRoute;
+  '/': typeof IndexRoute
+  '/color-test': typeof ColorTestRoute
+  '/dashboard': typeof DashboardRoute
+  '/dashboard-view': typeof DashboardViewRoute
+  '/sentiment-event': typeof SentimentEventRoute
+  '/sentiment-intensity': typeof SentimentIntensityRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute;
-  '/color-test': typeof ColorTestRoute;
-  '/dashboard': typeof DashboardRoute;
-  '/dashboard-view': typeof DashboardViewRoute;
-  '/sentiment-event': typeof SentimentEventRoute;
-  '/sentiment-intensity': typeof SentimentIntensityRoute;
+  '/': typeof IndexRoute
+  '/color-test': typeof ColorTestRoute
+  '/dashboard': typeof DashboardRoute
+  '/dashboard-view': typeof DashboardViewRoute
+  '/sentiment-event': typeof SentimentEventRoute
+  '/sentiment-intensity': typeof SentimentIntensityRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  '/': typeof IndexRoute;
-  '/color-test': typeof ColorTestRoute;
-  '/dashboard': typeof DashboardRoute;
-  '/dashboard-view': typeof DashboardViewRoute;
-  '/sentiment-event': typeof SentimentEventRoute;
-  '/sentiment-intensity': typeof SentimentIntensityRoute;
+  __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
+  '/color-test': typeof ColorTestRoute
+  '/dashboard': typeof DashboardRoute
+  '/dashboard-view': typeof DashboardViewRoute
+  '/sentiment-event': typeof SentimentEventRoute
+  '/sentiment-intensity': typeof SentimentIntensityRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
+  fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/color-test'
     | '/dashboard'
     | '/dashboard-view'
     | '/sentiment-event'
-    | '/sentiment-intensity';
-  fileRoutesByTo: FileRoutesByTo;
+    | '/sentiment-intensity'
+  fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/color-test'
     | '/dashboard'
     | '/dashboard-view'
     | '/sentiment-event'
-    | '/sentiment-intensity';
+    | '/sentiment-intensity'
   id:
     | '__root__'
     | '/'
@@ -96,62 +96,62 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/dashboard-view'
     | '/sentiment-event'
-    | '/sentiment-intensity';
-  fileRoutesById: FileRoutesById;
+    | '/sentiment-intensity'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute;
-  ColorTestRoute: typeof ColorTestRoute;
-  DashboardRoute: typeof DashboardRoute;
-  DashboardViewRoute: typeof DashboardViewRoute;
-  SentimentEventRoute: typeof SentimentEventRoute;
-  SentimentIntensityRoute: typeof SentimentIntensityRoute;
+  IndexRoute: typeof IndexRoute
+  ColorTestRoute: typeof ColorTestRoute
+  DashboardRoute: typeof DashboardRoute
+  DashboardViewRoute: typeof DashboardViewRoute
+  SentimentEventRoute: typeof SentimentEventRoute
+  SentimentIntensityRoute: typeof SentimentIntensityRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/sentiment-intensity': {
-      id: '/sentiment-intensity';
-      path: '/sentiment-intensity';
-      fullPath: '/sentiment-intensity';
-      preLoaderRoute: typeof SentimentIntensityRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/sentiment-intensity'
+      path: '/sentiment-intensity'
+      fullPath: '/sentiment-intensity'
+      preLoaderRoute: typeof SentimentIntensityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sentiment-event': {
-      id: '/sentiment-event';
-      path: '/sentiment-event';
-      fullPath: '/sentiment-event';
-      preLoaderRoute: typeof SentimentEventRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/sentiment-event'
+      path: '/sentiment-event'
+      fullPath: '/sentiment-event'
+      preLoaderRoute: typeof SentimentEventRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard-view': {
-      id: '/dashboard-view';
-      path: '/dashboard-view';
-      fullPath: '/dashboard-view';
-      preLoaderRoute: typeof DashboardViewRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/dashboard-view'
+      path: '/dashboard-view'
+      fullPath: '/dashboard-view'
+      preLoaderRoute: typeof DashboardViewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
-      id: '/dashboard';
-      path: '/dashboard';
-      fullPath: '/dashboard';
-      preLoaderRoute: typeof DashboardRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/color-test': {
-      id: '/color-test';
-      path: '/color-test';
-      fullPath: '/color-test';
-      preLoaderRoute: typeof ColorTestRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/color-test'
+      path: '/color-test'
+      fullPath: '/color-test'
+      preLoaderRoute: typeof ColorTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
-      id: '/';
-      path: '/';
-      fullPath: '/';
-      preLoaderRoute: typeof IndexRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -162,7 +162,7 @@ const rootRouteChildren: RootRouteChildren = {
   DashboardViewRoute: DashboardViewRoute,
   SentimentEventRoute: SentimentEventRoute,
   SentimentIntensityRoute: SentimentIntensityRoute,
-};
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>();
+  ._addFileTypes<FileRouteTypes>()
