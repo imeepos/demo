@@ -303,6 +303,297 @@ export class OpenAIService {
         this.estimateTokenCount(choice.message.content),
     };
   }
+  // ================== Agent CRUD 方法 ==================
+
+  /**
+   * 创建智能体
+   */
+  async createAgent(dto: CreateAgentDto): Promise<Agent> {
+    this.logger.log(`创建智能体: ${dto.code}`);
+
+    // 检查代码是否已存在
+    const existingAgent = await this.agentRepository.findOne({
+      where: { code: dto.code },
+    });
+    if (existingAgent) {
+      throw new ConflictException(`智能体代码已存在: ${dto.code}`);
+    }
+
+    const agent = this.agentRepository.create(dto);
+    const savedAgent = await this.agentRepository.save(agent);
+
+    this.logger.log(`智能体创建成功: ${savedAgent.code}, ID: ${savedAgent.id}`);
+    return savedAgent;
+  }
+
+  /**
+   * 更新智能体
+   */
+  async updateAgent(id: number, dto: UpdateAgentDto): Promise<Agent> {
+    this.logger.log(`更新智能体: ${id}`);
+
+    const agent = await this.agentRepository.findOne({ where: { id } });
+    if (!agent) {
+      throw new NotFoundException(`智能体不存在: ${id}`);
+    }
+
+    Object.assign(agent, dto);
+    const updatedAgent = await this.agentRepository.save(agent);
+
+    this.logger.log(`智能体更新成功: ${updatedAgent.code}`);
+    return updatedAgent;
+  }
+
+  /**
+   * 删除智能体
+   */
+  async deleteAgent(id: number): Promise<void> {
+    this.logger.log(`删除智能体: ${id}`);
+
+    const agent = await this.agentRepository.findOne({ where: { id } });
+    if (!agent) {
+      throw new NotFoundException(`智能体不存在: ${id}`);
+    }
+
+    // 检查是否有相关的执行记录
+    const executionCount = await this.agentExecutionRepository.count({
+      where: { agentId: id },
+    });
+    if (executionCount > 0) {
+      // 软删除 - 仅设置为不活跃状态
+      agent.isActive = false;
+      await this.agentRepository.save(agent);
+      this.logger.log(`智能体已停用（存在执行记录）: ${agent.code}`);
+    } else {
+      // 硬删除
+      await this.agentRepository.remove(agent);
+      this.logger.log(`智能体已删除: ${agent.code}`);
+    }
+  }
+
+  /**
+   * 获取单个智能体
+   */
+  async getAgentById(id: number): Promise<Agent> {
+    const agent = await this.agentRepository.findOne({ where: { id } });
+    if (!agent) {
+      throw new NotFoundException(`智能体不存在: ${id}`);
+    }
+    return agent;
+  }
+
+  /**
+   * 分页查询智能体
+   */
+  async findAgents(query: QueryAgentDto): Promise<PaginatedResponse<Agent>> {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'createdAt',
+      sortOrder = 'DESC',
+    } = query;
+    const skip = (page - 1) * limit;
+
+    // 构建查询条件
+    const where: FindOptionsWhere<Agent> = {};
+
+    if (query.code) {
+      where.code = Like(`%${query.code}%`);
+    }
+    if (query.name) {
+      where.name = Like(`%${query.name}%`);
+    }
+    if (query.isActive !== undefined) {
+      where.isActive = query.isActive;
+    }
+    if (query.model) {
+      where.model = Like(`%${query.model}%`);
+    }
+
+    const [data, total] = await this.agentRepository.findAndCount({
+      where,
+      skip,
+      take: limit,
+      order: { [sortBy]: sortOrder },
+    });
+
+    const meta: PaginationMeta = {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      hasPrevious: page > 1,
+      hasNext: page < Math.ceil(total / limit),
+    };
+
+    return { data, meta };
+  }
+
+  // ================== AgentExecution CRUD 方法 ==================
+
+  /**
+   * 获取单个执行记录
+   */
+  async getExecutionById(id: number): Promise<AgentExecution> {
+    const execution = await this.agentExecutionRepository.findOne({
+      where: { id },
+      relations: ['agent'],
+    });
+
+    if (!execution) {
+      throw new NotFoundException(`执行记录不存在: ${id}`);
+    }
+
+    return execution;
+  }
+
+  /**
+   * 分页查询执行记录
+   */
+  async findExecutions(
+    query: QueryAgentExecutionDto
+  ): Promise<PaginatedResponse<AgentExecution>> {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'createdAt',
+      sortOrder = 'DESC',
+    } = query;
+    const skip = (page - 1) * limit;
+
+    // 构建查询条件
+    const queryBuilder = this.agentExecutionRepository
+      .createQueryBuilder('execution')
+      .leftJoinAndSelect('execution.agent', 'agent')
+      .skip(skip)
+      .take(limit)
+      .orderBy(`execution.${sortBy}`, sortOrder);
+
+    // 添加筛选条件
+    if (query.agentId) {
+      queryBuilder.andWhere('execution.agentId = :agentId', {
+        agentId: query.agentId,
+      });
+    }
+
+    if (query.agentCode) {
+      queryBuilder.andWhere('agent.code LIKE :agentCode', {
+        agentCode: `%${query.agentCode}%`,
+      });
+    }
+
+    if (query.status) {
+      queryBuilder.andWhere('execution.status = :status', {
+        status: query.status,
+      });
+    }
+
+    if (query.startDate) {
+      queryBuilder.andWhere('execution.createdAt >= :startDate', {
+        startDate: new Date(query.startDate),
+      });
+    }
+
+    if (query.endDate) {
+      queryBuilder.andWhere('execution.createdAt <= :endDate', {
+        endDate: new Date(query.endDate),
+      });
+    }
+
+    if (query.inputKeyword) {
+      queryBuilder.andWhere('execution.input LIKE :inputKeyword', {
+        inputKeyword: `%${query.inputKeyword}%`,
+      });
+    }
+
+    if (query.minExecutionTime) {
+      queryBuilder.andWhere('execution.executionTime >= :minTime', {
+        minTime: query.minExecutionTime,
+      });
+    }
+
+    if (query.maxExecutionTime) {
+      queryBuilder.andWhere('execution.executionTime <= :maxTime', {
+        maxTime: query.maxExecutionTime,
+      });
+    }
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    const meta: PaginationMeta = {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+      hasPrevious: page > 1,
+      hasNext: page < Math.ceil(total / limit),
+    };
+
+    return { data, meta };
+  }
+
+  /**
+   * 获取增强版执行统计信息
+   */
+  async getEnhancedExecutionStats(
+    agentCode: string
+  ): Promise<AgentExecutionStatsDto> {
+    const agent = await this.findActiveAgent(agentCode);
+
+    const [total, completed, failed, running, pending, tokenStats, timeStats] =
+      await Promise.all([
+        this.agentExecutionRepository.count({ where: { agentId: agent.id } }),
+        this.agentExecutionRepository.count({
+          where: { agentId: agent.id, status: AgentExecutionStatus.COMPLETED },
+        }),
+        this.agentExecutionRepository.count({
+          where: { agentId: agent.id, status: AgentExecutionStatus.FAILED },
+        }),
+        this.agentExecutionRepository.count({
+          where: { agentId: agent.id, status: AgentExecutionStatus.RUNNING },
+        }),
+        this.agentExecutionRepository.count({
+          where: { agentId: agent.id, status: AgentExecutionStatus.PENDING },
+        }),
+        this.agentExecutionRepository
+          .createQueryBuilder('execution')
+          .select([
+            'SUM(execution.inputToken + execution.outputToken) as totalTokens',
+            'AVG(execution.inputToken) as avgInputTokens',
+            'AVG(execution.outputToken) as avgOutputTokens',
+          ])
+          .where('execution.agentId = :agentId', { agentId: agent.id })
+          .andWhere('execution.status = :status', {
+            status: AgentExecutionStatus.COMPLETED,
+          })
+          .getRawOne(),
+        this.agentExecutionRepository
+          .createQueryBuilder('execution')
+          .select([
+            'AVG(execution.executionTime) as avgExecutionTime',
+            'SUM(execution.executionTime) as totalExecutionTime',
+          ])
+          .where('execution.agentId = :agentId', { agentId: agent.id })
+          .andWhere('execution.status = :status', {
+            status: AgentExecutionStatus.COMPLETED,
+          })
+          .getRawOne(),
+      ]);
+
+    return {
+      total,
+      completed,
+      failed,
+      running,
+      pending,
+      successRate: total > 0 ? (completed / total) * 100 : 0,
+      totalTokens: parseInt(tokenStats?.totalTokens) || 0,
+      averageExecutionTime: parseInt(timeStats?.avgExecutionTime) || 0,
+      totalExecutionTime: parseInt(timeStats?.totalExecutionTime) || 0,
+      averageInputTokens: parseInt(tokenStats?.avgInputTokens) || 0,
+      averageOutputTokens: parseInt(tokenStats?.avgOutputTokens) || 0,
+    };
+  }
 
   /**
    * 完成执行记录
