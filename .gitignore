@@ -2,12 +2,12 @@
 node_modules/
 .pnpm-store/
 .turbo
-
 # Build outputs
 dist/
 build/
 out/
 *.tsbuildinfo
+apps/api/public
 
 # Environment files
 .env
