@@ -11,10 +11,8 @@ import {
   Length,
   IsInt,
   IsDateString,
-  Transform,
-  Type,
 } from 'class-validator';
-import { Transform as TransformPlain } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { AgentExecutionStatus } from '@sker/orm';
 
 export class ExecuteAgentDto {
@@ -361,7 +359,7 @@ export class QueryAgentDto extends PaginationDto {
     example: true,
   })
   @IsOptional()
-  @Transform(({ value }) => {
+  @Transform(({ value }: { value: any }) => {
     if (value === 'true') return true;
     if (value === 'false') return false;
     return value;
@@ -390,7 +388,6 @@ export class BatchExecuteAgentDto {
 
   @ApiPropertyOptional({
     description: '执行选项',
-    type: 'object',
   })
   @IsOptional()
   options?: OpenAIExecutionOptions;
