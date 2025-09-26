@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SentimentIntensity } from '@sker/orm';
 import {
@@ -32,16 +32,31 @@ export class SentimentIntensityService {
   async update(
     id: number,
     updateSentimentIntensityDto: UpdateSentimentIntensityDto,
-  ): Promise<SentimentIntensity | null> {
-    await this.sentimentIntensityRepository.update(
-      id,
+  ): Promise<SentimentIntensity> {
+    const existing = await this.findOne(id);
+
+    const updated = this.sentimentIntensityRepository.merge(
+      existing,
       updateSentimentIntensityDto,
     );
-    return await this.sentimentIntensityRepository.findOne({ where: { id } });
+    return await this.sentimentIntensityRepository.save(updated);
   }
 
   async remove(id: number): Promise<void> {
-    await this.sentimentIntensityRepository.delete(id);
+    const sentimentIntensity = await this.findOne(id);
+    await this.sentimentIntensityRepository.remove(sentimentIntensity);
+  }
+
+  async findOne(id: number): Promise<SentimentIntensity> {
+    const sentimentIntensity = await this.sentimentIntensityRepository.findOne({
+      where: { id },
+    });
+
+    if (!sentimentIntensity) {
+      throw new NotFoundException(`SentimentIntensity with ID ${id} not found`);
+    }
+
+    return sentimentIntensity;
   }
 
   async search(

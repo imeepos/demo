@@ -1,6 +1,13 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { EventType, MediaType, SentimentEvent } from '../entities';
+import {
+  Agent,
+  AgentExecution,
+  Config,
+  EventType,
+  MediaType,
+  SentimentEvent,
+} from '../entities';
 import { SentimentIntensity } from '../entities/SentimentIntensity';
 
 export const getDatabaseConfig = (
@@ -12,7 +19,15 @@ export const getDatabaseConfig = (
   username: configService.get<string>('POSTGRES_USER', 'postgres'),
   password: configService.get<string>('POSTGRES_PASSWORD', ''),
   database: configService.get<string>('POSTGRES_DB', 'sentiment_analysis'),
-  entities: [SentimentIntensity, SentimentEvent, EventType, MediaType],
+  entities: [
+    SentimentIntensity,
+    SentimentEvent,
+    EventType,
+    MediaType,
+    Config,
+    Agent,
+    AgentExecution,
+  ],
   synchronize: configService.get<string>('NODE_ENV') !== 'production',
   logging: configService.get<string>('NODE_ENV') === 'development',
 });
