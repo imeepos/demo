@@ -395,19 +395,20 @@ export class OpenAIService {
     const skip = (page - 1) * limit;
 
     // 构建查询条件
+    const { code, name, isActive, model } = query;
     const where: FindOptionsWhere<Agent> = {};
 
-    if (query.code) {
-      where.code = Like(`%${query.code}%`);
+    if (code) {
+      where.code = Like(`%${code}%`);
     }
-    if (query.name) {
-      where.name = Like(`%${query.name}%`);
+    if (name) {
+      where.name = Like(`%${name}%`);
     }
-    if (query.isActive !== undefined) {
-      where.isActive = query.isActive;
+    if (isActive !== undefined) {
+      where.isActive = isActive;
     }
-    if (query.model) {
-      where.model = Like(`%${query.model}%`);
+    if (model) {
+      where.model = Like(`%${model}%`);
     }
 
     const [data, total] = await this.agentRepository.findAndCount({
@@ -470,51 +471,58 @@ export class OpenAIService {
       .orderBy(`execution.${sortBy}`, sortOrder);
 
     // 添加筛选条件
-    if (query.agentId) {
-      queryBuilder.andWhere('execution.agentId = :agentId', {
-        agentId: query.agentId,
-      });
+    const {
+      agentId,
+      agentCode,
+      status,
+      startDate,
+      endDate,
+      inputKeyword,
+      minExecutionTime,
+      maxExecutionTime,
+    } = query;
+
+    if (agentId) {
+      queryBuilder.andWhere('execution.agentId = :agentId', { agentId });
     }
 
-    if (query.agentCode) {
+    if (agentCode) {
       queryBuilder.andWhere('agent.code LIKE :agentCode', {
-        agentCode: `%${query.agentCode}%`,
+        agentCode: `%${agentCode}%`,
       });
     }
 
-    if (query.status) {
-      queryBuilder.andWhere('execution.status = :status', {
-        status: query.status,
-      });
+    if (status) {
+      queryBuilder.andWhere('execution.status = :status', { status });
     }
 
-    if (query.startDate) {
+    if (startDate) {
       queryBuilder.andWhere('execution.createdAt >= :startDate', {
-        startDate: new Date(query.startDate),
+        startDate: new Date(startDate),
       });
     }
 
-    if (query.endDate) {
+    if (endDate) {
       queryBuilder.andWhere('execution.createdAt <= :endDate', {
-        endDate: new Date(query.endDate),
+        endDate: new Date(endDate),
       });
     }
 
-    if (query.inputKeyword) {
+    if (inputKeyword) {
       queryBuilder.andWhere('execution.input LIKE :inputKeyword', {
-        inputKeyword: `%${query.inputKeyword}%`,
+        inputKeyword: `%${inputKeyword}%`,
       });
     }
 
-    if (query.minExecutionTime) {
+    if (minExecutionTime) {
       queryBuilder.andWhere('execution.executionTime >= :minTime', {
-        minTime: query.minExecutionTime,
+        minTime: minExecutionTime,
       });
     }
 
-    if (query.maxExecutionTime) {
+    if (maxExecutionTime) {
       queryBuilder.andWhere('execution.executionTime <= :maxTime', {
-        maxTime: query.maxExecutionTime,
+        maxTime: maxExecutionTime,
       });
     }
 
