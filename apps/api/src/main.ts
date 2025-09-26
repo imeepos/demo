@@ -3,6 +3,7 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 import { exec } from 'child_process';
 import { join } from 'path';
 import { promisify } from 'util';
@@ -69,6 +70,18 @@ async function bootstrap() {
 
   // API 全局前缀 - 必须在 Swagger 配置之前设置
   app.setGlobalPrefix('api');
+
+  // 启用全局验证管道
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // 自动过滤掉非DTO属性
+      forbidNonWhitelisted: true, // 当有非白名单属性时抛出错误
+      transform: true, // 自动转换类型
+      transformOptions: {
+        enableImplicitConversion: true, // 启用隐式类型转换
+      },
+    }),
+  );
 
   // 配置 Swagger 文档
   const config = new DocumentBuilder()
