@@ -19,8 +19,8 @@
   "dependencies": {
     "@antv/g2plot": "^2.4.35",
     "@hookform/resolvers": "^3.10.0",
-    "@sker/hooks": "workspace:^",
     "@sker/map": "workspace:^",
+    "@sker/sdk": "workspace:^",
     "@sker/ui": "workspace:^",
     "@tanstack/react-query": "^5.90.2",
     "@tanstack/react-router": "^1.132.2",

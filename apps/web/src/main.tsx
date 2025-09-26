@@ -5,10 +5,16 @@ import { createRoot } from 'react-dom/client';
 import { Toaster } from 'react-hot-toast';
 import './styles/index.css';
 
+// 初始化API配置
+import { configureApiClient } from './config/api';
+
 // Import the generated route tree
 import { SearchProvider } from './contexts/SearchContext';
-import { queryClient } from './lib/query-client';
+import { queryClient } from './hooks/queryClient';
 import { routeTree } from './routeTree.gen';
+
+// 配置API客户端
+configureApiClient();
 
 // Create a new router instance
 const router = createRouter({
