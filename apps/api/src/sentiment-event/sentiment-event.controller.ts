@@ -22,7 +22,7 @@ import { SentimentEventResponseDto } from './dto/sentiment-event-response.dto';
 import { UpdateSentimentEventDto } from './dto/update-sentiment-event.dto';
 import { SentimentEventService } from './sentiment-event.service';
 
-@ApiTags('sentiment-event')
+@ApiTags('舆情事件')
 @Controller('sentiment-event')
 export class SentimentEventController {
   constructor(private readonly sentimentEventService: SentimentEventService) {}

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Agent, AgentExecution } from '@sker/orm';
@@ -9,8 +9,8 @@ import openaiConfig from './config/openai.config';
 
 @Module({
   imports: [
-    ConfigModule.forFeature(openaiConfig),
     TypeOrmModule.forFeature([Agent, AgentExecution]),
+    ConfigModule.forFeature(openaiConfig),
   ],
   controllers: [AgentController, AgentExecutionController],
   providers: [OpenAIService],

@@ -22,7 +22,7 @@ import { EventTypeResponseDto } from './dto/event-type-response.dto';
 import { UpdateEventTypeDto } from './dto/update-event-type.dto';
 import { EventTypeService } from './event-type.service';
 
-@ApiTags('event-type')
+@ApiTags('事件类型')
 @Controller('event-type')
 export class EventTypeController {
   constructor(private readonly eventTypeService: EventTypeService) {}

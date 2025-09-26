@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Like, FindOptionsWhere, Between } from 'typeorm';
+import { Repository, Like, FindOptionsWhere } from 'typeorm';
 import OpenAI from 'openai';
 import { Agent, AgentExecution, AgentExecutionStatus } from '@sker/orm';
 import { OpenAIConfig } from '../config/openai.config';
@@ -35,13 +35,13 @@ export class OpenAIService {
     @InjectRepository(Agent)
     private readonly agentRepository: Repository<Agent>,
     @InjectRepository(AgentExecution)
-    private readonly agentExecutionRepository: Repository<AgentExecution>
+    private readonly agentExecutionRepository: Repository<AgentExecution>,
   ) {
     const config = this.configService.get<OpenAIConfig>('openai');
 
     if (!config?.apiKey) {
       throw new Error(
-        'OpenAI API key is required. Please set OPENAI_API_KEY environment variable.'
+        'OpenAI API key is required. Please set OPENAI_API_KEY environment variable.',
       );
     }
 
@@ -61,7 +61,7 @@ export class OpenAIService {
    */
   async executeAgent(
     dto: ExecuteAgentDto,
-    options?: OpenAIExecutionOptions
+    options?: OpenAIExecutionOptions,
   ): Promise<AgentExecutionResult> {
     const { agentCode, input, context } = dto;
 
@@ -85,7 +85,7 @@ export class OpenAIService {
         execution,
         result.output,
         result.outputTokens,
-        result.inputTokens
+        result.inputTokens,
       );
 
       this.logger.log(`智能体执行完成: ${agentCode}, 执行ID: ${execution.id}`);
@@ -118,12 +118,12 @@ export class OpenAIService {
    */
   async executeAgentBatch(
     requests: ExecuteAgentDto[],
-    options?: OpenAIExecutionOptions
+    options?: OpenAIExecutionOptions,
   ): Promise<BatchExecutionResultDto> {
     this.logger.log(`开始批量执行智能体，共 ${requests.length} 个任务`);
 
     const results = await Promise.allSettled(
-      requests.map(request => this.executeAgent(request, options))
+      requests.map((request) => this.executeAgent(request, options)),
     );
 
     const successResults: AgentExecutionResult[] = [];
@@ -142,7 +142,7 @@ export class OpenAIService {
     }
 
     this.logger.log(
-      `批量执行完成，成功: ${successResults.length}, 失败: ${errorMessages.length}`
+      `批量执行完成，成功: ${successResults.length}, 失败: ${errorMessages.length}`,
     );
 
     return {
@@ -162,7 +162,7 @@ export class OpenAIService {
    */
   async getExecutionHistory(
     agentCode: string,
-    limit: number = 50
+    limit: number = 50,
   ): Promise<AgentExecution[]> {
     const agent = await this.findActiveAgent(agentCode);
 
@@ -199,7 +199,7 @@ export class OpenAIService {
       .createQueryBuilder('execution')
       .select(
         'SUM(execution.inputToken + execution.outputToken)',
-        'totalTokens'
+        'totalTokens',
       )
       .where('execution.agentId = :agentId', { agentId: agent.id })
       .andWhere('execution.status = :status', {
@@ -248,7 +248,7 @@ export class OpenAIService {
    */
   private async createExecution(
     agentId: number,
-    input: string
+    input: string,
   ): Promise<AgentExecution> {
     const execution = this.agentExecutionRepository.create({
       agentId,
@@ -272,7 +272,7 @@ export class OpenAIService {
   private async callOpenAI(
     agent: Agent,
     input: string,
-    options?: OpenAIExecutionOptions
+    options?: OpenAIExecutionOptions,
   ): Promise<{ output: string; inputTokens: number; outputTokens: number }> {
     const config = agent.getAIConfig();
 
@@ -452,7 +452,7 @@ export class OpenAIService {
    * 分页查询执行记录
    */
   async findExecutions(
-    query: QueryAgentExecutionDto
+    query: QueryAgentExecutionDto,
   ): Promise<PaginatedResponse<AgentExecution>> {
     const {
       page = 1,
@@ -544,7 +544,7 @@ export class OpenAIService {
    * 获取增强版执行统计信息
    */
   async getEnhancedExecutionStats(
-    agentCode: string
+    agentCode: string,
   ): Promise<AgentExecutionStatsDto> {
     const agent = await this.findActiveAgent(agentCode);
 
@@ -610,7 +610,7 @@ export class OpenAIService {
     execution: AgentExecution,
     output: string,
     outputTokens: number,
-    inputTokens: number
+    inputTokens: number,
   ): Promise<void> {
     execution.complete(output, outputTokens);
     execution.inputToken = inputTokens; // 更新实际的输入token数
@@ -622,7 +622,7 @@ export class OpenAIService {
    */
   private async failExecution(
     execution: AgentExecution,
-    errorMessage: string
+    errorMessage: string,
   ): Promise<void> {
     execution.fail(errorMessage);
     await this.agentExecutionRepository.save(execution);
@@ -637,7 +637,7 @@ export class OpenAIService {
     const englishWords = text
       .replace(/[\u4e00-\u9fff]/g, '')
       .split(/\s+/)
-      .filter(word => word.length > 0).length;
+      .filter((word) => word.length > 0).length;
 
     return chineseChars + Math.ceil(englishWords * 0.75);
   }

@@ -22,7 +22,7 @@ import { MediaTypeResponseDto } from './dto/media-type-response.dto';
 import { UpdateMediaTypeDto } from './dto/update-media-type.dto';
 import { MediaTypeService } from './media-type.service';
 
-@ApiTags('media-type')
+@ApiTags('媒体类型')
 @Controller('media-type')
 export class MediaTypeController {
   constructor(private readonly mediaTypeService: MediaTypeService) {}

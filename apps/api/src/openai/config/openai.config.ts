@@ -16,5 +16,5 @@ export default registerAs(
     timeout: parseInt(process.env.OPENAI_TIMEOUT || '60000'),
     defaultModel: process.env.OPENAI_DEFAULT_MODEL || 'gpt-3.5-turbo',
     maxRetries: parseInt(process.env.OPENAI_MAX_RETRIES || '3'),
-  })
+  }),
 );

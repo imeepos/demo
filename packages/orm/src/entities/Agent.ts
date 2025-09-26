@@ -22,7 +22,7 @@ import {
  * 用于存储舆情分析AI智能体的配置信息，包含系统提示词、模型参数等
  */
 @Entity('agents')
-@Index(['isActive', 'category', 'sortOrder']) // 复合索引：支持按启用状态、分类和排序查询
+@Index(['isActive', 'sortOrder']) // 复合索引：支持按启用状态和排序查询
 @Index(['code'], { unique: true }) // 唯一索引：智能体代码
 export class Agent {
   @PrimaryGeneratedColumn({ comment: '智能体唯一标识符' })

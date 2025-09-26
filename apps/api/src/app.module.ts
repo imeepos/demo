@@ -9,6 +9,7 @@ import { SentimentModule } from './sentiment/sentiment.module';
 import { SentimentEventModule } from './sentiment-event/sentiment-event.module';
 import { EventTypeModule } from './event-type/event-type.module';
 import { MediaTypeModule } from './media-type/media-type.module';
+import { OpenAIModule } from './openai';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { MediaTypeModule } from './media-type/media-type.module';
       useFactory: (configService: ConfigService) =>
         getDatabaseConfig(configService),
     }),
+    OpenAIModule,
     SentimentModule,
     SentimentIntensityModule,
     SentimentEventModule,

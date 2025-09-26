@@ -26,7 +26,7 @@ import { SentimentIntensityResponseDto } from './dto/sentiment-intensity-respons
  * 情感强度管理控制器
  * 负责处理情感强度相关的CRUD操作
  */
-@ApiTags('sentiment-intensity')
+@ApiTags('情感强度')
 @Controller('sentiment-intensity')
 export class SentimentIntensityController {
   constructor(

@@ -54,15 +54,57 @@ export class AgentController {
     description: '查询成功',
     type: PaginatedResponse<Agent>,
   })
-  @ApiQuery({ name: 'page', required: false, description: '页码，从1开始', example: 1 })
-  @ApiQuery({ name: 'limit', required: false, description: '每页数量，最大100', example: 10 })
-  @ApiQuery({ name: 'sortBy', required: false, description: '排序字段', example: 'createdAt' })
-  @ApiQuery({ name: 'sortOrder', required: false, description: '排序方向', enum: ['ASC', 'DESC'] })
-  @ApiQuery({ name: 'code', required: false, description: '智能体代码筛选', example: 'sentiment' })
-  @ApiQuery({ name: 'name', required: false, description: '智能体名称筛选', example: '情感' })
-  @ApiQuery({ name: 'isActive', required: false, description: '是否启用筛选', example: true })
-  @ApiQuery({ name: 'model', required: false, description: '模型筛选', example: 'gpt-3.5-turbo' })
-  async findAll(@Query() query: QueryAgentDto): Promise<PaginatedResponse<Agent>> {
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: '页码，从1开始',
+    example: 1,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: '每页数量，最大100',
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'sortBy',
+    required: false,
+    description: '排序字段',
+    example: 'createdAt',
+  })
+  @ApiQuery({
+    name: 'sortOrder',
+    required: false,
+    description: '排序方向',
+    enum: ['ASC', 'DESC'],
+  })
+  @ApiQuery({
+    name: 'code',
+    required: false,
+    description: '智能体代码筛选',
+    example: 'sentiment',
+  })
+  @ApiQuery({
+    name: 'name',
+    required: false,
+    description: '智能体名称筛选',
+    example: '情感',
+  })
+  @ApiQuery({
+    name: 'isActive',
+    required: false,
+    description: '是否启用筛选',
+    example: true,
+  })
+  @ApiQuery({
+    name: 'model',
+    required: false,
+    description: '模型筛选',
+    example: 'gpt-3.5-turbo',
+  })
+  async findAll(
+    @Query() query: QueryAgentDto,
+  ): Promise<PaginatedResponse<Agent>> {
     return this.openaiService.findAgents(query);
   }
 
