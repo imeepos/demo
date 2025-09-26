@@ -186,7 +186,7 @@
     infinite;
   --animate-pulse: pulse var(--duration) ease-out infinite;
   --animate-meteor: meteor 5s linear infinite;
-  --animate-gradient: gradient 8s linear infinite;
+  --animate-pulse-data: pulse-data 2s ease-in-out infinite;
   --animate-marker-draw: marker-draw 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   --animate-path-draw: path-draw 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
 
@@ -281,9 +281,12 @@
     }
   }
 
-  @keyframes gradient {
-    to {
-      background-position: var(--bg-size, 300%) 0;
+  @keyframes pulse-data {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.8;
     }
   }
 
@@ -405,30 +408,18 @@ body {
   --card-border: #e2e8f0;
   --hover-border: rgba(30, 64, 175, 0.2);
 
-  /* 舆情监控专用科技蓝渐变配色（亮色主题） */
-  --gradient-primary: linear-gradient(135deg, #1e40af 0%, #0ea5e9 100%);
-  --gradient-secondary: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-  --gradient-success: linear-gradient(135deg, #059669 0%, #047857 100%);
-  --gradient-warning: linear-gradient(135deg, #d97706 0%, #b45309 100%);
-  --gradient-danger: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  /* 舆情监控专用配色（纯色版本） */
+  --color-primary-solid: #1e40af;
+  --color-secondary-solid: #0ea5e9;
+  --color-success-solid: #059669;
+  --color-warning-solid: #d97706;
+  --color-danger-solid: #dc2626;
 
-  /* 数据卡片渐变背景（亮色优化） */
-  --gradient-card-primary: linear-gradient(
-    135deg,
-    #1e40af0a 0%,
-    #0ea5e906 100%
-  );
-  --gradient-card-success: linear-gradient(
-    135deg,
-    #05966908 0%,
-    #05966904 100%
-  );
-  --gradient-card-warning: linear-gradient(
-    135deg,
-    #d9770608 0%,
-    #d9770604 100%
-  );
-  --gradient-card-danger: linear-gradient(135deg, #dc262608 0%, #dc262604 100%);
+  /* 数据卡片背景（纯色优化） */
+  --color-card-primary: #1e40af08;
+  --color-card-success: #05966908;
+  --color-card-warning: #d9770608;
+  --color-card-danger: #dc262608;
 
   /* 阴影层次（亮色主题优化） */
   --shadow-2xs: 0 1px 1px 0 rgb(0 0 0 / 0.05);
@@ -557,15 +548,12 @@ body,
 }
 
 /* 亮色主题专用工具类 */
-.bg-tech-gradient {
-  background: var(--gradient-primary);
+.bg-tech-solid {
+  background: var(--color-primary-solid);
 }
 
-.text-tech-gradient {
-  background: var(--gradient-primary);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.text-tech-primary {
+  color: var(--color-primary-solid);
 }
 
 .border-tech {
@@ -665,7 +653,7 @@ body,
   }
 }
 
-/* 数据亮起动画 */
+/* 数据高亮动画 */
 .animate-data-highlight {
   animation: data-highlight 2s ease-in-out infinite;
 }
@@ -673,11 +661,11 @@ body,
 @keyframes data-highlight {
   0%,
   100% {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+    background-color: var(--primary);
     transform: scale(1);
   }
   50% {
-    background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+    background-color: var(--accent);
     transform: scale(1.02);
   }
 }

@@ -51,17 +51,19 @@ const FEATURES = [
  */
 export function FeaturesGrid() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-6 lg:space-y-8">
       {/* 标题区域 */}
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-foreground mb-4">核心功能</h2>
-        <p className="text-lg text-muted-foreground">
+        <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 md:mb-4">
+          核心功能
+        </h2>
+        <p className="text-base md:text-lg text-muted-foreground">
           专业的舆情监控解决方案，助您掌握舆论先机
         </p>
       </div>
 
       {/* 功能网格 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 lg:gap-6">
         {FEATURES.map(feature => (
           <FeatureCard
             key={feature.title}

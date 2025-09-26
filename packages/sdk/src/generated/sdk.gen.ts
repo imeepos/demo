@@ -3,6 +3,51 @@
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
 import type {
+  AgentControllerCreateData,
+  AgentControllerCreateErrors,
+  AgentControllerCreateResponses,
+  AgentControllerFindAllData,
+  AgentControllerFindAllResponses,
+  AgentControllerFindOneData,
+  AgentControllerFindOneErrors,
+  AgentControllerFindOneResponses,
+  AgentControllerGetStatsData,
+  AgentControllerGetStatsErrors,
+  AgentControllerGetStatsResponses,
+  AgentControllerRemoveData,
+  AgentControllerRemoveErrors,
+  AgentControllerRemoveResponses,
+  AgentControllerToggleStatusData,
+  AgentControllerToggleStatusErrors,
+  AgentControllerToggleStatusResponses,
+  AgentControllerUpdateData,
+  AgentControllerUpdateErrors,
+  AgentControllerUpdateResponses,
+  AgentExecutionControllerBatchExecuteData,
+  AgentExecutionControllerBatchExecuteResponses,
+  AgentExecutionControllerExecuteAgentData,
+  AgentExecutionControllerExecuteAgentErrors,
+  AgentExecutionControllerExecuteAgentResponses,
+  AgentExecutionControllerFindExecutionsData,
+  AgentExecutionControllerFindExecutionsResponses,
+  AgentExecutionControllerGetAnalyticsOverviewData,
+  AgentExecutionControllerGetAnalyticsOverviewResponses,
+  AgentExecutionControllerGetExecutionData,
+  AgentExecutionControllerGetExecutionErrors,
+  AgentExecutionControllerGetExecutionHistoryData,
+  AgentExecutionControllerGetExecutionHistoryErrors,
+  AgentExecutionControllerGetExecutionHistoryResponses,
+  AgentExecutionControllerGetExecutionResponses,
+  AgentExecutionControllerGetExecutionsByAgentData,
+  AgentExecutionControllerGetExecutionsByAgentResponses,
+  AgentExecutionControllerGetExecutionStatsData,
+  AgentExecutionControllerGetExecutionStatsErrors,
+  AgentExecutionControllerGetExecutionStatsResponses,
+  AgentExecutionControllerGetPerformanceAnalysisData,
+  AgentExecutionControllerGetPerformanceAnalysisResponses,
+  AgentExecutionControllerRetryExecutionData,
+  AgentExecutionControllerRetryExecutionErrors,
+  AgentExecutionControllerRetryExecutionResponses,
   AppControllerGetHelloData,
   AppControllerGetHelloResponses,
   EventTypeControllerCreateData,
@@ -37,17 +82,6 @@ import type {
   MediaTypeControllerUpdateData,
   MediaTypeControllerUpdateErrors,
   MediaTypeControllerUpdateResponses,
-  SentimentControllerGetAllEventsData,
-  SentimentControllerGetAllEventsResponses,
-  SentimentControllerGetEventByIdData,
-  SentimentControllerGetEventByIdErrors,
-  SentimentControllerGetEventByIdResponses,
-  SentimentControllerGetHotWordsData,
-  SentimentControllerGetHotWordsResponses,
-  SentimentControllerGetMetricsData,
-  SentimentControllerGetMetricsResponses,
-  SentimentControllerGetSentimentTableDataData,
-  SentimentControllerGetSentimentTableDataResponses,
   SentimentEventControllerCreateData,
   SentimentEventControllerCreateErrors,
   SentimentEventControllerCreateResponses,
@@ -110,101 +144,336 @@ export const appControllerGetHello = <ThrowOnError extends boolean = false>(
 };
 
 /**
- * 获取所有舆情事件
- * 获取系统中所有舆情事件的完整列表，包含事件详情、地理位置、情感分析结果等信息
+ * 分页查询智能体列表
  */
-export const sentimentControllerGetAllEvents = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<SentimentControllerGetAllEventsData, ThrowOnError>
+export const agentControllerFindAll = <ThrowOnError extends boolean = false>(
+  options?: Options<AgentControllerFindAllData, ThrowOnError>
 ) => {
   return (options?.client ?? client).get<
-    SentimentControllerGetAllEventsResponses,
+    AgentControllerFindAllResponses,
     unknown,
     ThrowOnError
   >({
     responseType: 'json',
-    url: '/api/sentiment/events',
+    url: '/api/agents',
     ...options,
   });
 };
 
 /**
- * 根据ID获取单个舆情事件
- * 根据事件唯一标识符获取特定舆情事件的详细信息
+ * 创建智能体
  */
-export const sentimentControllerGetEventById = <
-  ThrowOnError extends boolean = false,
->(
-  options: Options<SentimentControllerGetEventByIdData, ThrowOnError>
+export const agentControllerCreate = <ThrowOnError extends boolean = false>(
+  options: Options<AgentControllerCreateData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AgentControllerCreateResponses,
+    AgentControllerCreateErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/agents',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * 删除智能体
+ */
+export const agentControllerRemove = <ThrowOnError extends boolean = false>(
+  options: Options<AgentControllerRemoveData, ThrowOnError>
+) => {
+  return (options.client ?? client).delete<
+    AgentControllerRemoveResponses,
+    AgentControllerRemoveErrors,
+    ThrowOnError
+  >({
+    url: '/api/agents/{id}',
+    ...options,
+  });
+};
+
+/**
+ * 获取单个智能体详情
+ */
+export const agentControllerFindOne = <ThrowOnError extends boolean = false>(
+  options: Options<AgentControllerFindOneData, ThrowOnError>
 ) => {
   return (options.client ?? client).get<
-    SentimentControllerGetEventByIdResponses,
-    SentimentControllerGetEventByIdErrors,
+    AgentControllerFindOneResponses,
+    AgentControllerFindOneErrors,
     ThrowOnError
   >({
     responseType: 'json',
-    url: '/api/sentiment/events/{id}',
+    url: '/api/agents/{id}',
     ...options,
   });
 };
 
 /**
- * 获取舆情统计指标
- * 获取舆情分析的统计数据，包含正面、负面、中性情感的数量和比例信息
+ * 更新智能体
  */
-export const sentimentControllerGetMetrics = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<SentimentControllerGetMetricsData, ThrowOnError>
+export const agentControllerUpdate = <ThrowOnError extends boolean = false>(
+  options: Options<AgentControllerUpdateData, ThrowOnError>
 ) => {
-  return (options?.client ?? client).get<
-    SentimentControllerGetMetricsResponses,
-    unknown,
+  return (options.client ?? client).put<
+    AgentControllerUpdateResponses,
+    AgentControllerUpdateErrors,
     ThrowOnError
   >({
     responseType: 'json',
-    url: '/api/sentiment/metrics',
+    url: '/api/agents/{id}',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * 切换智能体启用状态
+ */
+export const agentControllerToggleStatus = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<AgentControllerToggleStatusData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AgentControllerToggleStatusResponses,
+    AgentControllerToggleStatusErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/agents/{id}/toggle-status',
     ...options,
   });
 };
 
 /**
- * 获取热点词汇数据
- * 获取当前热门词汇的统计信息，包含词汇出现频次和整体情感倾向
+ * 获取智能体统计信息
  */
-export const sentimentControllerGetHotWords = <
-  ThrowOnError extends boolean = false,
->(
-  options?: Options<SentimentControllerGetHotWordsData, ThrowOnError>
+export const agentControllerGetStats = <ThrowOnError extends boolean = false>(
+  options: Options<AgentControllerGetStatsData, ThrowOnError>
 ) => {
-  return (options?.client ?? client).get<
-    SentimentControllerGetHotWordsResponses,
-    unknown,
+  return (options.client ?? client).get<
+    AgentControllerGetStatsResponses,
+    AgentControllerGetStatsErrors,
     ThrowOnError
   >({
-    responseType: 'json',
-    url: '/api/sentiment/hotwords',
+    url: '/api/agents/{id}/stats',
     ...options,
   });
 };
 
 /**
- * 获取舆情表格显示数据
- * 获取适合在表格中展示的简化舆情数据，包含关键信息字段
+ * 执行单个智能体
  */
-export const sentimentControllerGetSentimentTableData = <
+export const agentExecutionControllerExecuteAgent = <
   ThrowOnError extends boolean = false,
 >(
-  options?: Options<SentimentControllerGetSentimentTableDataData, ThrowOnError>
+  options: Options<AgentExecutionControllerExecuteAgentData, ThrowOnError>
 ) => {
-  return (options?.client ?? client).get<
-    SentimentControllerGetSentimentTableDataResponses,
+  return (options.client ?? client).post<
+    AgentExecutionControllerExecuteAgentResponses,
+    AgentExecutionControllerExecuteAgentErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/executions/execute',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * 批量执行智能体
+ */
+export const agentExecutionControllerBatchExecute = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<AgentExecutionControllerBatchExecuteData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AgentExecutionControllerBatchExecuteResponses,
     unknown,
     ThrowOnError
   >({
     responseType: 'json',
-    url: '/api/sentiment/table',
+    url: '/api/executions/batch-execute',
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+};
+
+/**
+ * 分页查询执行记录
+ */
+export const agentExecutionControllerFindExecutions = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<AgentExecutionControllerFindExecutionsData, ThrowOnError>
+) => {
+  return (options?.client ?? client).get<
+    AgentExecutionControllerFindExecutionsResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/executions',
+    ...options,
+  });
+};
+
+/**
+ * 获取执行记录详情
+ */
+export const agentExecutionControllerGetExecution = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<AgentExecutionControllerGetExecutionData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    AgentExecutionControllerGetExecutionResponses,
+    AgentExecutionControllerGetExecutionErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/executions/{id}',
+    ...options,
+  });
+};
+
+/**
+ * 获取智能体执行历史
+ */
+export const agentExecutionControllerGetExecutionHistory = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    AgentExecutionControllerGetExecutionHistoryData,
+    ThrowOnError
+  >
+) => {
+  return (options.client ?? client).get<
+    AgentExecutionControllerGetExecutionHistoryResponses,
+    AgentExecutionControllerGetExecutionHistoryErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/executions/history/{agentCode}',
+    ...options,
+  });
+};
+
+/**
+ * 获取智能体执行统计
+ */
+export const agentExecutionControllerGetExecutionStats = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<AgentExecutionControllerGetExecutionStatsData, ThrowOnError>
+) => {
+  return (options.client ?? client).get<
+    AgentExecutionControllerGetExecutionStatsResponses,
+    AgentExecutionControllerGetExecutionStatsErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/executions/stats/{agentCode}',
+    ...options,
+  });
+};
+
+/**
+ * 根据智能体ID查询执行记录
+ */
+export const agentExecutionControllerGetExecutionsByAgent = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    AgentExecutionControllerGetExecutionsByAgentData,
+    ThrowOnError
+  >
+) => {
+  return (options.client ?? client).get<
+    AgentExecutionControllerGetExecutionsByAgentResponses,
+    unknown,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/executions/by-agent/{agentId}',
+    ...options,
+  });
+};
+
+/**
+ * 重试失败的执行记录
+ */
+export const agentExecutionControllerRetryExecution = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<AgentExecutionControllerRetryExecutionData, ThrowOnError>
+) => {
+  return (options.client ?? client).post<
+    AgentExecutionControllerRetryExecutionResponses,
+    AgentExecutionControllerRetryExecutionErrors,
+    ThrowOnError
+  >({
+    responseType: 'json',
+    url: '/api/executions/retry/{id}',
+    ...options,
+  });
+};
+
+/**
+ * 获取全局执行分析概览
+ */
+export const agentExecutionControllerGetAnalyticsOverview = <
+  ThrowOnError extends boolean = false,
+>(
+  options?: Options<
+    AgentExecutionControllerGetAnalyticsOverviewData,
+    ThrowOnError
+  >
+) => {
+  return (options?.client ?? client).get<
+    AgentExecutionControllerGetAnalyticsOverviewResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: '/api/executions/analytics/overview',
+    ...options,
+  });
+};
+
+/**
+ * 获取智能体性能分析
+ */
+export const agentExecutionControllerGetPerformanceAnalysis = <
+  ThrowOnError extends boolean = false,
+>(
+  options: Options<
+    AgentExecutionControllerGetPerformanceAnalysisData,
+    ThrowOnError
+  >
+) => {
+  return (options.client ?? client).get<
+    AgentExecutionControllerGetPerformanceAnalysisResponses,
+    unknown,
+    ThrowOnError
+  >({
+    url: '/api/executions/analytics/performance/{agentCode}',
     ...options,
   });
 };

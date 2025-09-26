@@ -13,20 +13,20 @@ export const dashboardCardVariants = cva(
   {
     variants: {
       size: {
-        sm: 'p-4',
-        default: 'p-6',
-        lg: 'p-8',
+        sm: 'p-2',
+        default: 'p-3',
+        lg: 'p-4',
       },
       variant: {
         default: '',
         primary:
-          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[var(--primary)] before:to-[var(--accent)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-gradient-to-br hover:from-[var(--primary)]/5 hover:to-[var(--accent)]/5',
+          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[var(--primary)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--primary)]/5',
         success:
-          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[var(--success)] before:to-[var(--success)]/80 before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--success)]/5',
+          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[var(--success)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--success)]/5',
         warning:
-          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[var(--warning)] before:to-[var(--warning)]/80 before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--warning)]/5',
+          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[var(--warning)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--warning)]/5',
         danger:
-          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[var(--destructive)] before:to-[var(--destructive)]/80 before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--destructive)]/5',
+          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[var(--destructive)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--destructive)]/5',
       },
       highlighted: {
         true: 'after:absolute after:top-0 after:right-0 after:w-1 after:h-full after:bg-[var(--primary)] after:transition-opacity after:duration-300 after:opacity-100',
@@ -35,7 +35,7 @@ export const dashboardCardVariants = cva(
       },
     },
     defaultVariants: {
-      size: 'default',
+      size: 'sm',
       variant: 'default',
       highlighted: false,
     },
@@ -49,23 +49,23 @@ export const metricCardVariants = cva(
     variants: {
       variant: {
         primary:
-          'bg-gradient-to-br from-[var(--primary)]/8 to-[var(--accent)]/6 border-2 border-transparent hover:border-[var(--primary)]/25 hover:shadow-lg hover:shadow-[var(--primary)]/10',
+          'bg-[var(--primary)]/8 border-2 border-transparent hover:border-[var(--primary)]/25 hover:shadow-lg hover:shadow-[var(--primary)]/10',
         success:
-          'bg-gradient-to-br from-[var(--success)]/8 to-[var(--success)]/6 border-2 border-transparent hover:border-[var(--success)]/25 hover:shadow-lg hover:shadow-[var(--success)]/10',
+          'bg-[var(--success)]/8 border-2 border-transparent hover:border-[var(--success)]/25 hover:shadow-lg hover:shadow-[var(--success)]/10',
         warning:
-          'bg-gradient-to-br from-[var(--warning)]/8 to-[var(--warning)]/6 border-2 border-transparent hover:border-[var(--warning)]/25 hover:shadow-lg hover:shadow-[var(--warning)]/10',
+          'bg-[var(--warning)]/8 border-2 border-transparent hover:border-[var(--warning)]/25 hover:shadow-lg hover:shadow-[var(--warning)]/10',
         danger:
-          'bg-gradient-to-br from-[var(--destructive)]/8 to-[var(--destructive)]/6 border-2 border-transparent hover:border-[var(--destructive)]/25 hover:shadow-lg hover:shadow-[var(--destructive)]/10',
+          'bg-[var(--destructive)]/8 border-2 border-transparent hover:border-[var(--destructive)]/25 hover:shadow-lg hover:shadow-[var(--destructive)]/10',
       },
       size: {
-        sm: 'p-4',
-        default: 'p-6',
-        lg: 'p-8',
+        sm: 'p-2',
+        default: 'p-3',
+        lg: 'p-4',
       },
     },
     defaultVariants: {
       variant: 'primary',
-      size: 'default',
+      size: 'sm',
     },
   }
 );
@@ -81,19 +81,15 @@ export const metricValueVariants = cva(
         lg: 'text-5xl lg:text-6xl',
       },
       variant: {
-        primary:
-          'bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] bg-clip-text text-transparent',
-        success:
-          'bg-gradient-to-r from-[var(--success)] to-[var(--success)]/80 bg-clip-text text-transparent',
-        warning:
-          'bg-gradient-to-r from-[var(--warning)] to-[var(--warning)]/80 bg-clip-text text-transparent',
-        danger:
-          'bg-gradient-to-r from-[var(--destructive)] to-[var(--destructive)]/80 bg-clip-text text-transparent',
+        primary: 'text-[var(--primary)]',
+        success: 'text-[var(--success)]',
+        warning: 'text-[var(--warning)]',
+        danger: 'text-[var(--destructive)]',
         neutral: 'text-foreground',
       },
     },
     defaultVariants: {
-      size: 'default',
+      size: 'sm',
       variant: 'primary',
     },
   }
@@ -159,16 +155,11 @@ export const intensityFillVariants = cva(
   {
     variants: {
       intensity: {
-        'very-positive':
-          'bg-gradient-to-r from-[var(--sentiment-very-positive)] to-[var(--sentiment-very-positive)]/90',
-        positive:
-          'bg-gradient-to-r from-[var(--sentiment-positive)] to-[var(--sentiment-positive)]/90',
-        neutral:
-          'bg-gradient-to-r from-[var(--sentiment-neutral)] to-[var(--sentiment-neutral)]/90',
-        negative:
-          'bg-gradient-to-r from-[var(--sentiment-negative)] to-[var(--sentiment-negative)]/90',
-        'very-negative':
-          'bg-gradient-to-r from-[var(--sentiment-very-negative)] to-[var(--sentiment-very-negative)]/90',
+        'very-positive': 'bg-[var(--sentiment-very-positive)]',
+        positive: 'bg-[var(--sentiment-positive)]',
+        neutral: 'bg-[var(--sentiment-neutral)]',
+        negative: 'bg-[var(--sentiment-negative)]',
+        'very-negative': 'bg-[var(--sentiment-very-negative)]',
       },
     },
     defaultVariants: {
@@ -221,13 +212,13 @@ export const statusDotVariants = cva(
 
 // 图表容器变体（亮色主题优化）
 export const chartContainerVariants = cva(
-  'relative p-6 bg-card border border-border/50 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300',
+  'relative p-2 bg-card border border-border/50 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300',
   {
     variants: {
       size: {
-        sm: 'h-64',
-        default: 'h-80',
-        lg: 'h-96',
+        sm: 'h-40',
+        default: 'h-48',
+        lg: 'h-64',
       },
       pattern: {
         true: 'before:absolute before:inset-0 before:bg-[linear-gradient(45deg,transparent_48%,rgb(var(--border))_48%,rgb(var(--border))_52%,transparent_52%)] before:bg-[length:24px_24px] before:opacity-[0.02] before:pointer-events-none',
@@ -235,7 +226,7 @@ export const chartContainerVariants = cva(
       },
     },
     defaultVariants: {
-      size: 'default',
+      size: 'sm',
       pattern: true,
     },
   }
@@ -243,17 +234,17 @@ export const chartContainerVariants = cva(
 
 // 词云标签变体（亮色科技蓝主题优化）
 export const wordcloudTagVariants = cva(
-  'inline-block px-4 py-2 m-1.5 rounded-full text-sm font-semibold border cursor-pointer transition-all duration-300 relative overflow-hidden hover:scale-105',
+  'inline-block px-3 py-1 m-1 rounded-full text-xs font-semibold border cursor-pointer transition-all duration-300 relative overflow-hidden hover:scale-105',
   {
     variants: {
       variant: {
         primary:
-          'bg-gradient-to-r from-[var(--primary)] to-[var(--accent)] text-white border-[var(--primary)]/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-[var(--primary)]/25',
+          'bg-[var(--primary)] text-white border-[var(--primary)]/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-[var(--primary)]/25',
         secondary:
-          'bg-gradient-to-r from-[var(--accent)] to-[var(--accent)]/80 text-white border-[var(--accent)]/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-[var(--accent)]/25',
+          'bg-[var(--accent)] text-white border-[var(--accent)]/30 hover:-translate-y-1 hover:shadow-xl hover:shadow-[var(--accent)]/25',
       },
       shine: {
-        true: 'before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:transition-all before:duration-700 hover:before:left-full',
+        true: 'before:absolute before:top-0 before:-left-full before:w-full before:h-full before:bg-white/20 before:transition-all before:duration-700 hover:before:left-full',
         false: '',
       },
     },
@@ -282,25 +273,22 @@ export const progressBarVariants = cva(
 );
 
 export const progressFillVariants = cva(
-  'h-full bg-gradient-to-r from-primary to-primary/80 transition-all duration-1000 ease-out relative rounded-full',
+  'h-full bg-primary transition-all duration-1000 ease-out relative rounded-full',
   {
     variants: {
       shine: {
-        true: 'after:absolute after:inset-0 after:bg-[linear-gradient(45deg,transparent_30%,rgba(255,255,255,0.4)_30%,rgba(255,255,255,0.4)_70%,transparent_70%)] after:bg-[length:25px_25px] after:animate-progress-shine after:rounded-full',
+        true: 'after:absolute after:inset-0 after:bg-white/20 after:animate-progress-shine after:rounded-full',
         false: '',
       },
       variant: {
-        primary: 'bg-gradient-to-r from-[var(--primary)] to-[var(--accent)]',
-        success:
-          'bg-gradient-to-r from-[var(--success)] to-[var(--success)]/80',
-        warning:
-          'bg-gradient-to-r from-[var(--warning)] to-[var(--warning)]/80',
-        danger:
-          'bg-gradient-to-r from-[var(--destructive)] to-[var(--destructive)]/80',
+        primary: 'bg-[var(--primary)]',
+        success: 'bg-[var(--success)]',
+        warning: 'bg-[var(--warning)]',
+        danger: 'bg-[var(--destructive)]',
       },
     },
     defaultVariants: {
-      shine: true,
+      shine: false,
       variant: 'primary',
     },
   }

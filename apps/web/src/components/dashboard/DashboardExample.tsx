@@ -52,25 +52,25 @@ export function DashboardExample() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
+    <div className="min-h-screen bg-background p-2 md:p-3 lg:p-4 space-y-2 md:space-y-3 lg:space-y-4">
       {/* 大屏标题 */}
-      <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent mb-2">
+      <div className="text-center mb-4 md:mb-6 lg:mb-8">
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-1 md:mb-2">
           舆情分析监控大屏
         </h1>
-        <p className="text-muted-foreground text-lg">
+        <p className="text-muted-foreground text-sm md:text-base lg:text-lg">
           基于 Tailwind CSS 组件系统 · 实时数据监控
         </p>
         <LiveIndicator
           status={isLoading ? 'warning' : 'online'}
-          className="mt-4"
+          className="mt-2 md:mt-4"
         >
           {isLoading ? '更新中...' : 'LIVE'}
         </LiveIndicator>
       </div>
 
       {/* 核心指标网格 - 响应式优化 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-1 md:gap-2 mb-2 md:mb-4">
         <DashboardCard variant="primary" highlighted>
           <BaseMetricCard variant="primary">
             <div className="flex items-center justify-center mb-3">
@@ -136,7 +136,7 @@ export function DashboardExample() {
         </DashboardCard>
       </div>
 
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-2 md:gap-4 lg:gap-6">
         {/* 情感分析展示 */}
         <DashboardCard size="lg">
           <div className="space-y-4">
@@ -365,7 +365,7 @@ export function DashboardExample() {
       </DashboardCard>
 
       {/* 趋势指示器展示 - 响应式优化 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3 lg:gap-4">
         <DashboardCard>
           <div className="text-center">
             <MetricValue variant="primary" size="sm">

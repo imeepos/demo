@@ -11,7 +11,7 @@ import { WelcomeSection } from '../components/home/WelcomeSection';
 export function HomePage() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 py-8 space-y-16">
+      <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 py-4 md:py-6 space-y-4 md:space-y-6 lg:space-y-8">
         {/* 欢迎区域 */}
         <WelcomeSection />
 
@@ -25,20 +25,20 @@ export function HomePage() {
         <SystemStatusSection />
 
         {/* 主要功能入口 */}
-        <div className="text-center space-y-8">
+        <div className="text-center space-y-4 md:space-y-6">
           <div>
-            <h2 className="text-3xl font-bold text-foreground mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-2 md:mb-4">
               开始使用
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-base md:text-lg text-muted-foreground">
               选择合适的视图，开始您的舆情监控之旅
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-3 md:gap-4 lg:gap-6">
             <Link
               to="/dashboard-view"
-              className="group relative overflow-hidden bg-gradient-to-br from-primary to-primary/80 text-primary-foreground rounded-2xl p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+              className="group relative overflow-hidden bg-primary text-primary-foreground rounded-2xl p-4 md:p-6 lg:p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative space-y-3">
@@ -55,7 +55,7 @@ export function HomePage() {
 
             <Link
               to="/dashboard"
-              className="group relative overflow-hidden bg-gradient-to-br from-secondary to-secondary/80 text-secondary-foreground rounded-2xl p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+              className="group relative overflow-hidden bg-secondary text-secondary-foreground rounded-2xl p-4 md:p-6 lg:p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative space-y-3">
@@ -72,7 +72,7 @@ export function HomePage() {
 
             <Link
               to="/sentiment-intensity"
-              className="group relative overflow-hidden bg-gradient-to-br from-warning to-warning/80 text-warning-foreground rounded-2xl p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+              className="group relative overflow-hidden bg-warning text-warning-foreground rounded-2xl p-4 md:p-6 lg:p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative space-y-3">
@@ -89,7 +89,7 @@ export function HomePage() {
 
             <Link
               to="/sentiment-event"
-              className="group relative overflow-hidden bg-gradient-to-br from-success to-success/80 text-success-foreground rounded-2xl p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+              className="group relative overflow-hidden bg-success text-success-foreground rounded-2xl p-4 md:p-6 lg:p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative space-y-3">
@@ -106,7 +106,7 @@ export function HomePage() {
 
             <Link
               to="/color-test"
-              className="group relative overflow-hidden bg-gradient-to-br from-accent to-accent/80 text-white rounded-2xl p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+              className="group relative overflow-hidden bg-accent text-white rounded-2xl p-4 md:p-6 lg:p-8 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
             >
               <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="relative space-y-3">

@@ -4,135 +4,253 @@ export type ClientOptions = {
   baseURL: string;
 };
 
-export type GeoCoordinateSchema = {
+export type CreateAgentDto = {
   /**
-   * 纬度
+   * 智能体代码
    */
-  lat: number;
+  code: string;
   /**
-   * 经度
+   * 智能体名称
    */
-  lng: number;
+  name: string;
+  /**
+   * 智能体描述
+   */
+  description?: string;
+  /**
+   * 系统提示词
+   */
+  systemPrompt: string;
+  /**
+   * 温度值，控制输出随机性
+   */
+  temperature?: number;
+  /**
+   * 最大token数
+   */
+  maxTokens?: number;
+  /**
+   * 使用的模型
+   */
+  model?: string;
+  /**
+   * 是否启用
+   */
+  isActive?: boolean;
+  /**
+   * 排序权重
+   */
+  sortOrder?: number;
 };
 
-export type SentimentEventSchema = {
-  /**
-   * 事件唯一标识符
-   */
-  id: string;
-  /**
-   * 事件标题
-   */
-  title: string;
-  /**
-   * 事件详细内容描述
-   */
-  content: string;
-  /**
-   * 情感倾向：positive(正面)、negative(负面)、neutral(中性)
-   */
-  sentiment: 'positive' | 'negative' | 'neutral';
-  /**
-   * 情感分数，范围通常为-1到1，负数表示负面情感
-   */
-  score: number;
-  /**
-   * 事件发生的地理位置坐标
-   */
-  location: GeoCoordinateSchema;
-  /**
-   * 事件发生的具体地址描述
-   */
-  address: string;
-  /**
-   * 信息来源媒体或平台
-   */
-  source: string;
-  /**
-   * 事件发生的时间戳
-   */
-  timestamp: string;
-  /**
-   * 事件热度值，数值越高表示关注度越高
-   */
-  hotness: number;
-  /**
-   * 事件相关标签
-   */
-  tags?: Array<string>;
+export type Agent = {
+  [key: string]: unknown;
 };
 
-export type SentimentMetricsSchema = {
+export type PaginationMeta = {
   /**
-   * 总事件数量
+   * 当前页码
    */
-  totalPosts: number;
+  page: number;
   /**
-   * 正面情感事件占比（百分比）
+   * 每页数量
    */
-  positiveRatio: number;
+  limit: number;
   /**
-   * 负面情感事件占比（百分比）
+   * 总记录数
    */
-  negativeRatio: number;
+  total: number;
   /**
-   * 中性情感事件占比（百分比）
+   * 总页数
    */
-  neutralRatio: number;
+  totalPages: number;
   /**
-   * 正面情感事件总数
+   * 是否有上一页
    */
-  totalPositive: number;
+  hasPrevious: boolean;
   /**
-   * 负面情感事件总数
+   * 是否有下一页
    */
-  totalNegative: number;
-  /**
-   * 中性情感事件总数
-   */
-  totalNeutral: number;
+  hasNext: boolean;
 };
 
-export type HotWordSchema = {
+export type PaginatedResponse = {
   /**
-   * 词汇内容
+   * 数据列表
    */
-  word: string;
+  data: Array<string>;
   /**
-   * 词汇出现频次
+   * 分页信息
    */
-  count: number;
-  /**
-   * 词汇整体情感倾向：positive(正面)、negative(负面)、neutral(中性)
-   */
-  sentiment: 'positive' | 'negative' | 'neutral';
+  meta: PaginationMeta;
 };
 
-export type SentimentTableItemSchema = {
+export type UpdateAgentDto = {
   /**
-   * 事件唯一标识符
+   * 智能体名称
    */
-  id: string;
+  name?: string;
   /**
-   * 事件标题
+   * 智能体描述
    */
-  title: string;
+  description?: string;
   /**
-   * 信息来源
+   * 系统提示词
    */
-  source: string;
+  systemPrompt?: string;
   /**
-   * 情感倾向
+   * 温度值，控制输出随机性
    */
-  sentiment: 'positive' | 'negative' | 'neutral';
+  temperature?: number;
   /**
-   * 情感分数
+   * 最大token数
    */
-  score: number;
+  maxTokens?: number;
   /**
-   * 事件时间
+   * 使用的模型
    */
-  time: string;
+  model?: string;
+  /**
+   * 是否启用
+   */
+  isActive?: boolean;
+  /**
+   * 排序权重
+   */
+  sortOrder?: number;
+};
+
+export type ExecuteAgentDto = {
+  /**
+   * 智能体代码
+   */
+  agentCode: string;
+  /**
+   * 输入内容
+   */
+  input: string;
+  /**
+   * 额外上下文信息
+   */
+  context?: string;
+};
+
+export type AgentExecutionResult = {
+  /**
+   * 执行记录ID
+   */
+  executionId: number;
+  /**
+   * AI生成的输出内容
+   */
+  output: string;
+  /**
+   * 输入token数量
+   */
+  inputTokens: number;
+  /**
+   * 输出token数量
+   */
+  outputTokens: number;
+  /**
+   * 总token数量
+   */
+  totalTokens: number;
+  /**
+   * 执行时间（毫秒）
+   */
+  executionTime: number;
+  /**
+   * 使用的模型
+   */
+  model: string;
+};
+
+export type BatchExecuteAgentDto = {
+  /**
+   * 批量执行请求列表
+   */
+  requests: Array<ExecuteAgentDto>;
+  /**
+   * 执行选项
+   */
+  options?: {
+    [key: string]: unknown;
+  };
+};
+
+export type BatchExecutionResultDto = {
+  /**
+   * 成功执行的结果
+   */
+  successResults: Array<AgentExecutionResult>;
+  /**
+   * 失败的错误信息
+   */
+  errorMessages: Array<string>;
+  /**
+   * 成功数量
+   */
+  successCount: number;
+  /**
+   * 失败数量
+   */
+  failureCount: number;
+  /**
+   * 总数量
+   */
+  totalCount: number;
+};
+
+export type AgentExecution = {
+  [key: string]: unknown;
+};
+
+export type AgentExecutionStatsDto = {
+  /**
+   * 总执行次数
+   */
+  total: number;
+  /**
+   * 成功执行次数
+   */
+  completed: number;
+  /**
+   * 失败执行次数
+   */
+  failed: number;
+  /**
+   * 运行中执行次数
+   */
+  running: number;
+  /**
+   * 等待中执行次数
+   */
+  pending: number;
+  /**
+   * 成功率（百分比）
+   */
+  successRate: number;
+  /**
+   * 总消耗token数
+   */
+  totalTokens: number;
+  /**
+   * 平均执行时间（毫秒）
+   */
+  averageExecutionTime: number;
+  /**
+   * 总执行时间（毫秒）
+   */
+  totalExecutionTime: number;
+  /**
+   * 平均输入token数
+   */
+  averageInputTokens: number;
+  /**
+   * 平均输出token数
+   */
+  averageOutputTokens: number;
 };
 
 export type CreateSentimentIntensityDto = {
@@ -475,102 +593,565 @@ export type AppControllerGetHelloResponses = {
   200: unknown;
 };
 
-export type SentimentControllerGetAllEventsData = {
+export type AgentControllerFindAllData = {
   body?: never;
   path?: never;
-  query?: never;
-  url: '/api/sentiment/events';
+  query?: {
+    /**
+     * 页码，从1开始
+     */
+    page?: number;
+    /**
+     * 每页数量，最大100
+     */
+    limit?: number;
+    /**
+     * 排序字段
+     */
+    sortBy?: string;
+    /**
+     * 排序方向
+     */
+    sortOrder?: 'ASC' | 'DESC';
+    /**
+     * 智能体代码筛选
+     */
+    code?: string;
+    /**
+     * 智能体名称筛选
+     */
+    name?: string;
+    /**
+     * 是否启用筛选
+     */
+    isActive?: boolean;
+    /**
+     * 模型筛选
+     */
+    model?: string;
+  };
+  url: '/api/agents';
 };
 
-export type SentimentControllerGetAllEventsResponses = {
+export type AgentControllerFindAllResponses = {
   /**
-   * 成功获取舆情事件列表
+   * 查询成功
    */
-  200: Array<SentimentEventSchema>;
+  200: PaginatedResponse;
 };
 
-export type SentimentControllerGetAllEventsResponse =
-  SentimentControllerGetAllEventsResponses[keyof SentimentControllerGetAllEventsResponses];
+export type AgentControllerFindAllResponse =
+  AgentControllerFindAllResponses[keyof AgentControllerFindAllResponses];
 
-export type SentimentControllerGetEventByIdData = {
+export type AgentControllerCreateData = {
+  body: CreateAgentDto;
+  path?: never;
+  query?: never;
+  url: '/api/agents';
+};
+
+export type AgentControllerCreateErrors = {
+  /**
+   * 智能体代码已存在
+   */
+  409: unknown;
+};
+
+export type AgentControllerCreateResponses = {
+  /**
+   * 智能体创建成功
+   */
+  201: Agent;
+};
+
+export type AgentControllerCreateResponse =
+  AgentControllerCreateResponses[keyof AgentControllerCreateResponses];
+
+export type AgentControllerRemoveData = {
   body?: never;
   path: {
     /**
-     * 舆情事件的唯一标识符
+     * 智能体ID
      */
-    id: string;
+    id: number;
   };
   query?: never;
-  url: '/api/sentiment/events/{id}';
+  url: '/api/agents/{id}';
 };
 
-export type SentimentControllerGetEventByIdErrors = {
+export type AgentControllerRemoveErrors = {
   /**
-   * 未找到指定ID的舆情事件
+   * 智能体不存在
    */
   404: unknown;
 };
 
-export type SentimentControllerGetEventByIdResponses = {
+export type AgentControllerRemoveResponses = {
   /**
-   * 成功获取舆情事件详情
+   * 删除成功（如果有执行记录则软删除）
    */
-  200: SentimentEventSchema;
+  204: void;
 };
 
-export type SentimentControllerGetEventByIdResponse =
-  SentimentControllerGetEventByIdResponses[keyof SentimentControllerGetEventByIdResponses];
+export type AgentControllerRemoveResponse =
+  AgentControllerRemoveResponses[keyof AgentControllerRemoveResponses];
 
-export type SentimentControllerGetMetricsData = {
+export type AgentControllerFindOneData = {
+  body?: never;
+  path: {
+    /**
+     * 智能体ID
+     */
+    id: number;
+  };
+  query?: never;
+  url: '/api/agents/{id}';
+};
+
+export type AgentControllerFindOneErrors = {
+  /**
+   * 智能体不存在
+   */
+  404: unknown;
+};
+
+export type AgentControllerFindOneResponses = {
+  /**
+   * 查询成功
+   */
+  200: Agent;
+};
+
+export type AgentControllerFindOneResponse =
+  AgentControllerFindOneResponses[keyof AgentControllerFindOneResponses];
+
+export type AgentControllerUpdateData = {
+  body: UpdateAgentDto;
+  path: {
+    /**
+     * 智能体ID
+     */
+    id: number;
+  };
+  query?: never;
+  url: '/api/agents/{id}';
+};
+
+export type AgentControllerUpdateErrors = {
+  /**
+   * 智能体不存在
+   */
+  404: unknown;
+};
+
+export type AgentControllerUpdateResponses = {
+  /**
+   * 更新成功
+   */
+  200: Agent;
+};
+
+export type AgentControllerUpdateResponse =
+  AgentControllerUpdateResponses[keyof AgentControllerUpdateResponses];
+
+export type AgentControllerToggleStatusData = {
+  body?: never;
+  path: {
+    /**
+     * 智能体ID
+     */
+    id: number;
+  };
+  query?: never;
+  url: '/api/agents/{id}/toggle-status';
+};
+
+export type AgentControllerToggleStatusErrors = {
+  /**
+   * 智能体不存在
+   */
+  404: unknown;
+};
+
+export type AgentControllerToggleStatusResponses = {
+  /**
+   * 状态切换成功
+   */
+  200: Agent;
+};
+
+export type AgentControllerToggleStatusResponse =
+  AgentControllerToggleStatusResponses[keyof AgentControllerToggleStatusResponses];
+
+export type AgentControllerGetStatsData = {
+  body?: never;
+  path: {
+    /**
+     * 智能体ID
+     */
+    id: number;
+  };
+  query?: never;
+  url: '/api/agents/{id}/stats';
+};
+
+export type AgentControllerGetStatsErrors = {
+  /**
+   * 智能体不存在
+   */
+  404: unknown;
+};
+
+export type AgentControllerGetStatsResponses = {
+  /**
+   * 统计信息获取成功
+   */
+  200: unknown;
+};
+
+export type AgentExecutionControllerExecuteAgentData = {
+  body: ExecuteAgentDto;
+  path?: never;
+  query?: never;
+  url: '/api/executions/execute';
+};
+
+export type AgentExecutionControllerExecuteAgentErrors = {
+  /**
+   * 智能体不存在
+   */
+  404: unknown;
+  /**
+   * 执行失败
+   */
+  500: unknown;
+};
+
+export type AgentExecutionControllerExecuteAgentResponses = {
+  /**
+   * 执行成功
+   */
+  200: AgentExecutionResult;
+};
+
+export type AgentExecutionControllerExecuteAgentResponse =
+  AgentExecutionControllerExecuteAgentResponses[keyof AgentExecutionControllerExecuteAgentResponses];
+
+export type AgentExecutionControllerBatchExecuteData = {
+  /**
+   * 批量执行请求
+   */
+  body: BatchExecuteAgentDto;
+  path?: never;
+  query?: never;
+  url: '/api/executions/batch-execute';
+};
+
+export type AgentExecutionControllerBatchExecuteResponses = {
+  /**
+   * 批量执行完成
+   */
+  200: BatchExecutionResultDto;
+};
+
+export type AgentExecutionControllerBatchExecuteResponse =
+  AgentExecutionControllerBatchExecuteResponses[keyof AgentExecutionControllerBatchExecuteResponses];
+
+export type AgentExecutionControllerFindExecutionsData = {
+  body?: never;
+  path?: never;
+  query?: {
+    /**
+     * 页码，从1开始
+     */
+    page?: number;
+    /**
+     * 每页数量，最大100
+     */
+    limit?: number;
+    /**
+     * 排序字段
+     */
+    sortBy?: string;
+    /**
+     * 排序方向
+     */
+    sortOrder?: 'ASC' | 'DESC';
+    /**
+     * 智能体ID筛选
+     */
+    agentId?: number;
+    /**
+     * 智能体代码筛选
+     */
+    agentCode?: string;
+    /**
+     * 执行状态筛选
+     */
+    status?: 'pending' | 'running' | 'completed' | 'failed';
+    /**
+     * 开始时间筛选
+     */
+    startDate?: string;
+    /**
+     * 结束时间筛选
+     */
+    endDate?: string;
+    /**
+     * 输入内容关键词筛选
+     */
+    inputKeyword?: string;
+    /**
+     * 最小执行时间筛选（毫秒）
+     */
+    minExecutionTime?: number;
+    /**
+     * 最大执行时间筛选（毫秒）
+     */
+    maxExecutionTime?: number;
+  };
+  url: '/api/executions';
+};
+
+export type AgentExecutionControllerFindExecutionsResponses = {
+  /**
+   * 查询成功
+   */
+  200: PaginatedResponse;
+};
+
+export type AgentExecutionControllerFindExecutionsResponse =
+  AgentExecutionControllerFindExecutionsResponses[keyof AgentExecutionControllerFindExecutionsResponses];
+
+export type AgentExecutionControllerGetExecutionData = {
+  body?: never;
+  path: {
+    /**
+     * 执行记录ID
+     */
+    id: number;
+  };
+  query?: never;
+  url: '/api/executions/{id}';
+};
+
+export type AgentExecutionControllerGetExecutionErrors = {
+  /**
+   * 执行记录不存在
+   */
+  404: unknown;
+};
+
+export type AgentExecutionControllerGetExecutionResponses = {
+  /**
+   * 查询成功
+   */
+  200: AgentExecution;
+};
+
+export type AgentExecutionControllerGetExecutionResponse =
+  AgentExecutionControllerGetExecutionResponses[keyof AgentExecutionControllerGetExecutionResponses];
+
+export type AgentExecutionControllerGetExecutionHistoryData = {
+  body?: never;
+  path: {
+    /**
+     * 智能体代码
+     */
+    agentCode: string;
+  };
+  query?: {
+    /**
+     * 限制数量
+     */
+    limit?: number;
+  };
+  url: '/api/executions/history/{agentCode}';
+};
+
+export type AgentExecutionControllerGetExecutionHistoryErrors = {
+  /**
+   * 智能体不存在
+   */
+  404: unknown;
+};
+
+export type AgentExecutionControllerGetExecutionHistoryResponses = {
+  /**
+   * 查询成功
+   */
+  200: Array<AgentExecution>;
+};
+
+export type AgentExecutionControllerGetExecutionHistoryResponse =
+  AgentExecutionControllerGetExecutionHistoryResponses[keyof AgentExecutionControllerGetExecutionHistoryResponses];
+
+export type AgentExecutionControllerGetExecutionStatsData = {
+  body?: never;
+  path: {
+    /**
+     * 智能体代码
+     */
+    agentCode: string;
+  };
+  query?: never;
+  url: '/api/executions/stats/{agentCode}';
+};
+
+export type AgentExecutionControllerGetExecutionStatsErrors = {
+  /**
+   * 智能体不存在
+   */
+  404: unknown;
+};
+
+export type AgentExecutionControllerGetExecutionStatsResponses = {
+  /**
+   * 统计信息获取成功
+   */
+  200: AgentExecutionStatsDto;
+};
+
+export type AgentExecutionControllerGetExecutionStatsResponse =
+  AgentExecutionControllerGetExecutionStatsResponses[keyof AgentExecutionControllerGetExecutionStatsResponses];
+
+export type AgentExecutionControllerGetExecutionsByAgentData = {
+  body?: never;
+  path: {
+    /**
+     * 智能体ID
+     */
+    agentId: number;
+  };
+  query?: {
+    /**
+     * 页码
+     */
+    page?: number;
+    /**
+     * 每页数量
+     */
+    limit?: number;
+    /**
+     * 排序字段
+     */
+    sortBy?: string;
+    /**
+     * 排序方向
+     */
+    sortOrder?: 'ASC' | 'DESC';
+    /**
+     * 智能体代码筛选
+     */
+    agentCode?: string;
+    /**
+     * 状态筛选
+     */
+    status?: 'pending' | 'running' | 'completed' | 'failed';
+    /**
+     * 开始时间筛选（ISO字符串）
+     */
+    startDate?: string;
+    /**
+     * 结束时间筛选（ISO字符串）
+     */
+    endDate?: string;
+    /**
+     * 输入内容关键词筛选
+     */
+    inputKeyword?: string;
+    /**
+     * 最小执行时间筛选（毫秒）
+     */
+    minExecutionTime?: number;
+    /**
+     * 最大执行时间筛选（毫秒）
+     */
+    maxExecutionTime?: number;
+  };
+  url: '/api/executions/by-agent/{agentId}';
+};
+
+export type AgentExecutionControllerGetExecutionsByAgentResponses = {
+  /**
+   * 查询成功
+   */
+  200: PaginatedResponse;
+};
+
+export type AgentExecutionControllerGetExecutionsByAgentResponse =
+  AgentExecutionControllerGetExecutionsByAgentResponses[keyof AgentExecutionControllerGetExecutionsByAgentResponses];
+
+export type AgentExecutionControllerRetryExecutionData = {
+  body?: never;
+  path: {
+    /**
+     * 执行记录ID
+     */
+    id: number;
+  };
+  query?: never;
+  url: '/api/executions/retry/{id}';
+};
+
+export type AgentExecutionControllerRetryExecutionErrors = {
+  /**
+   * 执行记录状态不允许重试
+   */
+  400: unknown;
+  /**
+   * 执行记录不存在
+   */
+  404: unknown;
+};
+
+export type AgentExecutionControllerRetryExecutionResponses = {
+  /**
+   * 重试成功
+   */
+  200: AgentExecutionResult;
+};
+
+export type AgentExecutionControllerRetryExecutionResponse =
+  AgentExecutionControllerRetryExecutionResponses[keyof AgentExecutionControllerRetryExecutionResponses];
+
+export type AgentExecutionControllerGetAnalyticsOverviewData = {
   body?: never;
   path?: never;
   query?: never;
-  url: '/api/sentiment/metrics';
+  url: '/api/executions/analytics/overview';
 };
 
-export type SentimentControllerGetMetricsResponses = {
+export type AgentExecutionControllerGetAnalyticsOverviewResponses = {
   /**
-   * 成功获取舆情统计指标
+   * 分析数据获取成功
    */
-  200: SentimentMetricsSchema;
+  200: unknown;
 };
 
-export type SentimentControllerGetMetricsResponse =
-  SentimentControllerGetMetricsResponses[keyof SentimentControllerGetMetricsResponses];
-
-export type SentimentControllerGetHotWordsData = {
+export type AgentExecutionControllerGetPerformanceAnalysisData = {
   body?: never;
-  path?: never;
-  query?: never;
-  url: '/api/sentiment/hotwords';
+  path: {
+    /**
+     * 智能体代码
+     */
+    agentCode: string;
+  };
+  query?: {
+    /**
+     * 分析天数
+     */
+    days?: number;
+  };
+  url: '/api/executions/analytics/performance/{agentCode}';
 };
 
-export type SentimentControllerGetHotWordsResponses = {
+export type AgentExecutionControllerGetPerformanceAnalysisResponses = {
   /**
-   * 成功获取热点词汇数据
+   * 性能分析数据获取成功
    */
-  200: Array<HotWordSchema>;
+  200: unknown;
 };
-
-export type SentimentControllerGetHotWordsResponse =
-  SentimentControllerGetHotWordsResponses[keyof SentimentControllerGetHotWordsResponses];
-
-export type SentimentControllerGetSentimentTableDataData = {
-  body?: never;
-  path?: never;
-  query?: never;
-  url: '/api/sentiment/table';
-};
-
-export type SentimentControllerGetSentimentTableDataResponses = {
-  /**
-   * 成功获取舆情表格数据
-   */
-  200: Array<SentimentTableItemSchema>;
-};
-
-export type SentimentControllerGetSentimentTableDataResponse =
-  SentimentControllerGetSentimentTableDataResponses[keyof SentimentControllerGetSentimentTableDataResponses];
 
 export type SentimentIntensityControllerFindAllData = {
   body?: never;

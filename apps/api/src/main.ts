@@ -90,8 +90,6 @@ async function bootstrap() {
       '舆情分析系统的 REST API 文档，提供舆情事件、统计指标等数据接口',
     )
     .setVersion('1.0')
-    .addTag('sentiment', '舆情分析相关接口')
-    .addTag('sentiment-intensity', '情感强度管理相关接口')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

@@ -31,7 +31,7 @@ export function FeatureCard({
       variant={color}
       className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
     >
-      <div className="space-y-4">
+      <div className="space-y-3 md:space-y-4">
         {/* 图标和标题 */}
         <div className="flex items-center gap-3">
           {icon && (

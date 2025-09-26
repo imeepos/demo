@@ -131,7 +131,7 @@ export function SystemStatusSection() {
       </div>
 
       {/* 系统总览 */}
-      <DashboardCard className="bg-gradient-to-r from-primary/5 to-secondary/5">
+      <DashboardCard className="bg-primary/5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center">

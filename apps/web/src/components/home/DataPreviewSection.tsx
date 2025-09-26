@@ -48,22 +48,24 @@ export function DataPreviewSection() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-4 md:space-y-6 lg:space-y-8">
       {/* 标题 */}
       <div className="text-center">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <h2 className="text-3xl font-bold text-foreground">实时数据概览</h2>
+        <div className="flex items-center justify-center gap-2 md:gap-3 mb-2 md:mb-4">
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+            实时数据概览
+          </h2>
           <LiveIndicator status={isUpdating ? 'warning' : 'online'}>
             {isUpdating ? '更新中' : '实时'}
           </LiveIndicator>
         </div>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-base md:text-lg text-muted-foreground">
           全网监控数据实时更新，掌握舆情动态第一手资料
         </p>
       </div>
 
       {/* 核心指标 */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         <DashboardCard
           variant="primary"
           className="transition-all duration-500 hover:scale-[1.02]"
@@ -134,10 +136,7 @@ export function DataPreviewSection() {
       </div>
 
       {/* 热点话题词云 */}
-      <DashboardCard
-        size="lg"
-        className="bg-gradient-to-br from-background to-muted/20"
-      >
+      <DashboardCard size="lg" className="bg-muted/10">
         <ChartContainer
           title="当前热点话题"
           subtitle="基于全网数据分析 · 每小时更新"
@@ -163,7 +162,7 @@ export function DataPreviewSection() {
 
       {/* 底部提示 */}
       <div className="text-center">
-        <p className="text-sm text-muted-foreground mb-4">
+        <p className="text-xs md:text-sm text-muted-foreground mb-2 md:mb-4">
           💡 以上数据每15秒自动更新，展示系统实时监控能力
         </p>
         <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full">

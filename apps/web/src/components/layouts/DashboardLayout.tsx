@@ -16,12 +16,14 @@ export function DashboardLayout({
   subtitle = '实时监控网络舆论动态，智能分析情感趋势',
 }: DashboardLayoutProps) {
   return (
-    <div className="dashboard-layout">
-      <header className="dashboard-header">
-        <h1 className="dashboard-title">{title}</h1>
-        <p className="dashboard-subtitle">{subtitle}</p>
+    <div className="w-full min-h-screen bg-background">
+      <header className="w-full p-2 bg-card border-b border-border">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-primary">{title}</h1>
+          <p className="text-sm text-muted-foreground">{subtitle}</p>
+        </div>
       </header>
-      <main className="dashboard-grid">{children}</main>
+      <main className="w-full p-2">{children}</main>
     </div>
   );
 }

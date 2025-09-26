@@ -18,8 +18,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background transition-colors">
-      <div className="container mx-auto px-4 py-8">
-        <header className="text-center mb-8">
+      <div className="w-full px-2 sm:px-4 md:px-6 lg:px-8 py-4 md:py-6">
+        <header className="text-center mb-4 md:mb-6 lg:mb-8">
           <div className="flex items-center justify-center gap-4 mb-4">
             <Avatar className="h-16 w-16">
               <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
@@ -37,7 +37,7 @@ function App() {
           </p>
         </header>
 
-        <main className="max-w-2xl mx-auto space-y-6">
+        <main className="w-full space-y-3 md:space-y-4">
           <Card>
             <CardHeader>
               <CardTitle>计数器示例</CardTitle>

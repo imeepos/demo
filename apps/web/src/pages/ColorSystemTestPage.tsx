@@ -18,8 +18,8 @@ import {
  */
 export function ColorSystemTestPage() {
   return (
-    <div className="dashboard-container p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="dashboard-container p-2">
+      <div className="w-full space-y-4">
         {/* 页面标题 */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-black metric-highlight mb-4">
