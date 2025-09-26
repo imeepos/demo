@@ -1,349 +1,351 @@
 import { cn } from '@sker/ui';
-import { forwardRef } from 'react';
-import {
-  chartContainerVariants,
-  dashboardCardVariants,
-  intensityBarVariants,
-  intensityFillVariants,
-  liveIndicatorVariants,
-  metricCardVariants,
-  metricValueVariants,
-  progressBarVariants,
-  progressFillVariants,
-  sentimentBadgeVariants,
-  statusDotVariants,
-  trendIndicatorVariants,
-  wordcloudTagVariants,
-  type ChartContainerVariants,
-  type DashboardCardVariants,
-  type IntensityBarVariants,
-  type IntensityFillVariants,
-  type LiveIndicatorVariants,
-  type MetricCardVariants,
-  type MetricValueVariants,
-  type ProgressBarVariants,
-  type ProgressFillVariants,
-  type SentimentBadgeVariants,
-  type StatusDotVariants,
-  type TrendIndicatorVariants,
-  type WordcloudTagVariants,
-} from '../../lib/dashboard-variants';
+import { forwardRef, type ReactNode } from 'react';
+import * as variants from '../../lib/dashboard-variants';
 
 /**
  * 舆情监控大屏组件库
- * 基于 Tailwind CSS 和样式变体系统实现
+ *
+ * 组件分类：
+ * - Container: 容器类组件 (DashboardCard, ChartContainer)
+ * - Metric: 指标展示组件 (MetricCard, MetricValue, MetricLabel)
+ * - Progress: 进度类组件 (ProgressBar, IntensityBar)
+ * - Status: 状态指示组件 (LiveIndicator, StatusDot, TrendIndicator)
+ * - Sentiment: 舆情专用组件 (SentimentBadge, WordcloudTag)
+ *
+ * @author SKER Team
+ * @version 1.0.0
  */
 
-// 仪表盘卡片组件
+// ==================== 类型定义区域 ====================
+
+/** 基础组件Props类型 */
+type BaseProps<T = HTMLDivElement> = React.HTMLAttributes<T>;
+type BaseSpanProps = React.HTMLAttributes<HTMLSpanElement>;
+
+/** 容器类组件接口 */
 interface DashboardCardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    DashboardCardVariants {}
+  extends BaseProps,
+    variants.DashboardCardVariants {}
 
-export const DashboardCard = forwardRef<HTMLDivElement, DashboardCardProps>(
-  ({ className, size, variant, highlighted, children, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          dashboardCardVariants({ size, variant, highlighted }),
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
-DashboardCard.displayName = 'DashboardCard';
-
-// 指标卡片组件
-interface MetricCardProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    MetricCardVariants {}
-
-export const MetricCard = forwardRef<HTMLDivElement, MetricCardProps>(
-  ({ className, variant, size, children, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(metricCardVariants({ variant, size }), className)}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
-MetricCard.displayName = 'MetricCard';
-
-// 指标数值组件
-interface MetricValueProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    MetricValueVariants {}
-
-export const MetricValue = forwardRef<HTMLDivElement, MetricValueProps>(
-  ({ className, size, variant, children, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(metricValueVariants({ size, variant }), className)}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
-MetricValue.displayName = 'MetricValue';
-
-// 指标标签组件
-interface MetricLabelProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export const MetricLabel = forwardRef<HTMLDivElement, MetricLabelProps>(
-  ({ className, children, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn('text-muted-foreground text-sm font-medium', className)}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
-MetricLabel.displayName = 'MetricLabel';
-
-// 趋势指示器组件
-interface TrendIndicatorProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    TrendIndicatorVariants {
-  value?: string | number;
-  icon?: React.ReactNode;
-}
-
-export const TrendIndicator = forwardRef<HTMLSpanElement, TrendIndicatorProps>(
-  ({ className, trend, value, icon, children, ...props }, ref) => {
-    return (
-      <span
-        ref={ref}
-        className={cn(trendIndicatorVariants({ trend }), className)}
-        {...props}
-      >
-        {icon}
-        {value && <span>{value}</span>}
-        {children}
-      </span>
-    );
-  }
-);
-TrendIndicator.displayName = 'TrendIndicator';
-
-// 情感标签组件
-interface SentimentBadgeProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    SentimentBadgeVariants {}
-
-export const SentimentBadge = forwardRef<HTMLSpanElement, SentimentBadgeProps>(
-  ({ className, sentiment, children, ...props }, ref) => {
-    return (
-      <span
-        ref={ref}
-        className={cn(sentimentBadgeVariants({ sentiment }), className)}
-        {...props}
-      >
-        {children}
-      </span>
-    );
-  }
-);
-SentimentBadge.displayName = 'SentimentBadge';
-
-// 情感强度条组件
-interface IntensityBarProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    IntensityBarVariants {
-  value: number; // 0-1
-  intensity?: IntensityFillVariants['intensity'];
-}
-
-export const IntensityBar = forwardRef<HTMLDivElement, IntensityBarProps>(
-  ({ className, size, value, intensity = 'neutral', ...props }, ref) => {
-    const percentage = Math.max(0, Math.min(100, value * 100));
-
-    return (
-      <div
-        ref={ref}
-        className={cn(intensityBarVariants({ size }), className)}
-        {...props}
-      >
-        <div
-          className={cn(intensityFillVariants({ intensity }))}
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
-    );
-  }
-);
-IntensityBar.displayName = 'IntensityBar';
-
-// 实时状态指示器组件
-interface LiveIndicatorProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    LiveIndicatorVariants {}
-
-export const LiveIndicator = forwardRef<HTMLSpanElement, LiveIndicatorProps>(
-  ({ className, status, children, ...props }, ref) => {
-    return (
-      <span
-        ref={ref}
-        className={cn(liveIndicatorVariants({ status }), className)}
-        {...props}
-      >
-        <span className="w-1.5 h-1.5 bg-current rounded-full animate-live-pulse" />
-        {children || 'LIVE'}
-      </span>
-    );
-  }
-);
-LiveIndicator.displayName = 'LiveIndicator';
-
-// 状态点组件
-interface StatusDotProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    StatusDotVariants {}
-
-export const StatusDot = forwardRef<HTMLSpanElement, StatusDotProps>(
-  ({ className, status, pulse, ...props }, ref) => {
-    return (
-      <span
-        ref={ref}
-        className={cn(statusDotVariants({ status, pulse }), className)}
-        {...props}
-      />
-    );
-  }
-);
-StatusDot.displayName = 'StatusDot';
-
-// 图表容器组件
 interface ChartContainerProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    ChartContainerVariants {
+  extends Omit<BaseProps, 'className'>,
+    variants.ChartContainerVariants {
   title?: string;
   subtitle?: string;
-  action?: React.ReactNode;
+  action?: ReactNode;
+  className?: string;
 }
 
-export const ChartContainer = forwardRef<HTMLDivElement, ChartContainerProps>(
-  (
-    { className, size, pattern, title, subtitle, action, children, ...props },
-    ref
-  ) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(chartContainerVariants({ size, pattern }), className)}
-        {...props}
-      >
-        {(title || subtitle || action) && (
-          <div className="flex items-center justify-between mb-4 pb-3 border-b border-border">
-            <div>
-              {title && (
-                <h3 className="text-lg font-semibold text-foreground">
-                  {title}
-                </h3>
-              )}
-              {subtitle && (
-                <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>
-              )}
-            </div>
-            {action && <div>{action}</div>}
-          </div>
-        )}
-        <div className="relative z-10">{children}</div>
-      </div>
-    );
-  }
-);
-ChartContainer.displayName = 'ChartContainer';
+/** 指标类组件接口 */
+interface MetricCardProps extends BaseProps, variants.MetricCardVariants {}
+interface MetricValueProps extends BaseProps, variants.MetricValueVariants {}
+interface MetricLabelProps extends BaseProps {}
 
-// 词云标签组件
-interface WordcloudTagProps
-  extends React.HTMLAttributes<HTMLSpanElement>,
-    WordcloudTagVariants {}
-
-export const WordcloudTag = forwardRef<HTMLSpanElement, WordcloudTagProps>(
-  ({ className, variant, shine, children, ...props }, ref) => {
-    return (
-      <span
-        ref={ref}
-        className={cn(wordcloudTagVariants({ variant, shine }), className)}
-        {...props}
-      >
-        {children}
-      </span>
-    );
-  }
-);
-WordcloudTag.displayName = 'WordcloudTag';
-
-// 进度条组件
-interface ProgressBarProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    ProgressBarVariants {
+/** 进度类组件接口 */
+interface ProgressBarProps extends BaseProps, variants.ProgressBarVariants {
   value: number; // 0-100
-  variant?: ProgressFillVariants['variant'];
-  shine?: ProgressFillVariants['shine'];
+  variant?: variants.ProgressFillVariants['variant'];
+  shine?: variants.ProgressFillVariants['shine'];
 }
 
-export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
-  (
-    { className, size, value, variant = 'primary', shine = true, ...props },
-    ref
-  ) => {
-    const percentage = Math.max(0, Math.min(100, value));
+interface IntensityBarProps extends BaseProps, variants.IntensityBarVariants {
+  value: number; // 0-1
+  intensity?: variants.IntensityFillVariants['intensity'];
+}
 
-    return (
-      <div
-        ref={ref}
-        className={cn(progressBarVariants({ size }), className)}
-        {...props}
-      >
-        <div
-          className={cn(progressFillVariants({ variant, shine }))}
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
-    );
-  }
-);
-ProgressBar.displayName = 'ProgressBar';
+/** 状态类组件接口 */
+interface LiveIndicatorProps
+  extends BaseSpanProps,
+    variants.LiveIndicatorVariants {}
+interface StatusDotProps extends BaseSpanProps, variants.StatusDotVariants {}
 
-// 词云容器组件
-interface WordcloudContainerProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+interface TrendIndicatorProps
+  extends BaseSpanProps,
+    variants.TrendIndicatorVariants {
+  value?: string | number;
+  icon?: ReactNode;
+}
 
-export const WordcloudContainer = forwardRef<
+/** 舆情专用组件接口 */
+interface SentimentBadgeProps
+  extends BaseSpanProps,
+    variants.SentimentBadgeVariants {}
+interface WordcloudTagProps
+  extends BaseSpanProps,
+    variants.WordcloudTagVariants {}
+interface WordcloudContainerProps extends BaseProps {}
+
+// ==================== 工具函数 ====================
+
+/** 创建forwardRef组件的工厂函数 */
+const createComponent = <T extends HTMLElement, P extends Record<string, any>>(
+  displayName: string,
+  render: React.ForwardRefRenderFunction<T, P>
+) => {
+  const component = forwardRef(render);
+  component.displayName = displayName;
+  return component;
+};
+
+/** 百分比值规范化 */
+const normalizePercentage = (value: number, max = 100): number =>
+  Math.max(0, Math.min(max, value));
+
+// ==================== 容器类组件 ====================
+
+export const DashboardCard = createComponent<
   HTMLDivElement,
-  WordcloudContainerProps
->(({ className, children, ...props }, ref) => {
-  return (
+  DashboardCardProps
+>(
+  'DashboardCard',
+  ({ className, size, variant, highlighted, children, ...props }, ref) => (
     <div
       ref={ref}
       className={cn(
-        'flex flex-wrap gap-2 p-4 items-center justify-center',
+        variants.dashboardCardVariants({ size, variant, highlighted }),
         className
       )}
       {...props}
     >
       {children}
     </div>
-  );
-});
-WordcloudContainer.displayName = 'WordcloudContainer';
+  )
+);
 
-// 导出新组件
+export const ChartContainer = createComponent<
+  HTMLDivElement,
+  ChartContainerProps
+>(
+  'ChartContainer',
+  (
+    { className, size, pattern, title, subtitle, action, children, ...props },
+    ref
+  ) => (
+    <div
+      ref={ref}
+      className={cn(
+        variants.chartContainerVariants({ size, pattern }),
+        className
+      )}
+      {...props}
+    >
+      {(title || subtitle || action) && (
+        <header className="flex items-center justify-between mb-4 pb-3 border-b border-border">
+          <div className="space-y-1">
+            {title && (
+              <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+            )}
+            {subtitle && (
+              <p className="text-sm text-muted-foreground">{subtitle}</p>
+            )}
+          </div>
+          {action && <div className="flex-shrink-0">{action}</div>}
+        </header>
+      )}
+      <main className="relative z-10">{children}</main>
+    </div>
+  )
+);
+
+// ==================== 指标类组件 ====================
+
+export const MetricCard = createComponent<HTMLDivElement, MetricCardProps>(
+  'MetricCard',
+  ({ className, variant, size, children, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(variants.metricCardVariants({ variant, size }), className)}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+);
+
+export const MetricValue = createComponent<HTMLDivElement, MetricValueProps>(
+  'MetricValue',
+  ({ className, size, variant, children, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(variants.metricValueVariants({ size, variant }), className)}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+);
+
+export const MetricLabel = createComponent<HTMLDivElement, MetricLabelProps>(
+  'MetricLabel',
+  ({ className, children, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn('text-muted-foreground text-sm font-medium', className)}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+);
+
+// ==================== 进度类组件 ====================
+
+export const ProgressBar = createComponent<HTMLDivElement, ProgressBarProps>(
+  'ProgressBar',
+  (
+    { className, size, value, variant = 'primary', shine = true, ...props },
+    ref
+  ) => {
+    const percentage = normalizePercentage(value);
+
+    return (
+      <div
+        ref={ref}
+        className={cn(variants.progressBarVariants({ size }), className)}
+        {...props}
+      >
+        <div
+          className={cn(variants.progressFillVariants({ variant, shine }))}
+          style={{ width: `${percentage}%` }}
+          role="progressbar"
+          aria-valuenow={percentage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        />
+      </div>
+    );
+  }
+);
+
+export const IntensityBar = createComponent<HTMLDivElement, IntensityBarProps>(
+  'IntensityBar',
+  ({ className, size, value, intensity = 'neutral', ...props }, ref) => {
+    const percentage = normalizePercentage(value * 100);
+
+    return (
+      <div
+        ref={ref}
+        className={cn(variants.intensityBarVariants({ size }), className)}
+        {...props}
+      >
+        <div
+          className={cn(variants.intensityFillVariants({ intensity }))}
+          style={{ width: `${percentage}%` }}
+          role="progressbar"
+          aria-valuenow={percentage}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={`情感强度: ${percentage}%`}
+        />
+      </div>
+    );
+  }
+);
+
+// ==================== 状态类组件 ====================
+
+export const LiveIndicator = createComponent<
+  HTMLSpanElement,
+  LiveIndicatorProps
+>('LiveIndicator', ({ className, status, children, ...props }, ref) => (
+  <span
+    ref={ref}
+    className={cn(variants.liveIndicatorVariants({ status }), className)}
+    {...props}
+  >
+    <span
+      className="w-1.5 h-1.5 bg-current rounded-full animate-live-pulse"
+      aria-hidden="true"
+    />
+    <span className="sr-only">实时状态: </span>
+    {children || 'LIVE'}
+  </span>
+));
+
+export const StatusDot = createComponent<HTMLSpanElement, StatusDotProps>(
+  'StatusDot',
+  ({ className, status, pulse, ...props }, ref) => (
+    <span
+      ref={ref}
+      className={cn(variants.statusDotVariants({ status, pulse }), className)}
+      role="status"
+      aria-label={`状态: ${status}`}
+      {...props}
+    />
+  )
+);
+
+export const TrendIndicator = createComponent<
+  HTMLSpanElement,
+  TrendIndicatorProps
+>(
+  'TrendIndicator',
+  ({ className, trend, value, icon, children, ...props }, ref) => (
+    <span
+      ref={ref}
+      className={cn(variants.trendIndicatorVariants({ trend }), className)}
+      {...props}
+    >
+      {icon && <span aria-hidden="true">{icon}</span>}
+      {value && <span>{value}</span>}
+      {children}
+      <span className="sr-only">趋势: {trend}</span>
+    </span>
+  )
+);
+
+// ==================== 舆情专用组件 ====================
+
+export const SentimentBadge = createComponent<
+  HTMLSpanElement,
+  SentimentBadgeProps
+>('SentimentBadge', ({ className, sentiment, children, ...props }, ref) => (
+  <span
+    ref={ref}
+    className={cn(variants.sentimentBadgeVariants({ sentiment }), className)}
+    role="status"
+    aria-label={`情感倾向: ${sentiment}`}
+    {...props}
+  >
+    {children}
+  </span>
+));
+
+export const WordcloudTag = createComponent<HTMLSpanElement, WordcloudTagProps>(
+  'WordcloudTag',
+  ({ className, variant, shine, children, ...props }, ref) => (
+    <span
+      ref={ref}
+      className={cn(
+        variants.wordcloudTagVariants({ variant, shine }),
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </span>
+  )
+);
+
+export const WordcloudContainer = createComponent<
+  HTMLDivElement,
+  WordcloudContainerProps
+>('WordcloudContainer', ({ className, children, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn(
+      'flex flex-wrap gap-2 p-4 items-center justify-center',
+      className
+    )}
+    role="group"
+    aria-label="词云标签组"
+    {...props}
+  >
+    {children}
+  </div>
+));
+
+// ==================== 外部组件导出 ====================
+
 export { CircularProgress } from './CircularProgress';
 export { GradientBar } from './GradientBar';

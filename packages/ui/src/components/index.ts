@@ -58,3 +58,15 @@ export { Switch } from './ui/switch';
 export { Textarea } from './ui/textarea';
 // Separator
 export { Separator } from './ui/separator';
+
+// Table
+export {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from './ui/table';

@@ -1,5 +1,14 @@
 import { useState, useEffect } from 'react';
 import {
+  Server,
+  Brain,
+  Send,
+  Database,
+  Shield,
+  Activity,
+  type LucideIcon,
+} from 'lucide-react';
+import {
   DashboardCard,
   StatusDot,
   ProgressBar,
@@ -9,10 +18,19 @@ import {
   mockDashboardData,
   generateSystemStatus,
 } from '../../data/mockDashboardData';
+import { cn } from '@sker/ui';
 
 /**
- * 系统状态监控面板
- * 职责：在首页展示系统运行状态，增强用户信心
+ * 现代化系统状态监控面板
+ *
+ * 设计理念：
+ * - 专业图标系统替代emoji
+ * - 实时数据可视化
+ * - 优雅的状态指示器
+ * - 直观的健康度评估
+ *
+ * @author SKER Team
+ * @version 2.0.0
  */
 export function SystemStatusSection() {
   const [systemStatus, setSystemStatus] = useState(
@@ -41,30 +59,49 @@ export function SystemStatusSection() {
     return 'danger';
   };
 
-  const services = [
+  // ==================== 服务配置系统 ====================
+
+  interface ServiceConfig {
+    readonly name: string;
+    readonly value: number;
+    readonly description: string;
+    readonly icon: LucideIcon;
+    readonly category: 'core' | 'analysis' | 'communication' | 'storage';
+    readonly priority: number;
+  }
+
+  const services: ServiceConfig[] = [
     {
       name: '数据采集服务',
       value: systemStatus.dataCollection,
       description: '多平台数据实时抓取',
-      icon: '📡',
+      icon: Server,
+      category: 'core',
+      priority: 1,
     },
     {
       name: '情感分析引擎',
       value: systemStatus.sentimentAnalysis,
       description: 'AI智能情感识别',
-      icon: '🧠',
+      icon: Brain,
+      category: 'analysis',
+      priority: 2,
     },
     {
       name: '实时推送服务',
       value: systemStatus.realTimePush,
       description: '预警信息即时通知',
-      icon: '📨',
+      icon: Send,
+      category: 'communication',
+      priority: 3,
     },
     {
       name: '备份存储系统',
       value: systemStatus.backupService,
       description: '数据安全保障',
-      icon: '💾',
+      icon: Database,
+      category: 'storage',
+      priority: 4,
     },
   ];
 
@@ -89,18 +126,33 @@ export function SystemStatusSection() {
       </div>
 
       {/* 服务状态网格 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {services.map(service => (
           <DashboardCard
             key={service.name}
             size="sm"
-            className="hover:shadow-lg transition-all duration-300 px-4 py-4"
+            className="hover:shadow-md transition-all duration-300 p-3"
           >
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {/* 服务标题 */}
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">{service.icon}</span>
+                <div className="flex items-center gap-3">
+                  <div
+                    className={cn(
+                      'w-10 h-10 rounded-lg flex items-center justify-center',
+                      'bg-gradient-to-br transition-all duration-300',
+                      service.category === 'core' &&
+                        'from-blue-50 to-blue-100 text-blue-600',
+                      service.category === 'analysis' &&
+                        'from-purple-50 to-purple-100 text-purple-600',
+                      service.category === 'communication' &&
+                        'from-green-50 to-green-100 text-green-600',
+                      service.category === 'storage' &&
+                        'from-orange-50 to-orange-100 text-orange-600'
+                    )}
+                  >
+                    <service.icon className="h-5 w-5" />
+                  </div>
                   <div>
                     <h4 className="font-semibold text-sm text-foreground">
                       {service.name}
@@ -130,15 +182,24 @@ export function SystemStatusSection() {
         ))}
       </div>
 
-      {/* 系统总览 */}
-      <DashboardCard className="bg-primary/5">
+      {/* 系统健康度总览 */}
+      <DashboardCard className="bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5 border-primary/20">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-success/20 flex items-center justify-center">
-              <span className="text-2xl">✅</span>
+            <div
+              className={cn(
+                'w-12 h-12 rounded-xl flex items-center justify-center',
+                'bg-gradient-to-br from-success/20 to-emerald-500/20',
+                'border border-success/30 shadow-lg'
+              )}
+            >
+              <Shield className="h-6 w-6 text-success" />
             </div>
             <div>
-              <h4 className="font-bold text-foreground">系统整体健康度</h4>
+              <h4 className="font-bold text-foreground flex items-center gap-2">
+                系统整体健康度
+                <Activity className="h-4 w-4 text-primary animate-pulse" />
+              </h4>
               <p className="text-sm text-muted-foreground">
                 所有核心服务运行稳定，数据处理正常
               </p>

@@ -45,92 +45,45 @@ export const SentimentIntensitySearchForm: React.FC<
   };
 
   return (
-    <DashboardCard className="mb-8">
-      <div className="p-6">
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="space-y-2">
-              <Label
-                htmlFor="title"
-                className="text-sm font-medium text-foreground"
-              >
-                🔍 标题关键词
-              </Label>
-              <Input
-                id="title"
-                placeholder="输入标题关键词进行模糊搜索"
-                className="border-border focus:border-primary focus:ring-primary/20"
-                {...register('title')}
-              />
-            </div>
+    <div className="bg-white/85 backdrop-blur-xl rounded-3xl border border-slate-200/60 p-8 shadow-2xl shadow-slate-200/50">
+      <form
+        onSubmit={handleSubmit(handleFormSubmit)}
+        className="flex gap-6 items-end"
+      >
+        <div className="flex-1">
+          <Label
+            htmlFor="title"
+            className="text-sm font-medium text-slate-700 mb-3 block"
+          >
+            🔍 智能搜索
+          </Label>
+          <Input
+            id="title"
+            placeholder="输入关键词进行搜索..."
+            className="border-slate-200 focus:border-blue-400 focus:ring-2 focus:ring-blue-100 rounded-xl h-12 text-slate-700 placeholder:text-slate-400 bg-white/80 backdrop-blur-sm transition-all duration-300"
+            {...register('title')}
+          />
+        </div>
 
-            <div className="space-y-2">
-              <Label
-                htmlFor="minIntensity"
-                className="text-sm font-medium text-foreground"
-              >
-                📉 最小强度值
-              </Label>
-              <Input
-                id="minIntensity"
-                type="number"
-                min="0"
-                max="1"
-                step="0.01"
-                placeholder="0.00 - 1.00"
-                className="border-border focus:border-primary focus:ring-primary/20"
-                {...register('minIntensity', {
-                  setValueAs: value =>
-                    value === '' ? undefined : parseFloat(value),
-                })}
-              />
-            </div>
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 text-white font-medium px-8 py-3 rounded-2xl shadow-xl shadow-purple-200/50 hover:shadow-2xl hover:shadow-purple-300/40 transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 h-12"
+        >
+          <Search className="w-4 h-4 mr-2" />
+          搜索
+        </Button>
 
-            <div className="space-y-2">
-              <Label
-                htmlFor="maxIntensity"
-                className="text-sm font-medium text-foreground"
-              >
-                📈 最大强度值
-              </Label>
-              <Input
-                id="maxIntensity"
-                type="number"
-                min="0"
-                max="1"
-                step="0.01"
-                placeholder="0.00 - 1.00"
-                className="border-border focus:border-primary focus:ring-primary/20"
-                {...register('maxIntensity', {
-                  setValueAs: value =>
-                    value === '' ? undefined : parseFloat(value),
-                })}
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-3 pt-4 border-t border-border">
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-2 transition-all duration-300 hover:-translate-y-0.5"
-            >
-              <Search className="w-4 h-4 mr-2" />
-              {isSubmitting ? '搜索中...' : '开始搜索'}
-            </Button>
-
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClear}
-              className="border-border text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-300"
-            >
-              <X className="w-4 h-4 mr-2" />
-              清空条件
-            </Button>
-          </div>
-        </form>
-      </div>
-    </DashboardCard>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={handleClear}
+          className="border-slate-300 text-slate-600 hover:text-slate-800 hover:bg-slate-50 rounded-xl h-12 px-6 transition-all duration-300"
+        >
+          <X className="w-4 h-4 mr-2" />
+          清空
+        </Button>
+      </form>
+    </div>
   );
 };

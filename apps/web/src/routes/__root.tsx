@@ -1,5 +1,7 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { TopNavigation } from '../components/layout/TopNavigation';
+import { Breadcrumb } from '../components/layout/Breadcrumb';
+import { Sidebar } from '../components/layout/Sidebar';
 
 /**
  * 根路由布局
@@ -11,14 +13,18 @@ export const Route = createRootRoute({
 
 function RootLayout() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <main className="py-0 px-0">
-        <Outlet />
-      </main>
-      {/* 仅在开发环境中显示 TanStack Router DevTools */}
-      {import.meta.env.DEV && (
-        <TanStackRouterDevtools position="bottom-right" />
-      )}
+    <div className="h-screen bg-background text-foreground flex flex-col">
+      <TopNavigation />
+
+      <div className="flex flex-1 overflow-hidden">
+        <Sidebar />
+
+        <main className="flex-1 relative">
+          <div className="absolute top-0 bottom-0 left-0 right-0 overflow-y-auto ">
+            <Outlet />
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

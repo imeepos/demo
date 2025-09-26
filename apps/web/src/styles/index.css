@@ -1,7 +1,5 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import '@sker/ui/styles';
-@import '@sker/map/styles';
 
 /* 字体文件加载 */
 @font-face {
@@ -342,29 +340,59 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* 舆情分析监控大屏专业亮色科技蓝主题 */
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  /* 舆情分析监控大屏专业亮色科技蓝主题 - 深度优化版 */
+  --background: #fafbfc;
+  --foreground: #0c1524;
   --card: #ffffff;
-  --card-foreground: #0f172a;
+  --card-foreground: #0c1524;
   --popover: #ffffff;
-  --popover-foreground: #0f172a;
+  --popover-foreground: #0c1524;
 
-  /* 主色调：深度科技蓝，体现专业监控感 */
+  /* 主色调：深度优化的科技蓝系，增强对比度和层次感 */
   --primary: #1e40af;
   --primary-foreground: #ffffff;
+  --primary-50: #eff6ff;
+  --primary-100: #dbeafe;
+  --primary-200: #bfdbfe;
+  --primary-300: #93c5fd;
+  --primary-400: #60a5fa;
+  --primary-500: #3b82f6;
+  --primary-600: #2563eb;
+  --primary-700: #1d4ed8;
+  --primary-800: #1e3a8a;
+  --primary-900: #1e2761;
 
-  /* 次要色：清新蓝灰，用于次级元素 */
-  --secondary: #e2e8f0;
-  --secondary-foreground: #334155;
+  /* 次要色：深度优化的蓝灰系，提升层次感 */
+  --secondary: #f4f6f8;
+  --secondary-foreground: #475569;
+  --secondary-50: #f8fafc;
+  --secondary-100: #f1f5f9;
+  --secondary-200: #e2e8f0;
+  --secondary-300: #cbd5e1;
+  --secondary-400: #94a3b8;
+  --secondary-500: #64748b;
+  --secondary-600: #475569;
+  --secondary-700: #334155;
+  --secondary-800: #1e293b;
+  --secondary-900: #0f172a;
 
-  /* 静默色：极浅蓝灰，用于背景分割 */
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  /* 静默色：更柔和的背景分割，提升可读性 */
+  --muted: #f8fafc;
+  --muted-foreground: #6b7280;
 
-  /* 强调色：清新青蓝，用于数据高亮和科技感 */
-  --accent: #0ea5e9;
+  /* 强调色：优化的翠绿系，增强数据高亮效果 */
+  --accent: #059669;
   --accent-foreground: #ffffff;
+  --accent-50: #f0fdf4;
+  --accent-100: #dcfce7;
+  --accent-200: #bbf7d0;
+  --accent-300: #86efac;
+  --accent-400: #4ade80;
+  --accent-500: #22c55e;
+  --accent-600: #059669;
+  --accent-700: #047857;
+  --accent-800: #065f46;
+  --accent-900: #064e3b;
 
   /* 舆情监控专用状态色系（亮色主题优化） */
   --success: #059669;
@@ -376,34 +404,34 @@ body {
   --info: #0ea5e9;
   --info-foreground: #ffffff;
 
-  /* 舆情分析专用数据可视化色板（语义化增强） */
+  /* 舆情分析专用数据可视化色板（深度优化） */
   --chart-1: #1e40af; /* 主要数据-深科技蓝 */
-  --chart-2: #0ea5e9; /* 次要数据-清新青蓝 */
-  --chart-3: #047857; /* 正面情感-深翠绿 */
-  --chart-4: #dc8b00; /* 中性情感-温和橙 */
-  --chart-5: #dc2626; /* 负面情感-鲜红色 */
-  --chart-6: #7c3aed; /* 特殊标记-紫罗兰 */
+  --chart-2: #3b82f6; /* 总监控数据-亮科技蓝 */
+  --chart-3: #059669; /* 正面情感-翠绿色 */
+  --chart-4: #f59e0b; /* 中性情感-琥珀色 */
+  --chart-5: #ef4444; /* 负面情感-明红色 */
+  --chart-6: #8b5cf6; /* 特殊标记-紫罗兰 */
 
-  /* 情感强度渐变色系（语义化增强） */
-  --sentiment-very-positive: #047857; /* 极正面-深绿翠 */
-  --sentiment-positive: #10b981;     /* 正面-翠绿 */
-  --sentiment-neutral: #dc8b00;      /* 中性-温和橙 */
-  --sentiment-negative: #ef4444;     /* 负面-鲜红 */
+  /* 情感强度语义化色系（对比度优化） */
+  --sentiment-very-positive: #047857; /* 极正面-深翠绿 */
+  --sentiment-positive: #059669;     /* 正面-翠绿 */
+  --sentiment-neutral: #f59e0b;      /* 中性-琥珀橙 */
+  --sentiment-negative: #ef4444;     /* 负面-明红 */
   --sentiment-very-negative: #dc2626; /* 极负面-深红 */
 
-  /* 情感分析辅助色系（语义化优化） */
-  --sentiment-very-positive-bg: rgba(4, 120, 87, 0.1);   /* 极正面背景 */
-  --sentiment-positive-bg: rgba(16, 185, 129, 0.1);     /* 正面背景 */
-  --sentiment-neutral-bg: rgba(220, 139, 0, 0.1);       /* 中性背景 */
-  --sentiment-negative-bg: rgba(239, 68, 68, 0.1);      /* 负面背景 */
-  --sentiment-very-negative-bg: rgba(220, 38, 38, 0.1); /* 极负面背景 */
+  /* 情感分析辅助色系（深度优化） */
+  --sentiment-very-positive-bg: rgba(4, 120, 87, 0.08);   /* 极正面背景 */
+  --sentiment-positive-bg: rgba(5, 150, 105, 0.08);      /* 正面背景 */
+  --sentiment-neutral-bg: rgba(245, 158, 11, 0.08);      /* 中性背景 */
+  --sentiment-negative-bg: rgba(239, 68, 68, 0.08);      /* 负面背景 */
+  --sentiment-very-negative-bg: rgba(220, 38, 38, 0.08); /* 极负面背景 */
   
-  /* 情感强度边框色系 */
-  --sentiment-very-positive-border: rgba(4, 120, 87, 0.3);
-  --sentiment-positive-border: rgba(16, 185, 129, 0.3);
-  --sentiment-neutral-border: rgba(220, 139, 0, 0.3);
-  --sentiment-negative-border: rgba(239, 68, 68, 0.3);
-  --sentiment-very-negative-border: rgba(220, 38, 38, 0.3);
+  /* 情感强度边框色系（增强对比度） */
+  --sentiment-very-positive-border: rgba(4, 120, 87, 0.25);
+  --sentiment-positive-border: rgba(5, 150, 105, 0.25);
+  --sentiment-neutral-border: rgba(245, 158, 11, 0.25);
+  --sentiment-negative-border: rgba(239, 68, 68, 0.25);
+  --sentiment-very-negative-border: rgba(220, 38, 38, 0.25);
 
   /* 界面元素优化（亮色科技蓝主题） */
   --border: #e2e8f0;
@@ -430,43 +458,43 @@ body {
   --color-card-warning: #d9770608;
   --color-card-danger: #dc262608;
 
-  /* 渐变系统（专业科技感） */
-  --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #0ea5e9 100%);
-  --gradient-success: linear-gradient(135deg, #047857 0%, #10b981 50%, #34d399 100%);
-  --gradient-warning: linear-gradient(135deg, #dc8b00 0%, #f59e0b 50%, #fbbf24 100%);
-  --gradient-danger: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
-  --gradient-info: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 50%, #22d3ee 100%);
+  /* 渐变系统（深度优化的专业科技感） */
+  --gradient-primary: linear-gradient(135deg, #1e40af 0%, #3b82f6 40%, #60a5fa 100%);
+  --gradient-success: linear-gradient(135deg, #047857 0%, #059669 40%, #22c55e 100%);
+  --gradient-warning: linear-gradient(135deg, #d97706 0%, #f59e0b 40%, #fbbf24 100%);
+  --gradient-danger: linear-gradient(135deg, #dc2626 0%, #ef4444 40%, #f87171 100%);
+  --gradient-info: linear-gradient(135deg, #0ea5e9 0%, #06b6d4 40%, #22d3ee 100%);
   
-  /* 数据可视化渐变 */
-  --gradient-data-positive: linear-gradient(to right, #047857, #10b981, #34d399);
-  --gradient-data-negative: linear-gradient(to right, #dc2626, #ef4444, #f87171);
-  --gradient-data-neutral: linear-gradient(to right, #dc8b00, #f59e0b, #fbbf24);
+  /* 数据可视化渐变（语义化优化） */
+  --gradient-data-positive: linear-gradient(90deg, #047857 0%, #059669 50%, #22c55e 100%);
+  --gradient-data-negative: linear-gradient(90deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
+  --gradient-data-neutral: linear-gradient(90deg, #d97706 0%, #f59e0b 50%, #fbbf24 100%);
   
-  /* 卡片背景渐变 */
-  --gradient-card-primary: linear-gradient(145deg, rgba(30, 64, 175, 0.02), rgba(59, 130, 246, 0.05));
-  --gradient-card-success: linear-gradient(145deg, rgba(4, 120, 87, 0.02), rgba(16, 185, 129, 0.05));
-  --gradient-card-warning: linear-gradient(145deg, rgba(220, 139, 0, 0.02), rgba(245, 158, 11, 0.05));
-  --gradient-card-danger: linear-gradient(145deg, rgba(220, 38, 38, 0.02), rgba(239, 68, 68, 0.05));
+  /* 卡片背景渐变（增强层次感） */
+  --gradient-card-primary: linear-gradient(145deg, rgba(30, 64, 175, 0.03), rgba(96, 165, 250, 0.06));
+  --gradient-card-success: linear-gradient(145deg, rgba(4, 120, 87, 0.03), rgba(34, 197, 94, 0.06));
+  --gradient-card-warning: linear-gradient(145deg, rgba(217, 119, 6, 0.03), rgba(251, 191, 36, 0.06));
+  --gradient-card-danger: linear-gradient(145deg, rgba(220, 38, 38, 0.03), rgba(248, 113, 113, 0.06));
 
-  /* 阴影层次（增强深度感） */
-  --shadow-2xs: 0 1px 1px 0 rgb(0 0 0 / 0.05);
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  /* 阴影层次（深度优化的层次感） */
+  --shadow-2xs: 0 1px 2px 0 rgb(0 0 0 / 0.04);
+  --shadow-xs: 0 1px 3px 0 rgb(0 0 0 / 0.06);
+  --shadow-sm: 0 2px 4px 0 rgb(0 0 0 / 0.06);
+  --shadow: 0 2px 8px 0 rgb(0 0 0 / 0.08), 0 1px 3px -1px rgb(0 0 0 / 0.06);
+  --shadow-md: 0 4px 12px -1px rgb(0 0 0 / 0.1), 0 2px 6px -2px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 8px 20px -3px rgb(0 0 0 / 0.12), 0 4px 8px -4px rgb(0 0 0 / 0.08);
+  --shadow-xl: 0 16px 32px -5px rgb(0 0 0 / 0.14), 0 8px 16px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 24px 48px -12px rgb(0 0 0 / 0.18);
   
-  /* 彩色阴影系统 */
-  --shadow-primary: 0 4px 14px 0 rgba(30, 64, 175, 0.2);
-  --shadow-primary-lg: 0 10px 25px 0 rgba(30, 64, 175, 0.25);
-  --shadow-success: 0 4px 14px 0 rgba(4, 120, 87, 0.2);
-  --shadow-success-lg: 0 10px 25px 0 rgba(4, 120, 87, 0.25);
-  --shadow-warning: 0 4px 14px 0 rgba(220, 139, 0, 0.2);
-  --shadow-warning-lg: 0 10px 25px 0 rgba(220, 139, 0, 0.25);
-  --shadow-danger: 0 4px 14px 0 rgba(220, 38, 38, 0.2);
-  --shadow-danger-lg: 0 10px 25px 0 rgba(220, 38, 38, 0.25);
+  /* 彩色阴影系统（增强品牌感） */
+  --shadow-primary: 0 4px 14px 0 rgba(30, 64, 175, 0.15);
+  --shadow-primary-lg: 0 10px 25px 0 rgba(30, 64, 175, 0.2);
+  --shadow-success: 0 4px 14px 0 rgba(4, 120, 87, 0.15);
+  --shadow-success-lg: 0 10px 25px 0 rgba(4, 120, 87, 0.2);
+  --shadow-warning: 0 4px 14px 0 rgba(217, 119, 6, 0.15);
+  --shadow-warning-lg: 0 10px 25px 0 rgba(217, 119, 6, 0.2);
+  --shadow-danger: 0 4px 14px 0 rgba(220, 38, 38, 0.15);
+  --shadow-danger-lg: 0 10px 25px 0 rgba(220, 38, 38, 0.2);
 }
 
 /* 暗色主题已禁用 - 仅使用亮色科技蓝主题 */
@@ -737,6 +765,235 @@ body,
   animation: card-float 6s ease-in-out infinite;
 }
 
+/* 现代化交互动画（深度优化版） */
+@keyframes scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in-delayed {
+  0%, 20% {
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-scale-in {
+  animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-slide-up {
+  animation: slide-up 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-fade-in-delayed {
+  animation: fade-in-delayed 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 2s ease-in-out infinite;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* 玻璃态效果 */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(30, 64, 175, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(30, 64, 175, 0.2);
+}
+
+/* 高级悬浮效果（深度优化版） */
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 20px 25px -5px rgba(30, 64, 175, 0.15),
+    0 10px 10px -5px rgba(30, 64, 175, 0.08);
+}
+
+.hover-lift::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.hover-lift:hover::before {
+  left: 100%;
+}
+
+/* 更细腻的悬浮动效 */
+.hover-subtle {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-subtle:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 
+    0 8px 15px -3px rgba(30, 64, 175, 0.12),
+    0 4px 6px -2px rgba(30, 64, 175, 0.06);
+}
+
+/* 磁吸效果 */
+.hover-magnetic {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.hover-magnetic:hover {
+  transform: translateY(-3px) scale(1.03);
+  filter: brightness(1.05);
+}
+
+/* 脉冲边框效果 */
+.hover-pulse-border {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.hover-pulse-border::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: linear-gradient(45deg, transparent, var(--primary), transparent);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hover-pulse-border:hover::after {
+  opacity: 1;
+  animation: pulse-border 2s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 微妙的光泽效果 */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.shimmer-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transform: translateX(-100%);
+  animation: shimmer 2s infinite;
+  pointer-events: none;
+}
+
 /* 亮色主题响应式适配工具类 */
 .dashboard-container {
   @apply min-h-screen bg-background transition-all duration-300;
@@ -906,6 +1163,71 @@ body,
 
 .gap-dashboard-xl {
   gap: 2.5rem; /* 40px */
+}
+
+/* 响应式工具类（深度优化版） */
+@media (max-width: 640px) {
+  .mobile-optimized {
+    padding: 1rem !important;
+    gap: 1rem !important;
+  }
+  
+  .mobile-card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+  
+  .mobile-text-scale {
+    font-size: 0.9rem !important;
+    line-height: 1.35rem !important;
+  }
+  
+  .mobile-spacing {
+    margin: 0.75rem 0 !important;
+  }
+
+  .mobile-hero-text {
+    font-size: 1.5rem !important;
+    line-height: 2rem !important;
+  }
+
+  .mobile-metric-value {
+    font-size: 1.75rem !important;
+    line-height: 2.25rem !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tablet-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.75rem !important;
+  }
+  
+  .tablet-padding {
+    padding: 1.75rem !important;
+  }
+
+  .tablet-metric-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  .desktop-grid {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+    gap: 2.5rem !important;
+  }
+  
+  .desktop-spacing {
+    padding: 2.5rem !important;
+    margin: 1.5rem 0 !important;
+  }
+
+  .desktop-hero-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 2rem !important;
+  }
 }
 
 /* 卡片标准内边距 */

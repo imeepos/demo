@@ -11,9 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SentimentIntensityRouteImport } from './routes/sentiment-intensity'
 import { Route as SentimentEventRouteImport } from './routes/sentiment-event'
+import { Route as EnhancedDashboardRouteImport } from './routes/enhanced-dashboard'
+import { Route as DataVisualizationRouteImport } from './routes/data-visualization'
 import { Route as DashboardViewRouteImport } from './routes/dashboard-view'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ColorTestRouteImport } from './routes/color-test'
+import { Route as AdminDashboardRouteImport } from './routes/admin-dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 
 const SentimentIntensityRoute = SentimentIntensityRouteImport.update({
@@ -24,6 +27,16 @@ const SentimentIntensityRoute = SentimentIntensityRouteImport.update({
 const SentimentEventRoute = SentimentEventRouteImport.update({
   id: '/sentiment-event',
   path: '/sentiment-event',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnhancedDashboardRoute = EnhancedDashboardRouteImport.update({
+  id: '/enhanced-dashboard',
+  path: '/enhanced-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DataVisualizationRoute = DataVisualizationRouteImport.update({
+  id: '/data-visualization',
+  path: '/data-visualization',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardViewRoute = DashboardViewRouteImport.update({
@@ -41,6 +54,11 @@ const ColorTestRoute = ColorTestRouteImport.update({
   path: '/color-test',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/admin-dashboard',
+  path: '/admin-dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -49,26 +67,35 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin-dashboard': typeof AdminDashboardRoute
   '/color-test': typeof ColorTestRoute
   '/dashboard': typeof DashboardRoute
   '/dashboard-view': typeof DashboardViewRoute
+  '/data-visualization': typeof DataVisualizationRoute
+  '/enhanced-dashboard': typeof EnhancedDashboardRoute
   '/sentiment-event': typeof SentimentEventRoute
   '/sentiment-intensity': typeof SentimentIntensityRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin-dashboard': typeof AdminDashboardRoute
   '/color-test': typeof ColorTestRoute
   '/dashboard': typeof DashboardRoute
   '/dashboard-view': typeof DashboardViewRoute
+  '/data-visualization': typeof DataVisualizationRoute
+  '/enhanced-dashboard': typeof EnhancedDashboardRoute
   '/sentiment-event': typeof SentimentEventRoute
   '/sentiment-intensity': typeof SentimentIntensityRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin-dashboard': typeof AdminDashboardRoute
   '/color-test': typeof ColorTestRoute
   '/dashboard': typeof DashboardRoute
   '/dashboard-view': typeof DashboardViewRoute
+  '/data-visualization': typeof DataVisualizationRoute
+  '/enhanced-dashboard': typeof EnhancedDashboardRoute
   '/sentiment-event': typeof SentimentEventRoute
   '/sentiment-intensity': typeof SentimentIntensityRoute
 }
@@ -76,34 +103,46 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin-dashboard'
     | '/color-test'
     | '/dashboard'
     | '/dashboard-view'
+    | '/data-visualization'
+    | '/enhanced-dashboard'
     | '/sentiment-event'
     | '/sentiment-intensity'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin-dashboard'
     | '/color-test'
     | '/dashboard'
     | '/dashboard-view'
+    | '/data-visualization'
+    | '/enhanced-dashboard'
     | '/sentiment-event'
     | '/sentiment-intensity'
   id:
     | '__root__'
     | '/'
+    | '/admin-dashboard'
     | '/color-test'
     | '/dashboard'
     | '/dashboard-view'
+    | '/data-visualization'
+    | '/enhanced-dashboard'
     | '/sentiment-event'
     | '/sentiment-intensity'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
   ColorTestRoute: typeof ColorTestRoute
   DashboardRoute: typeof DashboardRoute
   DashboardViewRoute: typeof DashboardViewRoute
+  DataVisualizationRoute: typeof DataVisualizationRoute
+  EnhancedDashboardRoute: typeof EnhancedDashboardRoute
   SentimentEventRoute: typeof SentimentEventRoute
   SentimentIntensityRoute: typeof SentimentIntensityRoute
 }
@@ -122,6 +161,20 @@ declare module '@tanstack/react-router' {
       path: '/sentiment-event'
       fullPath: '/sentiment-event'
       preLoaderRoute: typeof SentimentEventRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/enhanced-dashboard': {
+      id: '/enhanced-dashboard'
+      path: '/enhanced-dashboard'
+      fullPath: '/enhanced-dashboard'
+      preLoaderRoute: typeof EnhancedDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/data-visualization': {
+      id: '/data-visualization'
+      path: '/data-visualization'
+      fullPath: '/data-visualization'
+      preLoaderRoute: typeof DataVisualizationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard-view': {
@@ -145,6 +198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ColorTestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin-dashboard': {
+      id: '/admin-dashboard'
+      path: '/admin-dashboard'
+      fullPath: '/admin-dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -157,9 +217,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
   ColorTestRoute: ColorTestRoute,
   DashboardRoute: DashboardRoute,
   DashboardViewRoute: DashboardViewRoute,
+  DataVisualizationRoute: DataVisualizationRoute,
+  EnhancedDashboardRoute: EnhancedDashboardRoute,
   SentimentEventRoute: SentimentEventRoute,
   SentimentIntensityRoute: SentimentIntensityRoute,
 }

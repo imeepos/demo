@@ -1,219 +1,135 @@
+import { BarChart3, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { cn } from '@sker/ui';
-import {
-  DashboardCard,
-  LiveIndicator,
-  StatusDot,
-} from '../dashboard/DashboardComponents';
+import { useRouter, useRouterState } from '@tanstack/react-router';
+import { getRoutesByGroup } from '../../lib/routes-config';
+import { NavigationGroup } from './NavigationGroup';
+import { NavigationItem } from './NavigationItem';
+
+type NavigationGroupKey = 'dashboard' | 'analysis' | 'management' | 'system';
+
+const NAVIGATION_GROUPS = [
+  { key: 'dashboard' as const, priority: 1 },
+  { key: 'analysis' as const, priority: 2 },
+  { key: 'management' as const, priority: 3 },
+  { key: 'system' as const, priority: 4 },
+];
 
 interface SidebarProps {
   className?: string;
+  defaultCollapsed?: boolean;
+  enabledGroups?: NavigationGroupKey[];
+  brandTitle?: string;
 }
 
-interface NavItemProps {
-  icon: React.ReactNode;
-  label: string;
-  badge?: string | number;
-  active?: boolean;
-  onClick?: () => void;
-  status?: 'online' | 'offline' | 'warning';
-}
+export function Sidebar({
+  className,
+  defaultCollapsed = false,
+  enabledGroups,
+  brandTitle = '舆情监控系统',
+}: SidebarProps) {
+  const [collapsed, setCollapsed] = useState(defaultCollapsed);
 
-const NAV_ITEMS = [
-  {
-    icon: '🏠',
-    label: '首页概览',
-    active: true,
-    status: 'online' as const,
-  },
-  {
-    icon: '📊',
-    label: '数据监控',
-    badge: 'LIVE',
-    status: 'online' as const,
-  },
-  {
-    icon: '🧠',
-    label: '情感分析',
-    badge: 24,
-    status: 'online' as const,
-  },
-  {
-    icon: '🌍',
-    label: '地域分析',
-    status: 'online' as const,
-  },
-  {
-    icon: '🔥',
-    label: '热点追踪',
-    badge: '新',
-    status: 'warning' as const,
-  },
-  {
-    icon: '🚨',
-    label: '预警管理',
-    badge: 3,
-    status: 'warning' as const,
-  },
-  {
-    icon: '📈',
-    label: '统计报告',
-    status: 'online' as const,
-  },
-  {
-    icon: '⚙️',
-    label: '系统设置',
-    status: 'online' as const,
-  },
-];
+  const router = useRouter();
+  const routerState = useRouterState();
+  const currentPath = routerState.location.pathname;
 
-function NavItem({
-  icon,
-  label,
-  badge,
-  active,
-  onClick,
-  status,
-}: NavItemProps) {
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-300 group relative overflow-hidden',
-        active
-          ? 'bg-gradient-to-r from-primary/10 to-accent/10 text-primary border-l-2 border-primary shadow-primary/20 shadow-md'
-          : 'hover:bg-gradient-to-r hover:from-primary/5 hover:to-accent/5 hover:text-primary text-muted-foreground hover:shadow-sm'
-      )}
-    >
-      {/* 背景光效 */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+  const handleNavigate = (path: string) => {
+    router.navigate({ to: path });
+  };
 
-      {/* 图标 */}
-      <span className="text-lg relative z-10 group-hover:scale-110 transition-transform duration-300">
-        {icon}
-      </span>
+  const getEnabledGroups = () => {
+    if (enabledGroups) {
+      return NAVIGATION_GROUPS.filter(group =>
+        enabledGroups.includes(group.key)
+      );
+    }
+    return NAVIGATION_GROUPS;
+  };
 
-      {/* 状态点 */}
-      {status && <StatusDot status={status} className="relative z-10" />}
-
-      {/* 标签 */}
-      <span className="flex-1 text-left font-medium relative z-10 group-hover:font-semibold transition-all duration-300">
-        {label}
-      </span>
-
-      {/* 徽章 */}
-      {badge && (
-        <span
-          className={cn(
-            'px-2 py-0.5 rounded-full text-xs font-bold relative z-10 transition-all duration-300',
-            active
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-muted text-muted-foreground group-hover:bg-primary/20 group-hover:text-primary'
-          )}
-        >
-          {badge}
-        </span>
-      )}
-    </button>
-  );
-}
-
-/**
- * 专业管理后台侧边导航栏
- * 职责：提供主要功能导航和系统状态展示
- */
-export function Sidebar({ className }: SidebarProps) {
-  const [collapsed, setCollapsed] = useState(false);
+  const navigationGroupsData = getEnabledGroups().map(group => ({
+    config: group,
+    routes: getRoutesByGroup(group.key),
+  }));
 
   return (
-    <div
+    <aside
       className={cn(
-        'h-screen bg-card border-r border-border shadow-lg transition-all duration-300 flex flex-col backdrop-blur-sm',
+        'h-full flex flex-col transition-all duration-300 ease-in-out',
+        'bg-card border-r border-border/40 shadow-sm',
         collapsed ? 'w-16' : 'w-64',
         className
       )}
     >
-      {/* Logo 区域 */}
-      <div className="p-4 border-b border-border bg-gradient-to-r from-primary/5 to-accent/5">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center text-white font-bold text-sm shadow-primary">
-            舆
-          </div>
-          {!collapsed && (
-            <>
-              <div className="flex-1">
-                <h1 className="font-bold text-foreground">舆情监控系统</h1>
-                <div className="flex items-center gap-2 mt-1">
-                  <LiveIndicator status="online" className="text-xs">
-                    实时监控中
-                  </LiveIndicator>
-                </div>
-              </div>
-              <button
-                onClick={() => setCollapsed(!collapsed)}
-                className="p-1 rounded-md hover:bg-muted transition-colors"
-              >
-                ←
-              </button>
-            </>
+      <header
+        className={cn(
+          'p-4 border-b border-border/30',
+          collapsed
+            ? 'flex flex-col items-center gap-2'
+            : 'flex items-center gap-3'
+        )}
+      >
+        <div
+          className={cn(
+            'flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 text-white',
+            'transition-all duration-300',
+            collapsed ? 'w-10 h-10 rounded-lg' : 'w-10 h-10 rounded-xl'
           )}
-          {collapsed && (
-            <button
-              onClick={() => setCollapsed(!collapsed)}
-              className="absolute top-4 -right-3 w-6 h-6 rounded-full bg-card border border-border shadow-sm flex items-center justify-center hover:shadow-md transition-all duration-300"
+        >
+          <BarChart3 className={collapsed ? 'w-6 h-6' : 'w-6 h-6'} />
+        </div>
+
+        {!collapsed && (
+          <h1 className="font-bold text-lg text-foreground">{brandTitle}</h1>
+        )}
+
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className={cn(
+            'flex items-center justify-center transition-all duration-200',
+            'hover:bg-background/80 focus:outline-none focus:ring-2 focus:ring-primary/50',
+            collapsed
+              ? 'w-8 h-6 mt-2 rounded-md bg-primary/10 text-primary'
+              : 'w-7 h-7 rounded-md bg-background/60 text-muted-foreground ml-auto'
+          )}
+          aria-label={collapsed ? '展开侧边栏' : '折叠侧边栏'}
+        >
+          {collapsed ? (
+            <ChevronRight className="w-4 h-4" />
+          ) : (
+            <ChevronLeft className="w-4 h-4" />
+          )}
+        </button>
+      </header>
+
+      <nav
+        className={cn(
+          'flex-1 overflow-y-auto',
+          collapsed ? 'px-2 py-3 space-y-2' : 'px-3 py-4 space-y-2'
+        )}
+      >
+        {navigationGroupsData.map(({ config, routes }) => (
+          <div key={config.key} className="space-y-1">
+            <NavigationGroup
+              groupKey={config.key}
+              routes={routes}
+              currentPath={currentPath}
+              collapsed={collapsed}
+              onNavigate={handleNavigate}
             >
-              →
-            </button>
-          )}
-        </div>
-      </div>
-
-      {/* 导航区域 */}
-      <div className="flex-1 p-3 space-y-2 overflow-y-auto">
-        {NAV_ITEMS.map((item, index) => (
-          <NavItem
-            key={item.label}
-            icon={item.icon}
-            label={collapsed ? '' : item.label}
-            badge={collapsed ? undefined : item.badge}
-            active={item.active}
-            status={item.status}
-          />
+              {routes.map(route => (
+                <NavigationItem
+                  key={route.path}
+                  route={route}
+                  active={currentPath === route.path}
+                  collapsed={collapsed}
+                  onClick={() => handleNavigate(route.path)}
+                />
+              ))}
+            </NavigationGroup>
+          </div>
         ))}
-      </div>
-
-      {/* 底部状态区域 */}
-      {!collapsed && (
-        <div className="p-3 border-t border-border">
-          <DashboardCard
-            size="sm"
-            className="bg-gradient-to-br from-muted/50 to-accent/5"
-          >
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-muted-foreground">
-                  系统状态
-                </span>
-                <StatusDot status="online" pulse />
-              </div>
-              <div className="space-y-1 text-xs">
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">CPU使用率</span>
-                  <span className="font-mono text-success">23%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">内存使用</span>
-                  <span className="font-mono text-warning">67%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">数据源</span>
-                  <span className="font-mono text-primary">8/8</span>
-                </div>
-              </div>
-            </div>
-          </DashboardCard>
-        </div>
-      )}
-    </div>
+      </nav>
+    </aside>
   );
 }

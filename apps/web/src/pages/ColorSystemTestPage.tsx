@@ -1,3 +1,4 @@
+import { DashboardLayout } from '../components/layout';
 import {
   DashboardCard,
   MetricCard,
@@ -18,8 +19,8 @@ import {
  */
 export function ColorSystemTestPage() {
   return (
-    <div className="dashboard-container p-2">
-      <div className="w-full space-y-4">
+    <DashboardLayout>
+      <div className="space-y-4">
         {/* 页面标题 */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-black metric-highlight mb-4">
@@ -260,6 +261,6 @@ export function ColorSystemTestPage() {
           </DashboardCard>
         </section>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

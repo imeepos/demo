@@ -1,53 +1,79 @@
+import {
+  BarChart3,
+  Brain,
+  Globe,
+  AlertTriangle,
+  TrendingUp,
+  Activity,
+} from 'lucide-react';
 import { FeatureCard } from './FeatureCard';
 
-const FEATURES = [
+// ==================== 功能特性配置 ====================
+
+interface Feature {
+  readonly title: string;
+  readonly description: string;
+  readonly icon: React.ComponentType<{ className?: string }>;
+  readonly color: string;
+  readonly metrics: { value: string; label: string };
+}
+
+const FEATURES: Feature[] = [
   {
     title: '实时数据监控',
     description: '7×24小时全网数据采集，支持微博、新闻、论坛等多平台监控',
-    icon: '📊',
+    icon: BarChart3,
     color: 'primary',
     metrics: { value: '2.8K+', label: '日均监控数据' },
   },
   {
     title: '情感分析引擎',
     description: '基于深度学习的情感分析算法，准确识别正面、负面、中性情感',
-    icon: '🧠',
+    icon: Brain,
     color: 'success',
     metrics: { value: '94.2%', label: '分析准确率' },
   },
   {
     title: '地理位置分析',
     description: '结合地理位置信息，提供区域性舆情分布和热点地图可视化',
-    icon: '🌍',
+    icon: Globe,
     color: 'warning',
     metrics: { value: '350+', label: '覆盖城市' },
   },
   {
     title: '智能预警系统',
     description: '多维度风险评估模型，及时发现和预警潜在舆情风险',
-    icon: '🚨',
+    icon: AlertTriangle,
     color: 'danger',
     metrics: { value: '99.8%', label: '系统可用性' },
   },
   {
     title: '热点话题追踪',
     description: '智能识别热门话题和关键词，实时跟踪话题传播趋势',
-    icon: '🔥',
+    icon: TrendingUp,
     color: 'default',
     metrics: { value: '24/7', label: '实时追踪' },
   },
   {
     title: '数据可视化',
     description: '丰富的图表和大屏展示，直观呈现监控数据和分析结果',
-    icon: '📈',
+    icon: Activity,
     color: 'primary',
     metrics: { value: '15+', label: '可视化图表' },
   },
 ] as const;
 
 /**
- * 业务功能特性网格组件
- * 职责：展示舆情监控系统的核心功能特性
+ * 现代化业务功能特性网格组件
+ *
+ * 设计理念：
+ * - 专业图标系统替代emoji
+ * - 类型安全的组件接口
+ * - 统一的视觉设计语言
+ * - 响应式布局支持
+ *
+ * @author SKER Team
+ * @version 2.0.0
  */
 export function FeaturesGrid() {
   return (
@@ -69,7 +95,7 @@ export function FeaturesGrid() {
             key={feature.title}
             title={feature.title}
             description={feature.description}
-            icon={feature.icon}
+            icon={<feature.icon className="h-6 w-6" />}
             color={feature.color}
             metrics={feature.metrics}
           />

@@ -3,7 +3,7 @@ import { client } from '@sker/sdk';
 // API配置
 const API_CONFIG = {
   // 从环境变量获取API地址，提供默认值作为后备
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3011',
   // 请求超时时间
   timeout: parseInt(import.meta.env.VITE_API_TIMEOUT || '10000', 10),
   // 是否启用Mock数据

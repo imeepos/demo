@@ -1,11 +1,15 @@
-import { Button } from '@sker/ui';
+import {
+  Button,
+  Table,
+  TableHeader,
+  TableBody,
+  TableHead,
+  TableRow,
+  TableCell,
+} from '@sker/ui';
 import { Edit, Trash2, Database, FileX } from 'lucide-react';
 import React from 'react';
-import {
-  DashboardCard,
-  ProgressBar,
-  MetricValue,
-} from '../dashboard/DashboardComponents';
+import { DashboardCard } from '../dashboard/DashboardComponents';
 import type { SentimentIntensityItem } from '../../types/sentiment-intensity';
 
 interface SentimentIntensityListProps {
@@ -26,42 +30,36 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
 
   if (isLoading) {
     return (
-      <DashboardCard className="p-8">
-        <div className="flex flex-col items-center justify-center space-y-4">
+      <div className="p-16">
+        <div className="flex flex-col items-center justify-center space-y-6">
           <div className="relative">
-            <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-            <Database className="w-6 h-6 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+            <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div>
+            <Database className="w-8 h-8 text-blue-500 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
           </div>
-          <div className="text-center">
-            <div className="text-lg font-semibold text-foreground mb-1">
-              数据加载中
-            </div>
-            <div className="text-sm text-muted-foreground">
-              正在获取情感强度配置信息...
-            </div>
+          <div className="text-center space-y-2">
+            <div className="text-xl font-light text-slate-800">数据加载中</div>
+            <div className="text-slate-500">正在为您获取最新数据...</div>
           </div>
         </div>
-      </DashboardCard>
+      </div>
     );
   }
 
   if (safeItems.length === 0) {
     return (
-      <DashboardCard className="p-12">
-        <div className="flex flex-col items-center justify-center space-y-6">
-          <div className="p-4 bg-muted/30 rounded-full">
-            <FileX className="w-12 h-12 text-muted-foreground" />
+      <div className="p-16">
+        <div className="flex flex-col items-center justify-center space-y-8">
+          <div className="p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full">
+            <FileX className="w-16 h-16 text-slate-400" />
           </div>
-          <div className="text-center space-y-2">
-            <h3 className="text-lg font-semibold text-foreground">
-              暂无配置数据
-            </h3>
-            <p className="text-muted-foreground max-w-md">
-              尚未创建任何情感强度配置，点击“新建情感强度配置”按钮开始创建第一个配置项
+          <div className="text-center space-y-3">
+            <h3 className="text-2xl font-light text-slate-800">暂无数据</h3>
+            <p className="text-slate-500 max-w-md">
+              还没有任何情感强度配置，点击上方"新建配置"按钮开始创建
             </p>
           </div>
         </div>
-      </DashboardCard>
+      </div>
     );
   }
 
@@ -71,85 +69,117 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
     return isNaN(num) ? 0 : num;
   };
 
-  // 统一的颜色判断逻辑
-  const getVariant = (
-    intensity: any
-  ): 'success' | 'warning' | 'primary' | 'danger' => {
-    const num = safeIntensity(intensity);
-    if (num >= 0.7) return 'success';
-    if (num >= 0.4) return 'warning';
-    if (num >= 0.2) return 'primary';
-    return 'danger';
+  // 获取强度状态颜色和渐变
+  const getIntensityStyle = (
+    intensity: number
+  ): { color: string; bg: string; badge: string } => {
+    if (intensity >= 0.7)
+      return {
+        color: 'text-emerald-700',
+        bg: 'bg-emerald-50',
+        badge: 'bg-gradient-to-r from-emerald-500 to-green-500',
+      };
+    if (intensity >= 0.4)
+      return {
+        color: 'text-amber-700',
+        bg: 'bg-amber-50',
+        badge: 'bg-gradient-to-r from-amber-500 to-orange-500',
+      };
+    if (intensity >= 0.2)
+      return {
+        color: 'text-blue-700',
+        bg: 'bg-blue-50',
+        badge: 'bg-gradient-to-r from-blue-500 to-cyan-500',
+      };
+    return {
+      color: 'text-rose-700',
+      bg: 'bg-rose-50',
+      badge: 'bg-gradient-to-r from-rose-500 to-pink-500',
+    };
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {safeItems.map((item, index) => {
-        const intensityValue = safeIntensity(item.intensity);
-        const variant = getVariant(item.intensity);
+    <div className="overflow-hidden">
+      <Table>
+        <TableHeader>
+          <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
+            <TableHead className="font-medium text-slate-700 py-4 px-6">
+              标题
+            </TableHead>
+            <TableHead className="font-medium text-slate-700 py-4 px-6">
+              强度值
+            </TableHead>
+            <TableHead className="font-medium text-slate-700 py-4 px-6">
+              描述
+            </TableHead>
+            <TableHead className="font-medium text-slate-700 py-4 px-6 text-center">
+              操作
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {safeItems.map((item, index) => {
+            const intensityValue = safeIntensity(item.intensity);
+            const intensityStyle = getIntensityStyle(intensityValue);
 
-        return (
-          <DashboardCard
-            key={item.id}
-            variant={variant}
-            className="hover:shadow-tech-lg transition-all duration-300 animate-card-float group"
-            style={{ animationDelay: `${index * 100}ms` }}
-          >
-            <div className="p-6">
-              {/* 标题区域 */}
-              <div className="text-center space-y-3 mb-6">
-                <h3 className="text-lg font-bold text-foreground line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                  {item.title}
-                </h3>
-              </div>
+            return (
+              <TableRow
+                key={item.id}
+                className="border-b border-slate-100 hover:bg-slate-50/50 transition-all duration-200 group"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                <TableCell className="py-5 px-6">
+                  <div className="font-medium text-slate-800 group-hover:text-blue-600 transition-colors duration-200">
+                    {item.title}
+                  </div>
+                </TableCell>
 
-              {/* 强度数据区域 */}
-              <div className="text-center space-y-4 mb-6">
-                <MetricValue size="sm" variant={variant}>
-                  {intensityValue.toFixed(3)}
-                </MetricValue>
+                <TableCell className="py-5 px-6">
+                  <div className="flex items-center space-x-3">
+                    <div
+                      className={`w-3 h-3 rounded-full ${intensityStyle.badge}`}
+                    ></div>
+                    <span
+                      className={`font-semibold text-lg ${intensityStyle.color}`}
+                    >
+                      {intensityValue.toFixed(3)}
+                    </span>
+                  </div>
+                </TableCell>
 
-                <ProgressBar
-                  value={intensityValue * 100}
-                  variant={variant}
-                  shine={true}
-                  className="h-3"
-                />
-              </div>
+                <TableCell className="py-5 px-6 max-w-xs">
+                  <div className="text-slate-600 truncate">
+                    {item.description || '暂无描述'}
+                  </div>
+                </TableCell>
 
-              {/* 描述信息 */}
-              {item.description && (
-                <div className="p-3 bg-muted/20 rounded-lg border-l-4 border-primary/50 mb-6 group-hover:bg-muted/30 transition-colors duration-300">
-                  <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                    {item.description}
-                  </p>
-                </div>
-              )}
-              {/* 操作按钮区域 */}
-              <div className="flex gap-2 pt-4 border-t border-border/50">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onEdit(item)}
-                  className="flex-1 border-primary/30 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-md"
-                >
-                  <Edit className="w-3 h-3 mr-1" />
-                  编辑
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onDelete(item)}
-                  className="flex-1 border-destructive/30 text-destructive hover:bg-destructive hover:text-white transition-all duration-300 hover:scale-105 hover:shadow-md"
-                >
-                  <Trash2 className="w-3 h-3 mr-1" />
-                  删除
-                </Button>
-              </div>
-            </div>
-          </DashboardCard>
-        );
-      })}
+                <TableCell className="py-5 px-6">
+                  <div className="flex gap-3 justify-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onEdit(item)}
+                      className="border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 rounded-lg transition-all duration-200 hover:scale-105"
+                    >
+                      <Edit className="w-4 h-4 mr-1" />
+                      编辑
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => onDelete(item)}
+                      className="border-rose-200 text-rose-600 hover:bg-rose-50 hover:border-rose-300 rounded-lg transition-all duration-200 hover:scale-105"
+                    >
+                      <Trash2 className="w-4 h-4 mr-1" />
+                      删除
+                    </Button>
+                  </div>
+                </TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
     </div>
   );
 };

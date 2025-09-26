@@ -5,7 +5,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@sker/ui';
-import { ArrowLeft, RefreshCw, Download, Settings } from 'lucide-react';
+import { RefreshCw, Settings } from 'lucide-react';
+import { DashboardLayout } from '../components/layout';
 import {
   mockDashboardData,
   generateDashboardMetrics,
@@ -41,13 +42,7 @@ import {
   ChartContainer,
 } from '../components/charts';
 
-interface DataVisualizationPageProps {
-  onBack?: () => void;
-}
-
-export const DataVisualizationPage: React.FC<DataVisualizationPageProps> = ({
-  onBack,
-}) => {
+export const DataVisualizationPage: React.FC = () => {
   const [metrics, setMetrics] = useState(mockDashboardData.metrics);
   const [isLoading, setIsLoading] = useState(false);
   const [autoRefresh, setAutoRefresh] = useState(true);
@@ -93,27 +88,16 @@ export const DataVisualizationPage: React.FC<DataVisualizationPageProps> = ({
   }, [autoRefresh]);
 
   return (
-    <div className="min-h-screen bg-background p-4 space-y-6">
+    <div className="space-y-6">
       {/* 页面头部 */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={onBack}
-            className="flex items-center gap-2"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            返回
-          </Button>
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">
-              舆情数据可视化中心
-            </h1>
-            <p className="text-muted-foreground">
-              基于 Tremor + AntV G2Plot 构建 · 专业数据分析平台
-            </p>
-          </div>
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">
+            舆情数据可视化中心
+          </h1>
+          <p className="text-muted-foreground">
+            基于 Tremor + AntV G2Plot 构建 · 专业数据分析平台
+          </p>
         </div>
 
         {/* 控制面板 */}

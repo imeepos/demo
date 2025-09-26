@@ -1,11 +1,7 @@
-import { Button } from '@sker/ui';
-import { Plus, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import {
-  DashboardCard,
-  LiveIndicator,
-} from '../components/dashboard/DashboardComponents';
+import { Button } from '@sker/ui';
+import { DashboardLayout } from '../components/layout';
 import { SentimentIntensityDialog } from '../components/sentiment-intensity/SentimentIntensityDialog';
 import { SentimentIntensityList } from '../components/sentiment-intensity/SentimentIntensityList';
 import { SentimentIntensitySearchForm } from '../components/sentiment-intensity/SentimentIntensitySearchForm';
@@ -23,6 +19,18 @@ import type {
   SentimentIntensityItem,
 } from '../types/sentiment-intensity';
 
+/**
+ * 情感强度管理页面
+ *
+ * 设计理念：
+ * - 极致整洁的24列栅格布局
+ * - 完美对称的视觉排版
+ * - 一致的交互反馈体验
+ * - 专业的数据展示规范
+ *
+ * @author 专业表单布局艺术家
+ * @version 2.0.0
+ */
 export const SentimentIntensityPage: React.FC = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<SentimentIntensityItem | null>(
@@ -30,19 +38,16 @@ export const SentimentIntensityPage: React.FC = () => {
   );
 
   const {
-    // 状态
     searchTitle,
     searchMinIntensity,
     searchMaxIntensity,
-
-    // 搜索 Actions
     setSearchTitle,
     setSearchMinIntensity,
     setSearchMaxIntensity,
     clearSearch,
   } = useSentimentIntensityStore();
 
-  // 查询
+  // 数据查询
   const {
     data: listData = [],
     isLoading: isListLoading,
@@ -72,12 +77,12 @@ export const SentimentIntensityPage: React.FC = () => {
     },
   });
 
-  // 突变
+  // API 突变
   const createMutation = useMutationSentimentIntensityCreate();
   const updateMutation = useMutationSentimentIntensityUpdate();
   const deleteMutation = useMutationSentimentIntensityRemove();
 
-  // 判断是否在搜索模式
+  // 搜索状态计算
   const isSearchMode = !!(
     searchTitle ||
     searchMinIntensity !== null ||
@@ -169,93 +174,66 @@ export const SentimentIntensityPage: React.FC = () => {
 
   const isSubmitting = createMutation.isPending || updateMutation.isPending;
 
-  // 检查是否有搜索参数用于显示搜索结果提示
-  const hasActiveSearch = isSearchMode;
-
   return (
-    <div className="dashboard-container min-h-screen p-2">
-      <div className="w-full space-y-4">
-        {/* 页面标题栏 - 左右布局 */}
-        <div className="flex items-center justify-between mb-8">
-          {/* 左侧：标题和简介 */}
-          <div>
-            <h1 className="text-2xl font-black metric-highlight mb-2">
-              情感强度管理系统
-            </h1>
-            <div className="flex items-center gap-2">
-              <LiveIndicator status="online" />
-              <span className="text-muted-foreground">
-                配置参数管理 · 实时监控
-              </span>
-            </div>
-          </div>
-
-          {/* 右侧：操作按钮 */}
-          <div className="flex gap-4">
-            <Button
-              variant="outline"
-              onClick={handleRefresh}
-              disabled={isLoading}
-              className="border-primary/50 text-primary hover:bg-primary hover:text-white transition-all duration-300 hover:-translate-y-0.5"
-            >
-              <RefreshCw
-                className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`}
-              />
-              {isLoading ? '刷新中...' : '刷新数据'}
-            </Button>
-
-            <Button
-              onClick={handleCreate}
-              className="bg-primary hover:bg-primary/90 text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 hover:-translate-y-1"
-            >
-              <Plus className="w-5 h-5 mr-2" />
-              新建情感强度配置
-            </Button>
-          </div>
-        </div>
-
-        <SentimentIntensitySearchForm
-          onSearch={handleSearch}
-          onClear={handleClearSearch}
-        />
-
-        {hasActiveSearch && (
-          <DashboardCard className="mb-6">
-            <div className="p-4 border-l-4 border-primary bg-primary/5">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-sm font-medium text-primary">
-                  <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
-                  🔍 搜索结果：共找到 {displayData.length} 条记录
+    <DashboardLayout>
+      {/* 极简优雅的容器 */}
+      <div className="min-h-full">
+        <div className="max-w-6xl mx-auto px-10 py-16">
+          {/* 艺术级页面头部 */}
+          <div className="mb-16">
+            <div className="flex items-center justify-between">
+              <div className="space-y-6">
+                <div className="flex items-center space-x-6">
+                  <div className="w-1.5 h-16 bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 rounded-full shadow-lg"></div>
+                  <div>
+                    <h1 className="text-3xl font-extralight text-slate-900 tracking-wide leading-tight">
+                      情感强度管理
+                    </h1>
+                    <p className="text-slate-400 text-base font-light mt-3 tracking-wide">
+                      精致管理情感数据配置
+                    </p>
+                  </div>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleClearSearch}
-                  className="text-primary hover:bg-primary hover:text-white transition-all duration-300"
-                >
-                  显示全部数据
-                </Button>
               </div>
+
+              <Button
+                onClick={handleCreate}
+                className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white font-medium px-10 py-4 rounded-2xl shadow-2xl hover:shadow-indigo-500/25 transition-all duration-500 transform hover:-translate-y-1 hover:scale-105"
+              >
+                <span className="text-sm">+ 新建配置</span>
+              </Button>
             </div>
-          </DashboardCard>
-        )}
+          </div>
 
-        <SentimentIntensityList
-          items={displayData}
-          isLoading={isLoading}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
+          {/* 精致搜索区域 */}
+          <div className="mb-12">
+            <SentimentIntensitySearchForm
+              onSearch={handleSearch}
+              onClear={handleClearSearch}
+            />
+          </div>
 
-        <SentimentIntensityDialog
-          isOpen={dialogOpen}
-          onClose={handleDialogClose}
-          onSubmit={handleSubmit}
-          initialData={editingItem}
-          isSubmitting={isSubmitting}
-          title={editingItem ? '编辑情感强度配置' : '新建情感强度配置'}
-        />
+          {/* 美观数据区域 */}
+          <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-xl border border-slate-200/60">
+            <SentimentIntensityList
+              items={displayData}
+              isLoading={isLoading}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          </div>
+
+          {/* 对话框 */}
+          <SentimentIntensityDialog
+            isOpen={dialogOpen}
+            onClose={handleDialogClose}
+            onSubmit={handleSubmit}
+            initialData={editingItem}
+            isSubmitting={isSubmitting}
+            title={editingItem ? '编辑情感强度配置' : '新建情感强度配置'}
+          />
+        </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };

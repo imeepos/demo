@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { TrendingUp, CheckCircle, Clock } from 'lucide-react';
 import {
   mockDashboardData,
   generateDashboardMetrics,
@@ -82,7 +83,7 @@ export function DashboardExample() {
             <TrendIndicator
               trend="up"
               value={metrics.trends.total}
-              icon={<span>↗</span>}
+              icon={<TrendingUp className="h-3 w-3" />}
             />
           </BaseMetricCard>
         </DashboardCard>
@@ -98,7 +99,7 @@ export function DashboardExample() {
             <TrendIndicator
               trend="up"
               value={metrics.trends.positive}
-              icon={<span>↗</span>}
+              icon={<TrendingUp className="h-3 w-3" />}
             />
           </BaseMetricCard>
         </DashboardCard>
@@ -114,7 +115,7 @@ export function DashboardExample() {
             <TrendIndicator
               trend="neutral"
               value={metrics.trends.neutral}
-              icon={<span>→</span>}
+              icon={<div className="w-3 h-0.5 bg-current" />}
             />
           </BaseMetricCard>
         </DashboardCard>
@@ -130,7 +131,7 @@ export function DashboardExample() {
             <TrendIndicator
               trend="down"
               value={metrics.trends.negative}
-              icon={<span>↘</span>}
+              icon={<TrendingUp className="h-3 w-3 rotate-180" />}
             />
           </BaseMetricCard>
         </DashboardCard>
@@ -375,7 +376,7 @@ export function DashboardExample() {
             <TrendIndicator
               trend="up"
               value="持续上升"
-              icon="📈"
+              icon={<TrendingUp className="h-4 w-4" />}
               className="mt-2"
             />
           </div>
@@ -390,7 +391,7 @@ export function DashboardExample() {
             <TrendIndicator
               trend="up"
               value="稳定运行"
-              icon="✅"
+              icon={<CheckCircle className="h-4 w-4" />}
               className="mt-2"
             />
           </div>
@@ -405,7 +406,7 @@ export function DashboardExample() {
             <TrendIndicator
               trend="neutral"
               value="正常范围"
-              icon="⏱"
+              icon={<Clock className="h-4 w-4" />}
               className="mt-2"
             />
           </div>

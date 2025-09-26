@@ -13,7 +13,7 @@
 编辑 `.env.development` 文件：
 
 ```env
-VITE_API_URL=http://localhost:3001/api
+VITE_API_URL=http://localhost:3011
 VITE_API_TIMEOUT=10000
 ```
 
@@ -22,7 +22,7 @@ VITE_API_TIMEOUT=10000
 编辑 `.env.production` 文件：
 
 ```env
-VITE_API_URL=https://your-production-api.com/api
+VITE_API_URL=https://your-production-domain.com
 VITE_API_TIMEOUT=15000
 ```
 
@@ -32,7 +32,7 @@ VITE_API_TIMEOUT=15000
 
 ```env
 # 本地开发时使用的API地址
-VITE_API_URL=http://192.168.1.100:3001/api
+VITE_API_URL=http://192.168.1.100:3011
 VITE_API_TIMEOUT=8000
 ```
 
