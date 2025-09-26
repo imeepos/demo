@@ -29,7 +29,7 @@ export function FeatureCard({
   return (
     <DashboardCard
       variant={color}
-      className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+      className="group hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 px-4 py-4"
     >
       <div className="space-y-3 md:space-y-4">
         {/* 图标和标题 */}

@@ -1,14 +1,14 @@
 import React from 'react';
 import { Card, Badge } from '@sker/ui';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
-import { useSentimentIntensityList } from '../hooks/use-sentiment-intensity';
+import { useQuerySentimentIntensityFindAll } from '../hooks';
 
 /**
  * 情感强度挂件组件 - 零入参，拿来即用
  * 用于大屏幕展示情感强度统计信息
  */
 export const SentimentIntensityWidget: React.FC = () => {
-  const { data: items = [], isLoading } = useSentimentIntensityList();
+  const { data: items = [], isLoading } = useQuerySentimentIntensityFindAll();
 
   if (isLoading) {
     return (
@@ -22,15 +22,18 @@ export const SentimentIntensityWidget: React.FC = () => {
 
   // 统计数据
   const totalCount = items.length;
-  const highIntensity = items.filter(item => item.intensity >= 0.7).length;
-  const mediumIntensity = items.filter(
-    item => item.intensity >= 0.4 && item.intensity < 0.7
+  const highIntensity = items.filter(
+    (item: any) => item.intensity >= 0.7
   ).length;
-  const lowIntensity = items.filter(item => item.intensity < 0.4).length;
+  const mediumIntensity = items.filter(
+    (item: any) => item.intensity >= 0.4 && item.intensity < 0.7
+  ).length;
+  const lowIntensity = items.filter((item: any) => item.intensity < 0.4).length;
 
   const avgIntensity =
     totalCount > 0
-      ? items.reduce((sum, item) => sum + item.intensity, 0) / totalCount
+      ? items.reduce((sum: number, item: any) => sum + item.intensity, 0) /
+        totalCount
       : 0;
 
   const getIntensityIcon = (level: 'high' | 'medium' | 'low') => {

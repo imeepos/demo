@@ -1,5 +1,4 @@
 import { QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -10,8 +9,6 @@ import './styles/index.css';
 import { SearchProvider } from './contexts/SearchContext';
 import { queryClient } from './lib/query-client';
 import { routeTree } from './routeTree.gen';
-// Import QueryClient
-// Import SearchProvider
 
 // Create a new router instance
 const router = createRouter({
@@ -39,8 +36,6 @@ createRoot(container).render(
             },
           }}
         />
-        {/* 仅在开发环境中显示 React Query DevTools */}
-        {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
       </SearchProvider>
     </QueryClientProvider>
   </StrictMode>

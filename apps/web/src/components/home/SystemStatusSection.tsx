@@ -94,7 +94,7 @@ export function SystemStatusSection() {
           <DashboardCard
             key={service.name}
             size="sm"
-            className="hover:shadow-lg transition-all duration-300"
+            className="hover:shadow-lg transition-all duration-300 px-4 py-4"
           >
             <div className="space-y-3">
               {/* 服务标题 */}

@@ -6,9 +6,7 @@ import {
 import { queryKeys } from '../constants/queryKeys';
 import type { MutationConfig } from '../types';
 
-export const useMutationMediaTypeRemove = (
-  config?: MutationConfig<any, Error, MediaTypeControllerRemoveData>
-) => {
+export const useMutationMediaTypeRemove = (config?: any) => {
   const queryClient = useQueryClient();
 
   return useMutation({

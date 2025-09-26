@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { Button } from '@sker/ui';
 import { Plus, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
@@ -23,7 +24,11 @@ import type {
   SentimentIntensityItem,
 } from '../types/sentiment-intensity';
 
-export const SentimentIntensityPage: React.FC = () => {
+export const Route = createFileRoute('/sentiment-intensity')({
+  component: SentimentIntensityPage,
+});
+
+function SentimentIntensityPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<SentimentIntensityItem | null>(
     null
@@ -258,4 +263,4 @@ export const SentimentIntensityPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}

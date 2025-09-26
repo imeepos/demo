@@ -1,3 +1,4 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { Button } from '@sker/ui';
 import { Plus, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
@@ -22,7 +23,11 @@ import type {
   SentimentEvent,
 } from '../types/sentiment-event';
 
-export const SentimentEventPage: React.FC = () => {
+export const Route = createFileRoute('/sentiment-event')({
+  component: SentimentEventPage,
+});
+
+function SentimentEventPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<SentimentEvent | null>(null);
 
@@ -252,4 +257,4 @@ export const SentimentEventPage: React.FC = () => {
       </div>
     </div>
   );
-};
+}

@@ -25,3 +25,4 @@ export * from './mediaType';
 
 // Re-export all SDK types for convenience
 export * from '@sker/sdk';
+export * from './queryClient';

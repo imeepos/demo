@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
 /**
- * Dashboard 模拟数据
- * 为舆情监控大屏提供测试数据
+ * 舆情监控大屏模拟数据生成器
+ * 提供各种图表和组件所需的模拟数据，支持 Tremor 和 G2Plot 组件
  */
 
 export interface DashboardMetrics {
@@ -37,6 +37,43 @@ export interface HotTopic {
   text: string;
   weight: number;
   category: 'technology' | 'society' | 'economy' | 'politics';
+}
+
+// 时间序列数据接口
+export interface TimeSeriesData {
+  time: string;
+  value: number;
+  type: string;
+}
+
+// 情感趋势数据接口
+export interface SentimentTrendData {
+  time: string;
+  positive: number;
+  neutral: number;
+  negative: number;
+}
+
+// 热点话题数据接口（用于图表）
+export interface HotTopicData {
+  topic: string;
+  count: number;
+  sentiment: 'positive' | 'neutral' | 'negative';
+}
+
+// 地理分布数据接口
+export interface GeographicData {
+  region: string;
+  value: number;
+  latitude: number;
+  longitude: number;
+}
+
+// 系统性能指标接口
+export interface SystemMetricData {
+  name: string;
+  value: number;
+  status: 'good' | 'warning' | 'error';
 }
 
 // 生成随机数据的工具函数
@@ -175,4 +212,126 @@ export const useRealtimeDashboardData = (intervalMs: number = 5000) => {
   }, [intervalMs]);
 
   return data;
+};
+
+// 生成时间序列数据（24小时）
+export const generateTimeSeriesData = (): TimeSeriesData[] => {
+  const data: TimeSeriesData[] = [];
+  const now = new Date();
+  const types = ['数据采集', '情感分析', '实时推送'];
+
+  for (let i = 23; i >= 0; i--) {
+    const time = new Date(now.getTime() - i * 60 * 60 * 1000);
+    const timeStr = time.getHours().toString().padStart(2, '0') + ':00';
+
+    types.forEach(type => {
+      data.push({
+        time: timeStr,
+        value: randomBetween(100, 1000),
+        type,
+      });
+    });
+  }
+
+  return data;
+};
+
+// 生成情感趋势数据（24小时）
+export const generateSentimentTrendData = (): SentimentTrendData[] => {
+  const data: SentimentTrendData[] = [];
+  const now = new Date();
+
+  for (let i = 23; i >= 0; i--) {
+    const time = new Date(now.getTime() - i * 60 * 60 * 1000);
+    const timeStr = time.getHours().toString().padStart(2, '0') + ':00';
+
+    const positive = randomBetween(200, 800);
+    const negative = randomBetween(50, 200);
+    const neutral = randomBetween(100, 400);
+
+    data.push({
+      time: timeStr,
+      positive,
+      neutral,
+      negative,
+    });
+  }
+
+  return data;
+};
+
+// 生成热点话题数据（用于图表）
+export const generateHotTopicsData = (): HotTopicData[] => {
+  const topics = [
+    '人工智能发展',
+    '数字化转型',
+    '智能制造',
+    '新能源技术',
+    '5G应用创新',
+    '云计算服务',
+    '大数据分析',
+    '物联网应用',
+    '区块链技术',
+    '智慧城市建设',
+  ];
+
+  const sentiments: Array<'positive' | 'neutral' | 'negative'> = [
+    'positive',
+    'neutral',
+    'negative',
+  ];
+
+  return topics
+    .map(topic => ({
+      topic,
+      count: randomBetween(500, 5000),
+      sentiment: sentiments[randomBetween(0, sentiments.length - 1)],
+    }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 8);
+};
+
+// 生成地理分布数据
+export const generateGeographicData = (): GeographicData[] => {
+  const regions = [
+    { name: '北京', lat: 39.9042, lng: 116.4074 },
+    { name: '上海', lat: 31.2304, lng: 121.4737 },
+    { name: '广州', lat: 23.1291, lng: 113.2644 },
+    { name: '深圳', lat: 22.3193, lng: 114.1694 },
+    { name: '杭州', lat: 30.2741, lng: 120.1551 },
+    { name: '成都', lat: 30.5728, lng: 104.0668 },
+    { name: '西安', lat: 34.3416, lng: 108.9398 },
+    { name: '武汉', lat: 30.5844, lng: 114.2998 },
+  ];
+
+  return regions
+    .map(region => ({
+      region: region.name,
+      value: randomBetween(1000, 8000),
+      latitude: region.lat,
+      longitude: region.lng,
+    }))
+    .sort((a, b) => b.value - a.value);
+};
+
+// 生成系统性能指标数据
+export const generateSystemMetricsData = (): SystemMetricData[] => {
+  const metrics = [
+    '数据采集引擎',
+    '情感分析服务',
+    '实时计算集群',
+    '存储系统',
+    'API网关',
+    '消息队列',
+  ];
+
+  return metrics.map(name => {
+    const value = randomBetween(60, 100);
+    let status: 'good' | 'warning' | 'error' = 'good';
+
+    if (value < 70) status = 'error';
+    else if (value < 85) status = 'warning';
+
+    return { name, value, status };
+  });
 };

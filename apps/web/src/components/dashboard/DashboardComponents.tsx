@@ -343,3 +343,7 @@ export const WordcloudContainer = forwardRef<
   );
 });
 WordcloudContainer.displayName = 'WordcloudContainer';
+
+// 导出新组件
+export { CircularProgress } from './CircularProgress';
+export { GradientBar } from './GradientBar';

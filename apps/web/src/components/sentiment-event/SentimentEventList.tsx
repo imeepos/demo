@@ -248,14 +248,16 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                 <div className="min-h-[1.5rem] flex flex-wrap gap-1 items-start">
                   {item.tags && item.tags.length > 0 ? (
                     <>
-                      {item.tags.slice(0, 2).map((tag, tagIndex) => (
-                        <span
-                          key={tagIndex}
-                          className="inline-flex items-center px-1.5 py-0.5 bg-primary/10 text-primary rounded text-xs font-medium"
-                        >
-                          {tag}
-                        </span>
-                      ))}
+                      {item.tags
+                        .slice(0, 2)
+                        .map((tag: string, tagIndex: number) => (
+                          <span
+                            key={tagIndex}
+                            className="inline-flex items-center px-1.5 py-0.5 bg-primary/10 text-primary rounded text-xs font-medium"
+                          >
+                            {tag}
+                          </span>
+                        ))}
                       {item.tags.length > 2 && (
                         <span className="inline-flex items-center px-1.5 py-0.5 bg-muted text-muted-foreground rounded text-xs">
                           +{item.tags.length - 2}

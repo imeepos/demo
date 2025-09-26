@@ -6,10 +6,10 @@ import { cva, type VariantProps } from 'class-variance-authority';
  * 采用专业亮色配色方案，符合中国用户审美习惯
  */
 
-// 仪表盘卡片变体（亮色科技蓝主题优化）
+// 仪表盘卡片变体（增强渐变和阴影效果）
 export const dashboardCardVariants = cva(
-  // 基础样式 - 提升阴影和边框效果
-  'relative overflow-hidden bg-card border border-border rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/20',
+  // 基础样式 - 深度阴影和渐变优化
+  'relative overflow-hidden bg-card border border-border rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 hover:border-primary/30 backdrop-blur-sm',
   {
     variants: {
       size: {
@@ -20,13 +20,13 @@ export const dashboardCardVariants = cva(
       variant: {
         default: '',
         primary:
-          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[var(--primary)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--primary)]/5',
+          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[var(--primary)] before:to-[var(--accent)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-gradient-card-primary hover:shadow-primary',
         success:
-          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[var(--success)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--success)]/5',
+          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[var(--success)] before:to-emerald-400 before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-gradient-card-success hover:shadow-success',
         warning:
-          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[var(--warning)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--warning)]/5',
+          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[var(--warning)] before:to-orange-400 before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-gradient-card-warning hover:shadow-warning',
         danger:
-          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-[var(--destructive)] before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-[var(--destructive)]/5',
+          'before:absolute before:top-0 before:left-0 before:right-0 before:h-1 before:bg-gradient-to-r before:from-[var(--destructive)] before:to-red-400 before:opacity-0 before:transition-all before:duration-300 hover:before:opacity-100 hover:bg-gradient-card-danger hover:shadow-danger',
       },
       highlighted: {
         true: 'after:absolute after:top-0 after:right-0 after:w-1 after:h-full after:bg-[var(--primary)] after:transition-opacity after:duration-300 after:opacity-100',
@@ -42,20 +42,20 @@ export const dashboardCardVariants = cva(
   }
 );
 
-// 指标卡片变体
+// 指标卡片变体（增强渐变效果）
 export const metricCardVariants = cva(
-  'text-center transition-all duration-300 hover:scale-[1.02]',
+  'text-center transition-all duration-300 hover:scale-[1.02] rounded-lg backdrop-blur-sm',
   {
     variants: {
       variant: {
         primary:
-          'bg-[var(--primary)]/8 border-2 border-transparent hover:border-[var(--primary)]/25 hover:shadow-lg hover:shadow-[var(--primary)]/10',
+          'bg-gradient-card-primary border-2 border-transparent hover:border-[var(--primary)]/25 hover:shadow-primary hover:bg-gradient-to-br hover:from-[var(--primary)]/5 hover:to-[var(--accent)]/5',
         success:
-          'bg-[var(--success)]/8 border-2 border-transparent hover:border-[var(--success)]/25 hover:shadow-lg hover:shadow-[var(--success)]/10',
+          'bg-gradient-card-success border-2 border-transparent hover:border-[var(--success)]/25 hover:shadow-success hover:bg-gradient-to-br hover:from-[var(--success)]/5 hover:to-emerald-500/5',
         warning:
-          'bg-[var(--warning)]/8 border-2 border-transparent hover:border-[var(--warning)]/25 hover:shadow-lg hover:shadow-[var(--warning)]/10',
+          'bg-gradient-card-warning border-2 border-transparent hover:border-[var(--warning)]/25 hover:shadow-warning hover:bg-gradient-to-br hover:from-[var(--warning)]/5 hover:to-orange-500/5',
         danger:
-          'bg-[var(--destructive)]/8 border-2 border-transparent hover:border-[var(--destructive)]/25 hover:shadow-lg hover:shadow-[var(--destructive)]/10',
+          'bg-gradient-card-danger border-2 border-transparent hover:border-[var(--destructive)]/25 hover:shadow-danger hover:bg-gradient-to-br hover:from-[var(--destructive)]/5 hover:to-red-500/5',
       },
       size: {
         sm: 'p-2',
