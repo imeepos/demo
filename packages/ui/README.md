@@ -6,78 +6,70 @@
 
 ### 🎨 基础UI组件 (ui/)
 
-```
-accordion         # 手风琴组件
-alert            # 警告提示
-alert-dialog     # 警告对话框
-aspect-ratio     # 宽高比容器
-avatar           # 头像组件
-badge            # 徽章标签
-breadcrumb       # 面包屑导航
-button           # 按钮组件
-calendar         # 日历组件
-card             # 卡片容器
-checkbox         # 复选框
-collapsible      # 可折叠容器
-command          # 命令面板
-context-menu     # 右键菜单
-dialog           # 对话框
-dropdown-menu    # 下拉菜单
-form             # 表单组件
-hover-card       # 悬浮卡片
-input            # 输入框
-label            # 标签文本
-menubar          # 菜单栏
-navigation-menu  # 导航菜单
-pagination       # 分页组件
-popover          # 弹出层
-progress         # 进度条
-radio-group      # 单选按钮组
-resizable        # 可调整大小容器
-scroll-area      # 滚动区域
-select           # 选择器
-separator        # 分隔线
-sheet            # 侧边抽屉
-skeleton         # 骨架屏
-slider           # 滑块组件
-sonner           # Toast通知
-switch           # 开关组件
-table            # 表格组件
-tabs             # 标签页
-textarea         # 多行文本框
-tooltip          # 工具提示
-```
+- [accordion](src/components/ui/accordion.md) - 手风琴组件
+- [alert](src/components/ui/alert.md) - 警告提示
+- [alert-dialog](src/components/ui/alert-dialog.md) - 警告对话框
+- [aspect-ratio](src/components/ui/aspect-ratio.md) - 宽高比容器
+- [avatar](src/components/ui/avatar.md) - 头像组件
+- [badge](src/components/ui/badge.md) - 徽章标签
+- [breadcrumb](src/components/ui/breadcrumb.md) - 面包屑导航
+- [button](src/components/ui/button.md) - 按钮组件
+- [calendar](src/components/ui/calendar.md) - 日历组件
+- [card](src/components/ui/card.md) - 卡片容器
+- [checkbox](src/components/ui/checkbox.md) - 复选框
+- [collapsible](src/components/ui/collapsible.md) - 可折叠容器
+- [command](src/components/ui/command.md) - 命令面板
+- [context-menu](src/components/ui/context-menu.md) - 右键菜单
+- [dialog](src/components/ui/dialog.md) - 对话框
+- [dropdown-menu](src/components/ui/dropdown-menu.md) - 下拉菜单
+- [form](src/components/ui/form.md) - 表单组件
+- [hover-card](src/components/ui/hover-card.md) - 悬浮卡片
+- [input](src/components/ui/input.md) - 输入框
+- [label](src/components/ui/label.md) - 标签文本
+- [menubar](src/components/ui/menubar.md) - 菜单栏
+- [navigation-menu](src/components/ui/navigation-menu.md) - 导航菜单
+- [pagination](src/components/ui/pagination.md) - 分页组件
+- [popover](src/components/ui/popover.md) - 弹出层
+- [progress](src/components/ui/progress.md) - 进度条
+- [radio-group](src/components/ui/radio-group.md) - 单选按钮组
+- [resizable](src/components/ui/resizable.md) - 可调整大小容器
+- [scroll-area](src/components/ui/scroll-area.md) - 滚动区域
+- [select](src/components/ui/select.md) - 选择器
+- [separator](src/components/ui/separator.md) - 分隔线
+- [sheet](src/components/ui/sheet.md) - 侧边抽屉
+- [skeleton](src/components/ui/skeleton.md) - 骨架屏
+- [slider](src/components/ui/slider.md) - 滑块组件
+- [sonner](src/components/ui/sonner.md) - Toast通知
+- [switch](src/components/ui/switch.md) - 开关组件
+- [table](src/components/ui/table.md) - 表格组件
+- [tabs](src/components/ui/tabs.md) - 标签页
+- [textarea](src/components/ui/textarea.md) - 多行文本框
+- [tooltip](src/components/ui/tooltip.md) - 工具提示
 
 ### 🔧 元素组件 (elements/)
 
-```
-QuickActionButton    # 快速操作按钮
-SentimentIndicator   # 情感指示器
-SourceTag           # 来源标签
-StatusIndicator     # 状态指示器
-TimelineMarker      # 时间线标记
-TrendArrow          # 趋势箭头
-UrgencyLevel        # 紧急程度指示器
-```
+- [QuickActionButton](src/components/elements/QuickActionButton.md) - 快速操作按钮
+- [SentimentIndicator](src/components/elements/SentimentIndicator.md) - 情感指示器
+- [SourceTag](src/components/elements/SourceTag.md) - 来源标签
+- [StatusIndicator](src/components/elements/StatusIndicator.md) - 状态指示器
+- [TimelineMarker](src/components/elements/TimelineMarker.md) - 时间线标记
+- [TrendArrow](src/components/elements/TrendArrow.md) - 趋势箭头
+- [UrgencyLevel](src/components/elements/UrgencyLevel.md) - 紧急程度指示器
 
 ### 📱 布局组件 (layouts/)
 
-```
-MonitoringCenterLayout     # 监控中心布局
-ReportGeneratorLayout      # 报告生成器布局
-SentimentDashboardLayout   # 情感分析仪表板布局
-```
+- [MonitoringCenterLayout](src/components/layouts/MonitoringCenterLayout.md) - 监控中心布局
+- [ReportGeneratorLayout](src/components/layouts/ReportGeneratorLayout.md) - 报告生成器布局
+- [SentimentDashboardLayout](src/components/layouts/SentimentDashboardLayout.md) - 情感分析仪表板布局
 
 ### 🧩 复合组件 (widgets/)
 
-```
-AdvancedSearchPanel        # 高级搜索面板
-AlertManagementWidget      # 告警管理组件
-DataExplorerTable         # 数据探索表格
-GeographicDistributionMap  # 地理分布图
-SentimentOverviewWidget    # 情感概览组件
-TrendAnalysisChart        # 趋势分析图表
-```
+- [AdvancedSearchPanel](src/components/widgets/AdvancedSearchPanel.md) - 高级搜索面板
+- [AlertManagementWidget](src/components/widgets/AlertManagementWidget.md) - 告警管理组件
+- [DataExplorerTable](src/components/widgets/DataExplorerTable.md) - 数据探索表格
+- [GeographicDistributionMap](src/components/widgets/GeographicDistributionMap.md) - 地理分布图
+- [SentimentOverviewWidget](src/components/widgets/SentimentOverviewWidget.md) - 情感概览组件
+- [TrendAnalysisChart](src/components/widgets/TrendAnalysisChart.md) - 趋势分析图表
 
 ## 🚀 快速开始
 
