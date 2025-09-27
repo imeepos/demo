@@ -74,10 +74,10 @@ export type ComponentType<P = {}> =
   | (new (props: P) => React.Component<P>);
 
 /** 合并属性 */
-export type MergeProps<T, U> = StrictOmit<T, keyof U> & U;
+export type MergeProps<T, U> = StrictOmit<T, keyof U & keyof T> & U;
 
 /** 覆盖属性 */
-export type OverrideProps<T, U> = StrictOmit<T, keyof U> & U;
+export type OverrideProps<T, U> = StrictOmit<T, keyof U & keyof T> & U;
 
 /** 扩展属性 */
 export type ExtendProps<T, U> = T & U;

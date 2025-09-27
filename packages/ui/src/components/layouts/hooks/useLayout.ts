@@ -159,7 +159,7 @@ export const useLayout = (
   /** 防抖的宽度设置 */
   const debouncedSetSidebarWidth = React.useCallback(
     React.useMemo(() => {
-      let timeoutId: NodeJS.Timeout;
+      let timeoutId: ReturnType<typeof setTimeout>;
       return (width: number) => {
         clearTimeout(timeoutId);
         timeoutId = setTimeout(() => setSidebarWidth(width), 100);
