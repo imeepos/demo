@@ -290,5 +290,5 @@ export function UserForm() {
 - `react-hook-form`: 表单状态管理和验证
 - `@radix-ui/react-label`: 标签组件
 - `@radix-ui/react-slot`: 插槽组件
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)
 - `@/components/ui/label`: Label 组件

@@ -448,4 +448,4 @@ export function RealTimeProgress() {
 ## 依赖项
 
 - `@radix-ui/react-progress`: Progress 原语组件
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)

@@ -12,6 +12,8 @@ export default defineConfig({
       '@/types': path.resolve(__dirname, './src/types'),
       '@/styles': path.resolve(__dirname, './src/styles'),
       '@/test': path.resolve(__dirname, './src/test'),
+      '@sker/ui': path.resolve(__dirname, '../../packages/ui/src'),
+      '@sker/map': path.resolve(__dirname, '../../packages/map/src'),
     },
   },
   test: {

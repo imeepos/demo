@@ -4,7 +4,7 @@ import * as React from 'react';
 import { forwardRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import {
   Command,
   CommandEmpty,

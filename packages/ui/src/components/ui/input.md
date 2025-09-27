@@ -280,4 +280,4 @@ export function InputWithRef() {
 
 ## 依赖项
 
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)

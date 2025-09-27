@@ -562,4 +562,4 @@ export function DynamicRadioGroup() {
 
 - `@radix-ui/react-radio-group`: RadioGroup 原语组件
 - `lucide-react`: 图标组件 (Circle)
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)

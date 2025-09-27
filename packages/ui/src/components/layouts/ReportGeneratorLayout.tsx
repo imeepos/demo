@@ -10,7 +10,7 @@ import * as React from 'react';
 import { useState, forwardRef } from 'react';
 import { useForm } from 'react-hook-form';
 
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';

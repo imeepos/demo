@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import { Card, CardContent } from '../ui/card';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
@@ -140,11 +140,18 @@ const DesktopSidebar = React.memo(
           <ScrollArea className="flex-1">
             <div
               className={cn(
-                'transition-opacity duration-200',
-                collapsed && 'opacity-50'
+                'transition-all duration-300 ease-in-out',
+                collapsed && 'opacity-90'
               )}
             >
-              {children}
+              {React.isValidElement(children)
+                ? React.cloneElement(children, {
+                    collapsed,
+                    ...(children.props && typeof children.props === 'object'
+                      ? children.props
+                      : {}),
+                  } as any)
+                : children}
             </div>
           </ScrollArea>
         </aside>
@@ -162,11 +169,18 @@ const DesktopSidebar = React.memo(
           <ScrollArea className="h-full">
             <div
               className={cn(
-                'transition-opacity duration-200',
-                collapsed && 'opacity-50'
+                'transition-all duration-300 ease-in-out',
+                collapsed && 'opacity-90'
               )}
             >
-              {children}
+              {React.isValidElement(children)
+                ? React.cloneElement(children, {
+                    collapsed,
+                    ...(children.props && typeof children.props === 'object'
+                      ? children.props
+                      : {}),
+                  } as any)
+                : children}
             </div>
           </ScrollArea>
         </ResizablePanel>
@@ -321,7 +335,14 @@ const SentimentDashboardLayout = React.forwardRef<
           <DashboardHeader isMobile>
             <MobileSidebar isOpen={mobileOpen} onOpenChange={setMobileOpen}>
               <nav role="navigation" aria-label="主导航" {...ariaAttributes}>
-                {sidebar}
+                {React.isValidElement(sidebar)
+                  ? React.cloneElement(sidebar, {
+                      collapsed: false, // 移动端始终展开状态
+                      ...(sidebar.props && typeof sidebar.props === 'object'
+                        ? sidebar.props
+                        : {}),
+                    } as any)
+                  : sidebar}
               </nav>
             </MobileSidebar>
             {header}
@@ -408,11 +429,18 @@ const SentimentDashboardLayout = React.forwardRef<
               <ScrollArea className="h-full">
                 <div
                   className={cn(
-                    'transition-opacity duration-200',
-                    layout.sidebarState.collapsed && 'opacity-50'
+                    'transition-all duration-300 ease-in-out',
+                    layout.sidebarState.collapsed && 'opacity-90'
                   )}
                 >
-                  {sidebar}
+                  {React.isValidElement(sidebar)
+                    ? React.cloneElement(sidebar, {
+                        collapsed: layout.sidebarState.collapsed,
+                        ...(sidebar.props && typeof sidebar.props === 'object'
+                          ? sidebar.props
+                          : {}),
+                      } as any)
+                    : sidebar}
                 </div>
               </ScrollArea>
             </ResizablePanel>

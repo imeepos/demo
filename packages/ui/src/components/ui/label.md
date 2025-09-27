@@ -299,4 +299,4 @@ export function AccessibleForm() {
 ## 依赖项
 
 - `@radix-ui/react-label`: Label 原语组件
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)

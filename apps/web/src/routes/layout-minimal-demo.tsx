@@ -1,68 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { SentimentDashboardLayout } from '@sker/ui';
-import { Card, CardContent, Button } from '@sker/ui';
-import { BarChart3, TrendingUp, Users, Calendar, Sparkles } from 'lucide-react';
+import { Card, CardContent } from '@sker/ui';
+import { Sparkles } from 'lucide-react';
 
 export const Route = createFileRoute('/layout-minimal-demo')({
   component: LayoutMinimalDemoPage,
 });
 
 function LayoutMinimalDemoPage() {
-  const minimalSidebar = (
-    <div className="flex flex-col h-full">
-      <div className="p-6 border-b">
-        <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary/80 rounded-lg mb-4 flex items-center justify-center">
-          <Sparkles className="w-4 h-4 text-white" />
-        </div>
-        <h2 className="text-xl font-bold">极简风格</h2>
-      </div>
-
-      <nav className="flex-1 p-4 space-y-1">
-        <Button
-          variant="ghost"
-          className="w-full justify-start gap-4 h-12 rounded-xl bg-primary/10 text-primary"
-        >
-          <BarChart3 className="h-5 w-5" />
-          <span>概览</span>
-        </Button>
-
-        <Button
-          variant="ghost"
-          className="w-full justify-start gap-4 h-12 rounded-xl"
-        >
-          <TrendingUp className="h-5 w-5" />
-          <span>趋势</span>
-        </Button>
-
-        <Button
-          variant="ghost"
-          className="w-full justify-start gap-4 h-12 rounded-xl"
-        >
-          <Users className="h-5 w-5" />
-          <span>用户</span>
-        </Button>
-
-        <Button
-          variant="ghost"
-          className="w-full justify-start gap-4 h-12 rounded-xl"
-        >
-          <Calendar className="h-5 w-5" />
-          <span>日程</span>
-        </Button>
-      </nav>
-    </div>
-  );
-
-  const minimalHeader = (
-    <div className="flex items-center justify-between w-full">
-      <h1 className="text-2xl font-bold">极简风格示例</h1>
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 bg-muted rounded-full"></div>
-      </div>
-    </div>
-  );
-
-  const minimalContent = (
+  return (
     <div className="space-y-8">
       {/* 介绍卡片 */}
       <Card className="border-none shadow-none bg-gradient-to-br from-primary/5 via-primary/10 to-primary/5">
@@ -201,18 +146,5 @@ function LayoutMinimalDemoPage() {
         </CardContent>
       </Card>
     </div>
-  );
-
-  return (
-    <SentimentDashboardLayout
-      sidebar={minimalSidebar}
-      header={minimalHeader}
-      defaultCollapsed={false}
-      enableResize={false}
-      className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20"
-      aria-label="极简风格布局示例页面"
-    >
-      {minimalContent}
-    </SentimentDashboardLayout>
   );
 }

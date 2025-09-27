@@ -144,4 +144,4 @@ export function ComplexLayout() {
 
 - `react-resizable-panels`
 - `lucide-react` (GripVertical 图标)
-- `@/lib/utils` (cn 函数)
+- `../../lib/utils` (cn 函数)

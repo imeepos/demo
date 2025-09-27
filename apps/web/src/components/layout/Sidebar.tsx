@@ -1,12 +1,19 @@
-import { BarChart3, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
-import { cn } from '@sker/ui';
+import { BarChart3 } from 'lucide-react';
+import {
+  cn,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@sker/ui';
 import { useRouter, useRouterState } from '@tanstack/react-router';
 import { getRoutesByGroup } from '../../lib/routes-config';
 import { NavigationGroup } from './NavigationGroup';
 import { NavigationItem } from './NavigationItem';
 
 type NavigationGroupKey = 'dashboard' | 'analysis' | 'management' | 'system';
+type SidebarVariant = 'default' | 'compact' | 'minimal';
+type SidebarDensity = 'comfortable' | 'compact' | 'dense';
 
 const NAVIGATION_GROUPS = [
   { key: 'dashboard' as const, priority: 1 },
@@ -17,25 +24,34 @@ const NAVIGATION_GROUPS = [
 
 interface SidebarProps {
   className?: string;
-  defaultCollapsed?: boolean;
   enabledGroups?: NavigationGroupKey[];
   brandTitle?: string;
+  collapsed?: boolean;
+  variant?: SidebarVariant;
+  density?: SidebarDensity;
+  onItemSelect?: (path: string, route: any) => void;
+  showBrand?: boolean;
+  'aria-label'?: string;
 }
 
 export function Sidebar({
   className,
-  defaultCollapsed = false,
   enabledGroups,
   brandTitle = '舆情监控系统',
+  collapsed = false,
+  variant = 'default',
+  density = 'comfortable',
+  onItemSelect,
+  showBrand = true,
+  'aria-label': ariaLabel = '主导航菜单',
 }: SidebarProps) {
-  const [collapsed, setCollapsed] = useState(defaultCollapsed);
-
   const router = useRouter();
   const routerState = useRouterState();
   const currentPath = routerState.location.pathname;
 
-  const handleNavigate = (path: string) => {
+  const handleNavigate = (path: string, route?: any) => {
     router.navigate({ to: path });
+    onItemSelect?.(path, route);
   };
 
   const getEnabledGroups = () => {
@@ -52,61 +68,104 @@ export function Sidebar({
     routes: getRoutesByGroup(group.key),
   }));
 
-  return (
-    <aside
-      className={cn(
-        'h-full flex flex-col transition-all duration-300 ease-in-out',
-        'bg-card border-r border-border/40 shadow-sm',
-        collapsed ? 'w-16' : 'w-64',
-        className
-      )}
-    >
-      <header
+  const densityClasses = {
+    comfortable: collapsed ? 'px-3 py-4 space-y-2' : 'px-4 py-5 space-y-3',
+    compact: collapsed ? 'px-2 py-3 space-y-1.5' : 'px-3 py-4 space-y-2',
+    dense: collapsed ? 'px-2 py-2 space-y-1' : 'px-3 py-3 space-y-1.5',
+  };
+
+  const brandClasses = {
+    comfortable: collapsed ? 'p-4' : 'p-5',
+    compact: collapsed ? 'p-3' : 'p-4',
+    dense: collapsed ? 'p-2' : 'p-3',
+  };
+
+  const BrandLogo = () => {
+    const logoContent = (
+      <div
         className={cn(
-          'p-4 border-b border-border/30',
-          collapsed
-            ? 'flex flex-col items-center gap-2'
-            : 'flex items-center gap-3'
+          'flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 text-white',
+          'transition-all duration-300 ease-in-out',
+          variant === 'minimal' &&
+            'bg-primary/10 text-primary border border-primary/20',
+          {
+            comfortable: collapsed
+              ? 'w-10 h-10 rounded-xl'
+              : 'w-12 h-12 rounded-2xl',
+            compact: collapsed ? 'w-8 h-8 rounded-lg' : 'w-10 h-10 rounded-xl',
+            dense: collapsed ? 'w-7 h-7 rounded-md' : 'w-9 h-9 rounded-lg',
+          }[density]
         )}
       >
-        <div
+        <BarChart3
           className={cn(
-            'flex items-center justify-center bg-gradient-to-br from-primary to-primary/80 text-white',
-            'transition-all duration-300',
-            collapsed ? 'w-10 h-10 rounded-lg' : 'w-10 h-10 rounded-xl'
+            'transition-all duration-300 ease-in-out',
+            {
+              comfortable: collapsed ? 'w-5 h-5' : 'w-7 h-7',
+              compact: collapsed ? 'w-4 h-4' : 'w-6 h-6',
+              dense: collapsed ? 'w-3.5 h-3.5' : 'w-5 h-5',
+            }[density]
           )}
-        >
-          <BarChart3 className={collapsed ? 'w-6 h-6' : 'w-6 h-6'} />
-        </div>
+        />
+      </div>
+    );
 
-        {!collapsed && (
-          <h1 className="font-bold text-lg text-foreground">{brandTitle}</h1>
-        )}
+    return collapsed ? (
+      <TooltipProvider delayDuration={300}>
+        <Tooltip>
+          <TooltipTrigger asChild>{logoContent}</TooltipTrigger>
+          <TooltipContent side="right" className="font-medium">
+            {brandTitle}
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    ) : (
+      logoContent
+    );
+  };
 
-        <button
-          onClick={() => setCollapsed(!collapsed)}
+  return (
+    <div
+      className={cn('h-full flex flex-col', className)}
+      role="navigation"
+      aria-label={ariaLabel}
+    >
+      {showBrand && (
+        <header
           className={cn(
-            'flex items-center justify-center transition-all duration-200',
-            'hover:bg-background/80 focus:outline-none focus:ring-2 focus:ring-primary/50',
+            'border-b border-border/30 transition-all duration-300 ease-in-out',
+            brandClasses[density],
             collapsed
-              ? 'w-8 h-6 mt-2 rounded-md bg-primary/10 text-primary'
-              : 'w-7 h-7 rounded-md bg-background/60 text-muted-foreground ml-auto'
+              ? 'flex flex-col items-center justify-center'
+              : 'flex items-center gap-3'
           )}
-          aria-label={collapsed ? '展开侧边栏' : '折叠侧边栏'}
         >
-          {collapsed ? (
-            <ChevronRight className="w-4 h-4" />
-          ) : (
-            <ChevronLeft className="w-4 h-4" />
+          <BrandLogo />
+
+          {!collapsed && (
+            <h1
+              className={cn(
+                'font-semibold text-foreground truncate transition-all duration-300 ease-in-out',
+                {
+                  comfortable: 'text-lg',
+                  compact: 'text-base',
+                  dense: 'text-sm',
+                }[density]
+              )}
+            >
+              {brandTitle}
+            </h1>
           )}
-        </button>
-      </header>
+        </header>
+      )}
 
       <nav
         className={cn(
-          'flex-1 overflow-y-auto',
-          collapsed ? 'px-2 py-3 space-y-2' : 'px-3 py-4 space-y-2'
+          'flex-1 transition-all duration-300 ease-in-out',
+          densityClasses[density]
         )}
+        role="list"
+        aria-label="导航菜单"
       >
         {navigationGroupsData.map(({ config, routes }) => (
           <div key={config.key} className="space-y-1">
@@ -115,6 +174,8 @@ export function Sidebar({
               routes={routes}
               currentPath={currentPath}
               collapsed={collapsed}
+              density={density}
+              variant={variant}
               onNavigate={handleNavigate}
             >
               {routes.map(route => (
@@ -123,13 +184,15 @@ export function Sidebar({
                   route={route}
                   active={currentPath === route.path}
                   collapsed={collapsed}
-                  onClick={() => handleNavigate(route.path)}
+                  density={density}
+                  variant={variant}
+                  onClick={() => handleNavigate(route.path, route)}
                 />
               ))}
             </NavigationGroup>
           </div>
         ))}
       </nav>
-    </aside>
+    </div>
   );
 }

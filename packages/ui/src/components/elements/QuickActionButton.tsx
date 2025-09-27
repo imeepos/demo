@@ -2,14 +2,14 @@
 
 import * as React from 'react';
 import { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { cn } from '../../lib/utils';
+import { Button } from '../ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from '../ui/dropdown-menu';
 import { ChevronDown, Loader2 } from 'lucide-react';
 
 interface ActionConfig {

@@ -9,7 +9,7 @@
 import * as React from 'react';
 import { useState, useEffect, forwardRef } from 'react';
 
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import {
   Sheet,

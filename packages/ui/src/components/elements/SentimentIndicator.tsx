@@ -9,7 +9,7 @@ import {
   TooltipTrigger,
 } from '../ui/tooltip';
 import { Progress } from '../ui/progress';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 type SentimentType = 'positive' | 'negative' | 'neutral' | 'mixed' | 'unknown';
 type SentimentSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';

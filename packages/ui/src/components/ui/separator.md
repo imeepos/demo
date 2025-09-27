@@ -277,4 +277,4 @@ export function CustomSeparator() {
 ## 依赖
 
 - `@radix-ui/react-separator`
-- `@/lib/utils` (cn 函数)
+- `../../lib/utils` (cn 函数)

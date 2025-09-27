@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { SentimentDashboardLayout, TrendAnalysisChart } from '@sker/ui';
+import { TrendAnalysisChart } from '@sker/ui';
 import {
   Card,
   CardContent,
@@ -8,24 +8,14 @@ import {
   CardTitle,
   Button,
   Badge,
-  Separator,
   Switch,
   Slider,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
 } from '@sker/ui';
 import {
   Home,
   BarChart3,
   AlertTriangle,
   Settings,
-  User,
-  Search,
-  Bell,
-  Filter,
   TrendingUp,
   Activity,
   Keyboard,
@@ -35,9 +25,6 @@ import {
   Eye,
   EyeOff,
   ToggleLeft,
-  ToggleRight,
-  Maximize,
-  Minimize,
   MousePointer,
   Zap,
   Shield,
@@ -158,107 +145,7 @@ function LayoutBasicDemoPage() {
     ]);
   };
 
-  const sidebarContent = (
-    <div className="flex flex-col h-full">
-      <div className="p-4 border-b border-border/20">
-        <h2 className="text-lg font-semibold text-foreground">舆情监控</h2>
-        <p className="text-sm text-muted-foreground">高级功能演示</p>
-      </div>
-
-      <nav className="flex-1 p-4 space-y-2">
-        <Button
-          variant="ghost"
-          className="w-full justify-start gap-3 h-10"
-          aria-current="page"
-        >
-          <Home className="h-4 w-4" />
-          <span>仪表板</span>
-        </Button>
-
-        <Button variant="ghost" className="w-full justify-start gap-3 h-10">
-          <BarChart3 className="h-4 w-4" />
-          <span>数据分析</span>
-        </Button>
-
-        <Button variant="ghost" className="w-full justify-start gap-3 h-10">
-          <AlertTriangle className="h-4 w-4" />
-          <span>预警管理</span>
-          <Badge variant="destructive" className="ml-auto">
-            3
-          </Badge>
-        </Button>
-
-        <Separator className="my-4" />
-
-        <Button variant="ghost" className="w-full justify-start gap-3 h-10">
-          <Settings className="h-4 w-4" />
-          <span>系统设置</span>
-        </Button>
-
-        <Button variant="ghost" className="w-full justify-start gap-3 h-10">
-          <Shield className="h-4 w-4" />
-          <span>无障碍功能</span>
-        </Button>
-
-        <Button variant="ghost" className="w-full justify-start gap-3 h-10">
-          <Keyboard className="h-4 w-4" />
-          <span>快捷键</span>
-          <Badge variant="secondary" className="ml-auto text-xs">
-            Ctrl+B
-          </Badge>
-        </Button>
-      </nav>
-
-      <div className="p-4 border-t border-border/20">
-        <Button variant="outline" className="w-full justify-start gap-3 h-10">
-          <User className="h-4 w-4" />
-          <span>用户中心</span>
-        </Button>
-      </div>
-    </div>
-  );
-
-  const headerContent = (
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center gap-4">
-        <h1 className="text-xl font-semibold">
-          SentimentDashboardLayout 高级功能演示
-        </h1>
-        <Badge variant="secondary" className="flex items-center gap-1">
-          <Activity className="h-3 w-3" />
-          实时监控中
-        </Badge>
-        <Badge variant="outline" className="flex items-center gap-1">
-          <Zap className="h-3 w-3" />
-          {collapsed ? '收起' : '展开'}模式
-        </Badge>
-      </div>
-
-      <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" className="gap-2">
-          <Search className="h-4 w-4" />
-          <span className="hidden sm:inline">搜索</span>
-        </Button>
-
-        <Button variant="outline" size="sm" className="gap-2">
-          <Filter className="h-4 w-4" />
-          <span className="hidden sm:inline">筛选</span>
-        </Button>
-
-        <Button variant="outline" size="sm" className="relative">
-          <Bell className="h-4 w-4" />
-          <span className="absolute -top-1 -right-1 h-2 w-2 bg-red-500 rounded-full"></span>
-        </Button>
-
-        <Badge variant="secondary" className="hidden md:flex">
-          <Scale className="h-3 w-3 mr-1" />
-          280px
-        </Badge>
-      </div>
-    </div>
-  );
-
-  const mainContent = (
+  return (
     <div className="space-y-6">
       {/* 实时控制面板 */}
       <Card className="border-2 border-dashed border-primary/20 bg-primary/5">
@@ -662,24 +549,5 @@ function LayoutBasicDemoPage() {
         </CardContent>
       </Card>
     </div>
-  );
-
-  return (
-    <SentimentDashboardLayout
-      sidebar={sidebarContent}
-      header={headerContent}
-      defaultCollapsed={collapsed}
-      enableResize={enableResize}
-      minSidebarWidth={minWidth}
-      maxSidebarWidth={maxWidth}
-      onSidebarToggle={isCollapsed => {
-        setCollapsed(isCollapsed);
-        addLog(`回调触发: 侧边栏${isCollapsed ? '折叠' : '展开'}`);
-      }}
-      className="min-h-screen"
-      aria-label="SentimentDashboardLayout高级功能演示页面"
-    >
-      {mainContent}
-    </SentimentDashboardLayout>
   );
 }

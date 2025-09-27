@@ -7,7 +7,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '../ui/hover-card';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 type SourceType = 'news' | 'social' | 'forum' | 'video' | 'blog';
 type SourceSize = 'sm' | 'md' | 'lg';

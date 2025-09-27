@@ -335,4 +335,4 @@ export function CascadeSelect() {
 
 - `@radix-ui/react-select`
 - `lucide-react` (Check, ChevronDown, ChevronUp 图标)
-- `@/lib/utils` (cn 函数)
+- `../../lib/utils` (cn 函数)

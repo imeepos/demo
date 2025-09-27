@@ -21,6 +21,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@sker/ui': path.resolve(__dirname, '../../packages/ui/src'),
+      '@sker/map': path.resolve(__dirname, '../../packages/map/src'),
     },
   },
   server: {

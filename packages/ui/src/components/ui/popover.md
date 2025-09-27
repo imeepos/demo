@@ -162,7 +162,7 @@ import {
 } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 export function DatePicker() {
   const [date, setDate] = useState<Date>();
@@ -466,4 +466,4 @@ export function PopoverWithArrow() {
 ## 依赖项
 
 - `@radix-ui/react-popover`: Popover 原语组件
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)

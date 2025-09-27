@@ -200,4 +200,4 @@ export function ChatScrollArea() {
 ## 依赖
 
 - `@radix-ui/react-scroll-area`
-- `@/lib/utils` (cn 函数)
+- `../../lib/utils` (cn 函数)

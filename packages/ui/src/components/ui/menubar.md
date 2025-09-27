@@ -511,4 +511,4 @@ export function MenubarWithEvents() {
 
 - `@radix-ui/react-menubar`: Menubar 原语组件
 - `lucide-react`: 图标组件 (Check, ChevronRight, Circle)
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)

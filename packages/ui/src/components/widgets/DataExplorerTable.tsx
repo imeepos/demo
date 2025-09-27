@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { forwardRef, useState, useMemo } from 'react';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 import {
   Table,
   TableBody,

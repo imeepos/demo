@@ -588,5 +588,5 @@ export function ResponsivePagination() {
 ## 依赖项
 
 - `lucide-react`: 图标组件 (ChevronLeft, ChevronRight, MoreHorizontal)
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)
 - `@/components/ui/button`: 按钮组件 (ButtonProps, buttonVariants)

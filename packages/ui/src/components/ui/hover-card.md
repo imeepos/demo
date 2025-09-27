@@ -182,4 +182,4 @@ const [open, setOpen] = useState(false)
 ## 依赖项
 
 - `@radix-ui/react-hover-card`: 悬停卡片原语组件
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)

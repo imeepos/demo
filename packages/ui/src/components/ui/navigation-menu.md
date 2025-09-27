@@ -458,7 +458,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
-import { cn } from '@/lib/utils';
+import { cn } from '../../lib/utils';
 
 export function NextNavigation() {
   const pathname = usePathname();
@@ -511,4 +511,4 @@ export function NextNavigation() {
 - `@radix-ui/react-navigation-menu`: NavigationMenu 原语组件
 - `class-variance-authority`: 样式变体管理 (cva)
 - `lucide-react`: 图标组件 (ChevronDown)
-- `@/lib/utils`: 工具函数 (cn)
+- `../../lib/utils`: 工具函数 (cn)

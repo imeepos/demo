@@ -2,15 +2,15 @@
 
 import * as React from 'react';
 import { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+import { cn } from '../../lib/utils';
+import { Badge } from '../ui/badge';
+import { Progress } from '../ui/progress';
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
-} from '@/components/ui/tooltip';
+} from '../ui/tooltip';
 
 type UrgencyLevelType = 'very-low' | 'low' | 'medium' | 'high' | 'critical';
 
