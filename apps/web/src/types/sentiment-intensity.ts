@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type {
   SentimentIntensityResponseDto,
   CreateSentimentIntensityDto,
-} from '../hooks';
+} from '@sker/sdk';
 
 // 创建情感强度的表单验证 schema
 export const createSentimentIntensitySchema = z.object({

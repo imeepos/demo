@@ -2,7 +2,7 @@ import { z } from 'zod';
 import type {
   SentimentEventResponseDto,
   CreateSentimentEventDto,
-} from '../hooks';
+} from '@sker/sdk';
 
 // 使用完整的API类型，搜索返回的是CreateSentimentEventDto类型
 export type SentimentEvent = CreateSentimentEventDto & { id: number };

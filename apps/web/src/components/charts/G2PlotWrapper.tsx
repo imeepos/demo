@@ -216,7 +216,7 @@ export const G2LineChart: React.FC<LineChartProps> = ({
   );
 
   return (
-    <ChartContainer className={className}>
+    <ChartContainer className={className || ''}>
       <div ref={chartRef} style={{ height }} />
     </ChartContainer>
   );
@@ -255,7 +255,7 @@ export const G2BarChart: React.FC<BarChartProps> = ({
   );
 
   return (
-    <ChartContainer className={className}>
+    <ChartContainer className={className || ''}>
       <div ref={chartRef} style={{ height }} />
     </ChartContainer>
   );
@@ -301,7 +301,7 @@ export const G2PieChart: React.FC<PieChartProps> = ({
   );
 
   return (
-    <ChartContainer className={className}>
+    <ChartContainer className={className || ''}>
       <div ref={chartRef} style={{ height }} />
     </ChartContainer>
   );
@@ -341,7 +341,7 @@ export const G2AreaChart: React.FC<AreaChartProps> = ({
   );
 
   return (
-    <ChartContainer className={className}>
+    <ChartContainer className={className || ''}>
       <div ref={chartRef} style={{ height }} />
     </ChartContainer>
   );

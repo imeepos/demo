@@ -3,7 +3,8 @@
     "allow": [
       "WebFetch(domain:blog.fit2cloud.com)",
       "WebSearch",
-      "WebFetch(domain:max.naiveadmin.com)"
+      "WebFetch(domain:max.naiveadmin.com)",
+      "Bash(pnpm run:*)"
     ],
     "deny": [],
     "ask": []
