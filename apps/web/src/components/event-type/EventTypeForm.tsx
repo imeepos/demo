@@ -89,10 +89,20 @@ export const EventTypeForm: React.FC<EventTypeFormProps> = ({
   const isActive = watch('isActive');
 
   const handleFormSubmit = (data: EventTypeFormInput) => {
-    onSubmit({
-      ...data,
+    const submitData: EventTypeCreateInput = {
+      code: data.code,
+      name: data.name,
       color: selectedColor,
-    });
+      isActive: data.isActive,
+      sortOrder: data.sortOrder,
+    };
+
+    // 只有当description有值时才包含它
+    if (data.description && data.description.trim()) {
+      submitData.description = data.description;
+    }
+
+    onSubmit(submitData);
   };
 
   const handleColorSelect = (color: string) => {

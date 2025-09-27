@@ -95,8 +95,8 @@ export const EventTypeList: React.FC<EventTypeListProps> = ({
       : text;
   };
 
-  const getStatusVariant = (isActive: boolean): 'success' | 'secondary' => {
-    return isActive ? 'success' : 'secondary';
+  const getStatusVariant = (isActive: boolean): 'positive' | 'neutral' => {
+    return isActive ? 'positive' : 'neutral';
   };
 
   return (

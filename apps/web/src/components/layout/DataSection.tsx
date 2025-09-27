@@ -229,7 +229,7 @@ function DataLoadingState({
       iconColor: 'text-amber-600',
       showActions: false,
     },
-  };
+  } as const;
 
   const config = stateConfigs[type];
   const Icon = config.icon;
@@ -262,14 +262,16 @@ function DataLoadingState({
         </div>
 
         {/* 操作按钮 */}
-        {config.showActions && config.primaryHandler && (
-          <Button
-            onClick={config.primaryHandler}
-            className={ACTION_BUTTON_STYLES}
-          >
-            {config.primaryAction}
-          </Button>
-        )}
+        {config.showActions &&
+          'primaryHandler' in config &&
+          config.primaryHandler && (
+            <Button
+              onClick={config.primaryHandler}
+              className={ACTION_BUTTON_STYLES}
+            >
+              {'primaryAction' in config ? config.primaryAction : '操作'}
+            </Button>
+          )}
       </div>
     </Card>
   );
