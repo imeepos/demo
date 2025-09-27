@@ -285,7 +285,10 @@ export const generateHotTopicsData = (): HotTopicData[] => {
     .map(topic => ({
       topic,
       count: randomBetween(500, 5000),
-      sentiment: sentiments[randomBetween(0, sentiments.length - 1)],
+      sentiment: sentiments[randomBetween(0, sentiments.length - 1)] as
+        | 'positive'
+        | 'negative'
+        | 'neutral',
     }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 8);

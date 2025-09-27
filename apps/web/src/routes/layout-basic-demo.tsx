@@ -331,8 +331,8 @@ function LayoutBasicDemoPage() {
                   <Slider
                     value={[minWidth]}
                     onValueChange={value => {
-                      setMinWidth(value[0]);
-                      addLog(`最小宽度设置为 ${value[0]}px`);
+                      setMinWidth(value[0] ?? 150);
+                      addLog(`最小宽度设置为 ${value[0] ?? 150}px`);
                     }}
                     min={150}
                     max={300}
@@ -351,8 +351,8 @@ function LayoutBasicDemoPage() {
                   <Slider
                     value={[maxWidth]}
                     onValueChange={value => {
-                      setMaxWidth(value[0]);
-                      addLog(`最大宽度设置为 ${value[0]}px`);
+                      setMaxWidth(value[0] ?? 300);
+                      addLog(`最大宽度设置为 ${value[0] ?? 300}px`);
                     }}
                     min={300}
                     max={600}
@@ -545,7 +545,11 @@ function LayoutBasicDemoPage() {
               addLog(`数据源变更: ${sources.join(', ')}`)
             }
             onExport={format => addLog(`导出图表格式: ${format}`)}
-          />
+          >
+            <div className="p-4 text-center text-muted-foreground">
+              趋势分析图表组件内容
+            </div>
+          </TrendAnalysisChart>
         </CardContent>
       </Card>
 

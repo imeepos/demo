@@ -99,7 +99,7 @@ const getStatusConfig = (status: MetricStatus) => {
       barColor: 'bg-yellow-500',
     },
     critical: {
-      label: type =>
+      label: (type: string) =>
         type === 'disk' ? '空间紧张' : type === 'network' ? '高流量' : '高负载',
       bgColor: 'bg-red-100',
       textColor: 'text-red-700',
@@ -187,10 +187,9 @@ export function EnhancedDashboardPage() {
 
           <div className="flex flex-col items-end gap-3">
             <Button
-              variant="tech"
+              variant="secondary"
               onClick={handleRefresh}
-              loading={loading}
-              ripple
+              disabled={loading}
               className="text-sm"
             >
               刷新数据
@@ -378,7 +377,7 @@ export function EnhancedDashboardPage() {
           </div>
 
           <div className="flex justify-center gap-4 mt-6">
-            <Button variant="tech" size="lg" ripple>
+            <Button variant="secondary" size="lg">
               查看更多特性
             </Button>
             <Button variant="outline" size="lg">

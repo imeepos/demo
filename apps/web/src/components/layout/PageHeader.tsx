@@ -48,7 +48,7 @@ interface PageHeaderProps {
   /** 页面描述 */
   description: string;
   /** 系统状态 */
-  status?: 'online' | 'offline' | 'loading';
+  status?: 'online' | 'offline' | 'warning';
   /** 统计数据 */
   stats?: PageStats;
   /** 主要操作按钮文本 */

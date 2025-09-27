@@ -28,9 +28,9 @@ interface DashboardCardProps
     variants.DashboardCardVariants {}
 
 interface ChartContainerProps
-  extends Omit<BaseProps, 'className'>,
+  extends Omit<BaseProps, 'className' | 'title'>,
     variants.ChartContainerVariants {
-  title?: string;
+  title?: string | ReactNode;
   subtitle?: string;
   action?: ReactNode;
   className?: string;
@@ -77,27 +77,13 @@ interface WordcloudContainerProps extends BaseProps {}
 
 // ==================== 工具函数 ====================
 
-/** 创建forwardRef组件的工厂函数 */
-const createComponent = <T extends HTMLElement, P extends Record<string, any>>(
-  displayName: string,
-  render: React.ForwardRefRenderFunction<T, P>
-) => {
-  const component = forwardRef(render);
-  component.displayName = displayName;
-  return component;
-};
-
 /** 百分比值规范化 */
 const normalizePercentage = (value: number, max = 100): number =>
   Math.max(0, Math.min(max, value));
 
 // ==================== 容器类组件 ====================
 
-export const DashboardCard = createComponent<
-  HTMLDivElement,
-  DashboardCardProps
->(
-  'DashboardCard',
+export const DashboardCard = forwardRef<HTMLDivElement, DashboardCardProps>(
   ({ className, size, variant, highlighted, children, ...props }, ref) => (
     <div
       ref={ref}
@@ -111,12 +97,9 @@ export const DashboardCard = createComponent<
     </div>
   )
 );
+DashboardCard.displayName = 'DashboardCard';
 
-export const ChartContainer = createComponent<
-  HTMLDivElement,
-  ChartContainerProps
->(
-  'ChartContainer',
+export const ChartContainer = forwardRef<HTMLDivElement, ChartContainerProps>(
   (
     { className, size, pattern, title, subtitle, action, children, ...props },
     ref
@@ -133,7 +116,9 @@ export const ChartContainer = createComponent<
         <header className="flex items-center justify-between mb-4 pb-3 border-b border-border">
           <div className="space-y-1">
             {title && (
-              <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+              <div className="text-lg font-semibold text-foreground">
+                {title}
+              </div>
             )}
             {subtitle && (
               <p className="text-sm text-muted-foreground">{subtitle}</p>
@@ -146,11 +131,11 @@ export const ChartContainer = createComponent<
     </div>
   )
 );
+ChartContainer.displayName = 'ChartContainer';
 
 // ==================== 指标类组件 ====================
 
-export const MetricCard = createComponent<HTMLDivElement, MetricCardProps>(
-  'MetricCard',
+export const MetricCard = forwardRef<HTMLDivElement, MetricCardProps>(
   ({ className, variant, size, children, ...props }, ref) => (
     <div
       ref={ref}
@@ -161,9 +146,9 @@ export const MetricCard = createComponent<HTMLDivElement, MetricCardProps>(
     </div>
   )
 );
+MetricCard.displayName = 'MetricCard';
 
-export const MetricValue = createComponent<HTMLDivElement, MetricValueProps>(
-  'MetricValue',
+export const MetricValue = forwardRef<HTMLDivElement, MetricValueProps>(
   ({ className, size, variant, children, ...props }, ref) => (
     <div
       ref={ref}
@@ -174,9 +159,9 @@ export const MetricValue = createComponent<HTMLDivElement, MetricValueProps>(
     </div>
   )
 );
+MetricValue.displayName = 'MetricValue';
 
-export const MetricLabel = createComponent<HTMLDivElement, MetricLabelProps>(
-  'MetricLabel',
+export const MetricLabel = forwardRef<HTMLDivElement, MetricLabelProps>(
   ({ className, children, ...props }, ref) => (
     <div
       ref={ref}
@@ -187,11 +172,11 @@ export const MetricLabel = createComponent<HTMLDivElement, MetricLabelProps>(
     </div>
   )
 );
+MetricLabel.displayName = 'MetricLabel';
 
 // ==================== 进度类组件 ====================
 
-export const ProgressBar = createComponent<HTMLDivElement, ProgressBarProps>(
-  'ProgressBar',
+export const ProgressBar = forwardRef<HTMLDivElement, ProgressBarProps>(
   (
     { className, size, value, variant = 'primary', shine = true, ...props },
     ref
@@ -216,6 +201,7 @@ export const ProgressBar = createComponent<HTMLDivElement, ProgressBarProps>(
     );
   }
 );
+ProgressBar.displayName = 'ProgressBar';
 
 export const IntensityBar = createComponent<HTMLDivElement, IntensityBarProps>(
   'IntensityBar',

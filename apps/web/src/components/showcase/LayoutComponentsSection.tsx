@@ -132,24 +132,14 @@ export function LayoutComponentsSection() {
                       </DialogDescription>
                     </DialogHeader>
                     <div className="w-full h-[600px] border rounded-lg overflow-hidden">
-                      <SentimentDashboardLayout
-                        data={{
-                          sentiments: mockSentimentData,
-                          trends: mockTrendData,
-                          alerts: mockAlertData.slice(0, 3),
-                          summary: {
-                            total: 1234,
-                            positive: 789,
-                            negative: 245,
-                            neutral: 200,
-                          },
-                        }}
-                        onDataRefresh={() => console.log('Data refresh')}
-                        onExport={format => console.log('Export:', format)}
-                        onSettingsChange={settings =>
-                          console.log('Settings:', settings)
-                        }
-                      />
+                      <SentimentDashboardLayout>
+                        <div className="p-4 text-center text-muted-foreground">
+                          舆情分析仪表板布局组件演示
+                          <div className="text-sm mt-2">
+                            支持响应式设计、侧边栏、顶部导航等功能
+                          </div>
+                        </div>
+                      </SentimentDashboardLayout>
                     </div>
                   </DialogContent>
                 </Dialog>
@@ -205,25 +195,14 @@ export function LayoutComponentsSection() {
                       </DialogDescription>
                     </DialogHeader>
                     <div className="w-full h-[600px] border rounded-lg overflow-hidden">
-                      <MonitoringCenterLayout
-                        data={{
-                          alerts: mockAlertData,
-                          metrics: {
-                            totalSources: 45,
-                            activeMonitors: 12,
-                            alertsCount: mockAlertData.length,
-                            systemHealth: 98.5,
-                          },
-                          realtimeData: mockSentimentData.slice(0, 10),
-                        }}
-                        onAlertAction={(alertId, action) =>
-                          console.log('Alert action:', { alertId, action })
-                        }
-                        onMonitorToggle={monitorId =>
-                          console.log('Monitor toggle:', monitorId)
-                        }
-                        onSystemCheck={() => console.log('System check')}
-                      />
+                      <MonitoringCenterLayout>
+                        <div className="p-4 text-center text-muted-foreground">
+                          监控中心布局组件演示
+                          <div className="text-sm mt-2">
+                            支持告警管理、实时监控、系统状态等功能
+                          </div>
+                        </div>
+                      </MonitoringCenterLayout>
                     </div>
                   </DialogContent>
                 </Dialog>
@@ -279,44 +258,14 @@ export function LayoutComponentsSection() {
                       </DialogDescription>
                     </DialogHeader>
                     <div className="w-full h-[600px] border rounded-lg overflow-hidden">
-                      <ReportGeneratorLayout
-                        data={{
-                          templates: [
-                            {
-                              id: '1',
-                              name: '日度监控报告',
-                              category: 'daily',
-                            },
-                            {
-                              id: '2',
-                              name: '舆情分析周报',
-                              category: 'weekly',
-                            },
-                            {
-                              id: '3',
-                              name: '危机处理报告',
-                              category: 'crisis',
-                            },
-                          ],
-                          datasets: mockSentimentData,
-                          reportConfig: {
-                            title: '舆情监控月度报告',
-                            period: '2024年1月',
-                            includeCharts: true,
-                            includeDetails: true,
-                          },
-                        }}
-                        onTemplateSelect={templateId =>
-                          console.log('Template selected:', templateId)
-                        }
-                        onReportGenerate={config =>
-                          console.log('Generate report:', config)
-                        }
-                        onPreview={() => console.log('Preview report')}
-                        onExport={format =>
-                          console.log('Export report:', format)
-                        }
-                      />
+                      <ReportGeneratorLayout>
+                        <div className="p-4 text-center text-muted-foreground">
+                          报告生成器布局组件演示
+                          <div className="text-sm mt-2">
+                            支持模板选择、数据分析、报告生成等功能
+                          </div>
+                        </div>
+                      </ReportGeneratorLayout>
                     </div>
                   </DialogContent>
                 </Dialog>

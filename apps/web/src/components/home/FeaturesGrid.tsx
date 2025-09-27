@@ -10,11 +10,13 @@ import { FeatureCard } from './FeatureCard';
 
 // ==================== 功能特性配置 ====================
 
+type FeatureVariant = 'default' | 'primary' | 'success' | 'warning' | 'danger';
+
 interface Feature {
   readonly title: string;
   readonly description: string;
   readonly icon: React.ComponentType<{ className?: string }>;
-  readonly color: string;
+  readonly color: FeatureVariant;
   readonly metrics: { value: string; label: string };
 }
 

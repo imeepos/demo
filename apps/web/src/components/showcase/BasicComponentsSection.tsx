@@ -73,7 +73,7 @@ export function BasicComponentsSection() {
   const [inputValue, setInputValue] = useState('');
   const [progress, setProgress] = useState(65);
   const [sliderValue, setSliderValue] = useState([50]);
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState<boolean | 'indeterminate'>(false);
   const [radioValue, setRadioValue] = useState('option1');
   const [switchValue, setSwitchValue] = useState(false);
 
