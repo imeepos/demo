@@ -46,7 +46,9 @@ export const EventTypePage: React.FC = () => {
     isLoading: isLoadingAll,
     refetch: refetchAll,
   } = useQueryEventTypeFindAll(
-    !hasSearchParams ? {} : { config: { enabled: false } }
+    !hasSearchParams
+      ? { url: '/api/event-type' }
+      : { url: '/api/event-type', config: { enabled: false } }
   );
 
   const {
@@ -54,7 +56,9 @@ export const EventTypePage: React.FC = () => {
     isLoading: isLoadingSearch,
     refetch: refetchSearch,
   } = useQueryEventTypeSearch(
-    hasSearchParams ? { ...searchParams } : { config: { enabled: false } }
+    hasSearchParams
+      ? { url: '/api/event-type/search', query: { ...searchParams } }
+      : { url: '/api/event-type/search', config: { enabled: false } }
   );
 
   const items: EventType[] = hasSearchParams ? searchResults : allEventTypes;
@@ -87,12 +91,14 @@ export const EventTypePage: React.FC = () => {
     try {
       if (editingItem) {
         await updateMutation.mutateAsync({
+          url: '/api/event-type/{id}',
           path: { id: editingItem.id.toString() },
           body: data,
         });
         toast.success('事件类型更新成功');
       } else {
         await createMutation.mutateAsync({
+          url: '/api/event-type',
           body: data,
         });
         toast.success('事件类型创建成功');
@@ -120,6 +126,7 @@ export const EventTypePage: React.FC = () => {
 
     try {
       await deleteMutation.mutateAsync({
+        url: '/api/event-type/{id}',
         path: { id: item.id.toString() },
       });
       toast.success('事件类型删除成功');
@@ -139,6 +146,7 @@ export const EventTypePage: React.FC = () => {
   const handleToggleStatus = async (item: EventType) => {
     try {
       await updateMutation.mutateAsync({
+        url: '/api/event-type/{id}',
         path: { id: item.id.toString() },
         body: {
           ...item,

@@ -9,6 +9,7 @@ import {
   Zap,
   Palette,
   Tag,
+  Activity,
 } from 'lucide-react';
 import { DataPreviewSection } from '../components/home/DataPreviewSection';
 import { FeaturesGrid } from '../components/home/FeaturesGrid';
@@ -30,6 +31,7 @@ const iconComponents = {
   Zap,
   Palette,
   Tag,
+  Activity,
 };
 
 /**
@@ -131,6 +133,14 @@ function HomePage() {
                 icon: 'Tag',
                 gradient: 'from-pink-600 to-pink-700',
                 shadowColor: 'pink-400',
+              },
+              {
+                to: '/agent-execution',
+                title: 'Agent执行管理',
+                description: '监控和管理Agent执行状态，查看详细日志和性能分析',
+                icon: 'Activity',
+                gradient: 'from-teal-600 to-teal-700',
+                shadowColor: 'teal-400',
               },
               {
                 to: '/color-test',

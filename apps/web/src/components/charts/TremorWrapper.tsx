@@ -123,7 +123,7 @@ export const TremorText: React.FC<TremorTextProps> = ({
   return (
     <Text
       className={cn('text-muted-foreground', className)}
-      color={color}
+      color={color || 'neutral'}
       {...props}
     >
       {children}
