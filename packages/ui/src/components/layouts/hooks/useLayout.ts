@@ -42,6 +42,8 @@ interface UseLayoutReturn {
     toggleSidebar: () => void;
     /** 设置侧边栏宽度 */
     setSidebarWidth: (width: number) => void;
+    /** 防抖设置侧边栏宽度 */
+    debouncedSetSidebarWidth: (width: number) => void;
   };
   /** 响应式相关 */
   responsive: {
@@ -71,6 +73,23 @@ const useMediaQuery = (query: string): boolean => {
   }, [query]);
 
   return matches;
+};
+
+/** 防抖 Hook */
+const useDebounce = <T>(value: T, delay: number): T => {
+  const [debouncedValue, setDebouncedValue] = React.useState(value);
+
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
 };
 
 /**
@@ -125,7 +144,7 @@ export const useLayout = (
     onSidebarToggle?.(newCollapsed);
   }, [sidebarState.collapsed, isMobile, onSidebarToggle]);
 
-  /** 设置侧边栏宽度 */
+  /** 设置侧边栏宽度（带防抖） */
   const setSidebarWidth = React.useCallback(
     (width: number) => {
       const clampedWidth = Math.max(
@@ -135,6 +154,18 @@ export const useLayout = (
       setSidebarState(prev => ({ ...prev, width: clampedWidth }));
     },
     [config.sidebar.minWidth, config.sidebar.maxWidth]
+  );
+
+  /** 防抖的宽度设置 */
+  const debouncedSetSidebarWidth = React.useCallback(
+    React.useMemo(() => {
+      let timeoutId: NodeJS.Timeout;
+      return (width: number) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => setSidebarWidth(width), 100);
+      };
+    }, [setSidebarWidth]),
+    [setSidebarWidth]
   );
 
   /** 通知状态变化（无障碍访问） */
@@ -151,7 +182,7 @@ export const useLayout = (
   }, []);
 
   /** 获取 ARIA 属性 */
-  const getAriaAttributes = React.useCallback(
+  const getAriaAttributes = React.useMemo(
     () => ({
       'aria-expanded': sidebarState.collapsed ? 'false' : 'true',
       'aria-label': sidebarState.collapsed ? '展开侧边栏' : '收起侧边栏',
@@ -159,18 +190,40 @@ export const useLayout = (
     [sidebarState.collapsed]
   );
 
-  return {
-    sidebarState,
-    actions: {
+  /** 缓存的 actions 对象 */
+  const actions = React.useMemo(
+    () => ({
       toggleSidebar,
       setSidebarWidth,
-    },
-    responsive: {
+      debouncedSetSidebarWidth,
+    }),
+    [toggleSidebar, setSidebarWidth, debouncedSetSidebarWidth]
+  );
+
+  /** 缓存的 responsive 对象 */
+  const responsive = React.useMemo(
+    () => ({
       isMobile,
-    },
-    accessibility: {
+    }),
+    [isMobile]
+  );
+
+  /** 缓存的 accessibility 对象 */
+  const accessibility = React.useMemo(
+    () => ({
       announceChange,
-      getAriaAttributes,
-    },
-  };
+      getAriaAttributes: () => getAriaAttributes,
+    }),
+    [announceChange, getAriaAttributes]
+  );
+
+  return React.useMemo(
+    () => ({
+      sidebarState,
+      actions,
+      responsive,
+      accessibility,
+    }),
+    [sidebarState, actions, responsive, accessibility]
+  );
 };

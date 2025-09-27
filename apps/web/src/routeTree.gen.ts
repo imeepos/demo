@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 // @ts-nocheck
 
 // noinspection JSUnusedGlobalSymbols
@@ -7,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root';
+import { Route as UiShowcaseRouteImport } from './routes/ui-showcase';
 import { Route as SentimentIntensityRouteImport } from './routes/sentiment-intensity';
 import { Route as SentimentEventRouteImport } from './routes/sentiment-event';
 import { Route as MediaTypeRouteImport } from './routes/media-type';
@@ -21,6 +24,11 @@ import { Route as ColorTestRouteImport } from './routes/color-test';
 import { Route as AdminDashboardRouteImport } from './routes/admin-dashboard';
 import { Route as IndexRouteImport } from './routes/index';
 
+const UiShowcaseRoute = UiShowcaseRouteImport.update({
+  id: '/ui-showcase',
+  path: '/ui-showcase',
+  getParentRoute: () => rootRouteImport,
+} as any);
 const SentimentIntensityRoute = SentimentIntensityRouteImport.update({
   id: '/sentiment-intensity',
   path: '/sentiment-intensity',
@@ -101,6 +109,7 @@ export interface FileRoutesByFullPath {
   '/media-type': typeof MediaTypeRoute;
   '/sentiment-event': typeof SentimentEventRoute;
   '/sentiment-intensity': typeof SentimentIntensityRoute;
+  '/ui-showcase': typeof UiShowcaseRoute;
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute;
@@ -116,6 +125,7 @@ export interface FileRoutesByTo {
   '/media-type': typeof MediaTypeRoute;
   '/sentiment-event': typeof SentimentEventRoute;
   '/sentiment-intensity': typeof SentimentIntensityRoute;
+  '/ui-showcase': typeof UiShowcaseRoute;
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport;
@@ -132,6 +142,7 @@ export interface FileRoutesById {
   '/media-type': typeof MediaTypeRoute;
   '/sentiment-event': typeof SentimentEventRoute;
   '/sentiment-intensity': typeof SentimentIntensityRoute;
+  '/ui-showcase': typeof UiShowcaseRoute;
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
@@ -148,7 +159,8 @@ export interface FileRouteTypes {
     | '/layout-minimal-demo'
     | '/media-type'
     | '/sentiment-event'
-    | '/sentiment-intensity';
+    | '/sentiment-intensity'
+    | '/ui-showcase';
   fileRoutesByTo: FileRoutesByTo;
   to:
     | '/'
@@ -163,7 +175,8 @@ export interface FileRouteTypes {
     | '/layout-minimal-demo'
     | '/media-type'
     | '/sentiment-event'
-    | '/sentiment-intensity';
+    | '/sentiment-intensity'
+    | '/ui-showcase';
   id:
     | '__root__'
     | '/'
@@ -178,7 +191,8 @@ export interface FileRouteTypes {
     | '/layout-minimal-demo'
     | '/media-type'
     | '/sentiment-event'
-    | '/sentiment-intensity';
+    | '/sentiment-intensity'
+    | '/ui-showcase';
   fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
@@ -195,10 +209,18 @@ export interface RootRouteChildren {
   MediaTypeRoute: typeof MediaTypeRoute;
   SentimentEventRoute: typeof SentimentEventRoute;
   SentimentIntensityRoute: typeof SentimentIntensityRoute;
+  UiShowcaseRoute: typeof UiShowcaseRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/ui-showcase': {
+      id: '/ui-showcase';
+      path: '/ui-showcase';
+      fullPath: '/ui-showcase';
+      preLoaderRoute: typeof UiShowcaseRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/sentiment-intensity': {
       id: '/sentiment-intensity';
       path: '/sentiment-intensity';
@@ -307,6 +329,7 @@ const rootRouteChildren: RootRouteChildren = {
   MediaTypeRoute: MediaTypeRoute,
   SentimentEventRoute: SentimentEventRoute,
   SentimentIntensityRoute: SentimentIntensityRoute,
+  UiShowcaseRoute: UiShowcaseRoute,
 };
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

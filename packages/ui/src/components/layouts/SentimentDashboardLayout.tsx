@@ -61,7 +61,10 @@ const SidebarToggleButton = React.memo(
         <ChevronLeft className="h-4 w-4" aria-hidden="true" />
       )}
     </Button>
-  )
+  ),
+  (prevProps, nextProps) =>
+    prevProps.collapsed === nextProps.collapsed &&
+    prevProps.className === nextProps.className
 );
 SidebarToggleButton.displayName = 'SidebarToggleButton';
 
@@ -96,7 +99,13 @@ const DashboardHeader = React.memo(
         </CardContent>
       </Card>
     );
-  }
+  },
+  (prevProps, nextProps) =>
+    prevProps.children === nextProps.children &&
+    prevProps.showToggleButton === nextProps.showToggleButton &&
+    prevProps.collapsed === nextProps.collapsed &&
+    prevProps.onToggle === nextProps.onToggle &&
+    prevProps.isMobile === nextProps.isMobile
 );
 DashboardHeader.displayName = 'DashboardHeader';
 
@@ -169,7 +178,14 @@ const DesktopSidebar = React.memo(
         </ResizablePanel>
       </ResizablePanelGroup>
     );
-  }
+  },
+  (prevProps, nextProps) =>
+    prevProps.collapsed === nextProps.collapsed &&
+    prevProps.width === nextProps.width &&
+    prevProps.enableResize === nextProps.enableResize &&
+    prevProps.minWidth === nextProps.minWidth &&
+    prevProps.maxWidth === nextProps.maxWidth &&
+    prevProps.children === nextProps.children
 );
 DesktopSidebar.displayName = 'DesktopSidebar';
 
@@ -198,7 +214,11 @@ const MobileSidebar = React.memo(
         <ScrollArea className="h-full">{children}</ScrollArea>
       </SheetContent>
     </Sheet>
-  )
+  ),
+  (prevProps, nextProps) =>
+    prevProps.isOpen === nextProps.isOpen &&
+    prevProps.onOpenChange === nextProps.onOpenChange &&
+    prevProps.children === nextProps.children
 );
 MobileSidebar.displayName = 'MobileSidebar';
 
@@ -261,25 +281,31 @@ const SentimentDashboardLayout = React.forwardRef<
           layout.actions.toggleSidebar();
         }
       },
-      [mobileOpen, layout.actions]
+      [mobileOpen, layout.actions.toggleSidebar]
     );
 
-    const renderMainContent = () => (
-      <main
-        className="flex-1 overflow-hidden"
-        role="main"
-        aria-label="主要内容区域"
-        tabIndex={-1}
-      >
-        <ScrollArea className="h-full">
-          <div className="p-6" role="region" aria-label="内容区域">
-            {children}
-          </div>
-        </ScrollArea>
-      </main>
+    const renderMainContent = React.useMemo(
+      () => (
+        <main
+          className="flex-1 overflow-hidden"
+          role="main"
+          aria-label="主要内容区域"
+          tabIndex={-1}
+        >
+          <ScrollArea className="h-full">
+            <div className="p-6" role="region" aria-label="内容区域">
+              {children}
+            </div>
+          </ScrollArea>
+        </main>
+      ),
+      [children]
     );
 
-    const ariaAttributes = layout.accessibility.getAriaAttributes();
+    const ariaAttributes = React.useMemo(
+      () => layout.accessibility.getAriaAttributes(),
+      [layout.accessibility]
+    );
 
     if (layout.responsive.isMobile && sidebar) {
       return (
@@ -300,7 +326,7 @@ const SentimentDashboardLayout = React.forwardRef<
             </MobileSidebar>
             {header}
           </DashboardHeader>
-          {renderMainContent()}
+          {renderMainContent}
         </div>
       );
     }
@@ -313,7 +339,7 @@ const SentimentDashboardLayout = React.forwardRef<
           {...props}
         >
           {header && <DashboardHeader>{header}</DashboardHeader>}
-          {renderMainContent()}
+          {renderMainContent}
         </div>
       );
     }
@@ -345,7 +371,7 @@ const SentimentDashboardLayout = React.forwardRef<
             >
               {sidebar}
             </DesktopSidebar>
-            {renderMainContent()}
+            {renderMainContent}
           </div>
         </div>
       );
@@ -395,7 +421,7 @@ const SentimentDashboardLayout = React.forwardRef<
               defaultSize={layout.sidebarState.collapsed ? 96 : 82.5}
               className="bg-background"
             >
-              {renderMainContent()}
+              {renderMainContent}
             </ResizablePanel>
           </ResizablePanelGroup>
         </div>
