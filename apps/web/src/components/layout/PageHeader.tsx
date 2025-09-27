@@ -1,16 +1,6 @@
 import { Card, Button } from '@sker/ui';
 import { cn } from '@sker/ui';
-import { LiveIndicator } from '../dashboard/DashboardComponents';
-import {
-  RefreshCw,
-  Plus,
-  Activity,
-  Database,
-  TrendingUp,
-  Users,
-  Settings,
-  BarChart3,
-} from 'lucide-react';
+import { RefreshCw, Plus, Database, Settings, BarChart3 } from 'lucide-react';
 
 /**
  * 专业页面头部组件
@@ -131,7 +121,6 @@ export function PageHeader({
               <div>
                 <h1 className={TITLE_STYLES}>{title}</h1>
                 <div className={DESCRIPTION_STYLES}>
-                  <LiveIndicator status={status} />
                   <span>{description}</span>
                 </div>
               </div>

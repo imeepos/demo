@@ -1,6 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { Settings, Home } from 'lucide-react';
-import { DashboardExample } from '../components/dashboard';
 import { Button } from '@sker/ui';
 
 export const Route = createFileRoute('/dashboard-view')({
@@ -46,11 +45,6 @@ function DashboardViewPage() {
             </Button>
           </Link>
         </div>
-      </div>
-
-      {/* Dashboard 内容 */}
-      <div className="pt-16">
-        <DashboardExample />
       </div>
     </div>
   );

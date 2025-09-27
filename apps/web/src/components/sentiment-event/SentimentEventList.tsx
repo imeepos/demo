@@ -11,11 +11,7 @@ import {
   Hash,
 } from 'lucide-react';
 import React from 'react';
-import {
-  DashboardCard,
-  ProgressBar,
-  SentimentBadge,
-} from '../dashboard/DashboardComponents';
+import { DashboardCard, ProgressBar } from '../dashboard/DashboardComponents';
 import type { SentimentEvent } from '../../types/sentiment-event';
 
 interface SentimentEventListProps {
@@ -167,9 +163,6 @@ export const SentimentEventList: React.FC<SentimentEventListProps> = ({
                       {truncateText(item.title, 50)}
                     </h3>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <SentimentBadge sentiment={sentimentVariant}>
-                        {getSentimentLabel(item.score)}
-                      </SentimentBadge>
                       <div className="text-xs text-muted-foreground">
                         <span className="data-value font-mono">
                           {parseScore(item.score).toFixed(2)}

@@ -1,12 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { Button } from '@sker/ui';
 import { Plus, RefreshCw } from 'lucide-react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import {
-  DashboardCard,
-  LiveIndicator,
-} from '../components/dashboard/DashboardComponents';
+import { DashboardCard } from '../components/dashboard/DashboardComponents';
 import { SentimentIntensityDialog } from '../components/sentiment-intensity/SentimentIntensityDialog';
 import { SentimentIntensityList } from '../components/sentiment-intensity/SentimentIntensityList';
 import { SentimentIntensitySearchForm } from '../components/sentiment-intensity/SentimentIntensitySearchForm';
@@ -188,7 +185,6 @@ function SentimentIntensityPage() {
               情感强度管理系统
             </h1>
             <div className="flex items-center gap-2">
-              <LiveIndicator status="online" />
               <span className="text-muted-foreground">
                 配置参数管理 · 实时监控
               </span>

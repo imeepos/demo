@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
-import { DashboardLayout } from '../components/layout';
 import { SimplePageHeader } from '../components/layout/SimplePageHeader';
 import { EventTypeDialog } from '../components/event-type/EventTypeDialog';
 import { EventTypeList } from '../components/event-type/EventTypeList';

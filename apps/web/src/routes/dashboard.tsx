@@ -1,17 +1,5 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
 import { L7EventMap } from '@sker/map';
-import { Button } from '@sker/ui';
-import { BarChart3, Home, Settings } from 'lucide-react';
-import {
-  MetricCard as BaseMetricCard,
-  DashboardCard,
-  LiveIndicator,
-  MetricLabel,
-  MetricValue,
-  ProgressBar,
-  StatusDot,
-  TrendIndicator,
-} from '../components/dashboard/DashboardComponents';
 import { mockMapEvents } from '../data/mockMapData';
 
 export const Route = createFileRoute('/dashboard')({

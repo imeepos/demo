@@ -1,8 +1,4 @@
-import {
-  DashboardCard,
-  MetricValue,
-  TrendIndicator,
-} from '../dashboard/DashboardComponents';
+import { DashboardCard, MetricValue } from '../dashboard/DashboardComponents';
 
 // ==================== 类型定义 ====================
 
@@ -76,14 +72,7 @@ export function FeatureCard({
               </MetricValue>
               <p className="text-xs text-muted-foreground">{metrics.label}</p>
             </div>
-            <div className="text-right">
-              <TrendIndicator
-                trend="up"
-                value="实时"
-                icon={<span className="animate-pulse">●</span>}
-                className="text-xs"
-              />
-            </div>
+            <div className="text-right"></div>
           </div>
         </div>
 

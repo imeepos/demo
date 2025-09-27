@@ -9,15 +9,10 @@ import {
   Palette,
   ToggleLeft,
   ToggleRight,
-  ArrowUp,
-  ArrowDown,
   Tag,
 } from 'lucide-react';
 import React from 'react';
-import {
-  DashboardCard,
-  SentimentBadge,
-} from '../dashboard/DashboardComponents';
+import { DashboardCard } from '../dashboard/DashboardComponents';
 import type { EventType } from '../../types/event-type';
 
 interface EventTypeListProps {
@@ -135,11 +130,6 @@ export const EventTypeList: React.FC<EventTypeListProps> = ({
                       <span className="inline-flex items-center px-2 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium font-mono">
                         {item.code}
                       </span>
-                      <SentimentBadge
-                        sentiment={getStatusVariant(item.isActive)}
-                      >
-                        {item.isActive ? '启用' : '禁用'}
-                      </SentimentBadge>
                     </div>
                   </div>
                 </div>

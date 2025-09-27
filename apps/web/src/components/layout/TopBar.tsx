@@ -1,11 +1,7 @@
 import { useState } from 'react';
 import { cn } from '@sker/ui';
 import { Button, Avatar, AvatarImage, AvatarFallback, Badge } from '@sker/ui';
-import {
-  LiveIndicator,
-  StatusDot,
-  MetricValue,
-} from '../dashboard/DashboardComponents';
+import { MetricValue } from '../dashboard/DashboardComponents';
 
 interface TopBarProps {
   className?: string;
@@ -67,19 +63,16 @@ export function TopBar({ className }: TopBarProps) {
         {/* 快速状态指示器 */}
         <div className="hidden md:flex items-center gap-4 pl-6 border-l border-border">
           <div className="flex items-center gap-2">
-            <StatusDot status="online" pulse />
             <span className="text-sm font-medium text-foreground">
               数据采集
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <StatusDot status="online" />
             <span className="text-sm font-medium text-foreground">
               分析引擎
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <StatusDot status="warning" />
             <span className="text-sm font-medium text-warning">预警系统</span>
           </div>
         </div>
@@ -108,11 +101,6 @@ export function TopBar({ className }: TopBarProps) {
             <p className="text-xs text-muted-foreground">待处理预警</p>
           </div>
         </div>
-
-        {/* 实时状态 */}
-        <LiveIndicator status="online" className="hidden md:flex">
-          实时监控
-        </LiveIndicator>
 
         {/* 通知按钮 */}
         <Button

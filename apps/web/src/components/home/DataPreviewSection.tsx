@@ -13,11 +13,7 @@ import {
   MetricCard,
   MetricLabel,
   MetricValue,
-  TrendIndicator,
   ChartContainer,
-  WordcloudContainer,
-  WordcloudTag,
-  LiveIndicator,
 } from '../dashboard/DashboardComponents';
 import {
   mockDashboardData,
@@ -200,9 +196,6 @@ export function DataPreviewSection() {
           <h2 className="text-2xl md:text-2xl md:text-3xl font-bold text-foreground">
             实时数据概览
           </h2>
-          <LiveIndicator status={isUpdating ? 'warning' : 'online'}>
-            {isUpdating ? '更新中' : '实时'}
-          </LiveIndicator>
         </div>
         <p className="text-base md:text-lg text-muted-foreground">
           全网监控数据实时更新，掌握舆情动态第一手资料
@@ -272,11 +265,6 @@ export function DataPreviewSection() {
                 >
                   {value.toLocaleString()}
                 </MetricValue>
-                <TrendIndicator
-                  trend={trendDirection}
-                  value={trendValue}
-                  className={cn(config.trendColor, 'text-sm font-medium')}
-                />
               </MetricCard>
             </DashboardCard>
           );
@@ -297,35 +285,7 @@ export function DataPreviewSection() {
           }
           subtitle="基于全网数据智能分析 · 每小时自动更新"
           className="p-6"
-        >
-          <WordcloudContainer className="py-6">
-            {HOT_TOPICS.map((topic, index) => {
-              const variants = ['primary', 'secondary'] as const;
-              const colorClass =
-                TOPIC_GRADIENT_COLORS[index % TOPIC_GRADIENT_COLORS.length];
-
-              return (
-                <WordcloudTag
-                  key={topic}
-                  variant={variants[index % 2]}
-                  shine
-                  className={cn(
-                    colorClass,
-                    'text-white font-medium shadow-md',
-                    'hover:shadow-lg hover:scale-105',
-                    'transition-all duration-300',
-                    'animate-fade-in-delayed cursor-pointer'
-                  )}
-                  style={{
-                    animationDelay: `${index * 0.15}s`,
-                  }}
-                >
-                  {topic}
-                </WordcloudTag>
-              );
-            })}
-          </WordcloudContainer>
-        </ChartContainer>
+        ></ChartContainer>
       </DashboardCard>
 
       {/* 底部状态与提示 - 优化版设计 */}

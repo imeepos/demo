@@ -8,12 +8,7 @@ import {
   Activity,
   type LucideIcon,
 } from 'lucide-react';
-import {
-  DashboardCard,
-  StatusDot,
-  ProgressBar,
-  LiveIndicator,
-} from '../dashboard/DashboardComponents';
+import { DashboardCard, ProgressBar } from '../dashboard/DashboardComponents';
 import {
   mockDashboardData,
   generateSystemStatus,
@@ -116,9 +111,6 @@ export function SystemStatusSection() {
           <p className="text-muted-foreground">各核心服务运行监控</p>
         </div>
         <div className="text-right">
-          <LiveIndicator status="online" className="mb-2">
-            系统正常运行
-          </LiveIndicator>
           <p className="text-xs text-muted-foreground">
             最后更新: {lastUpdate.toLocaleTimeString()}
           </p>
@@ -163,7 +155,6 @@ export function SystemStatusSection() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <StatusDot status={getStatusLevel(service.value)} pulse />
                   <span className="text-sm font-mono font-bold">
                     {service.value}%
                   </span>

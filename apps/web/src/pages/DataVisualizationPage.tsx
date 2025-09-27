@@ -13,7 +13,6 @@ import {
   Minus,
   ThumbsDown,
 } from 'lucide-react';
-import { DashboardLayout } from '../components/layout';
 import {
   mockDashboardData,
   generateDashboardMetrics,

@@ -3,10 +3,7 @@ import { Button } from '@sker/ui';
 import { Plus, RefreshCw } from 'lucide-react';
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import {
-  DashboardCard,
-  LiveIndicator,
-} from '../components/dashboard/DashboardComponents';
+import { DashboardCard } from '../components/dashboard/DashboardComponents';
 import { SentimentEventDialog } from '../components/sentiment-event/SentimentEventDialog';
 import { SentimentEventList } from '../components/sentiment-event/SentimentEventList';
 import { SentimentEventSearchForm } from '../components/sentiment-event/SentimentEventSearchForm';
@@ -181,7 +178,6 @@ function SentimentEventPage() {
               舆情事件管理系统
             </h1>
             <div className="flex items-center gap-2">
-              <LiveIndicator status="online" />
               <span className="text-muted-foreground">
                 事件数据管理 · 实时监控
               </span>

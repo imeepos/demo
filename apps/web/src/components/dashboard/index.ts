@@ -11,20 +11,9 @@ export {
   MetricCard as BaseMetricCard,
   // 数据可视化组件
   ChartContainer,
-  IntensityBar,
-
-  // 状态指示器
-  LiveIndicator,
   MetricLabel,
   MetricValue,
   ProgressBar,
-  // 情感分析组件
-  SentimentBadge,
-  StatusDot,
-  TrendIndicator,
-  WordcloudContainer,
-  // 词云组件
-  WordcloudTag,
 } from './DashboardComponents';
 
 // 样式变体类型
@@ -43,6 +32,3 @@ export type {
   TrendIndicatorVariants,
   WordcloudTagVariants,
 } from '../../lib/dashboard-variants';
-
-// 演示组件
-export { DashboardExample } from './DashboardExample';

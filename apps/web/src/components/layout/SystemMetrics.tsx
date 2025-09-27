@@ -1,4 +1,3 @@
-import { StatusDot } from '../dashboard/DashboardComponents';
 import { DashboardCard } from '../dashboard/DashboardComponents';
 import { cn } from '@sker/ui';
 
@@ -32,7 +31,6 @@ export function SystemMetrics({ className }: SystemMetricsProps) {
           <span className="text-xs font-semibold text-primary-700">
             系统状态
           </span>
-          <StatusDot status="online" pulse />
         </div>
         <div className="space-y-2 text-xs">
           <div className="flex justify-between items-center">
