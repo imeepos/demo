@@ -109,7 +109,7 @@ export const SentimentIntensityForm: React.FC<SentimentIntensityFormProps> = ({
           )}
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
             <p className="text-xs text-primary font-medium mb-1">
-              📊 强度参考范围
+              强度参考范围
             </p>
             <div className="grid grid-cols-5 gap-2 text-xs">
               <div className="text-center">

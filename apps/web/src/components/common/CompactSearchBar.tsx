@@ -58,7 +58,7 @@ export const CompactSearchBar: React.FC<CompactSearchBarProps> = ({
               placeholder={placeholder}
               value={inputValue}
               onChange={handleInputChange}
-              className="pl-10 pr-10 h-10 md:h-12 bg-background border-border focus:border-primary focus:ring-primary/20 transition-all duration-300"
+              className="pl-10 pr-10 h-10 transition-all duration-200"
             />
             {inputValue && (
               <button
@@ -78,7 +78,7 @@ export const CompactSearchBar: React.FC<CompactSearchBarProps> = ({
             type="button"
             variant="outline"
             onClick={onToggleFilters}
-            className={`h-10 md:h-12 px-3 md:px-4 border-border hover:bg-accent transition-all duration-300 relative ${
+            className={`h-10 px-3 transition-all duration-200 relative ${
               hasActiveFilters || showFilters
                 ? 'bg-primary/10 border-primary text-primary'
                 : ''
@@ -96,7 +96,7 @@ export const CompactSearchBar: React.FC<CompactSearchBarProps> = ({
         <Button
           type="submit"
           disabled={isSearching}
-          className="h-10 md:h-12 px-4 md:px-6 bg-primary hover:bg-primary/90 text-white font-medium transition-all duration-300"
+          className="h-10 px-4 transition-all duration-200"
         >
           <Search className="w-4 h-4 sm:mr-2" />
           <span className="hidden sm:inline">

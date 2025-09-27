@@ -68,60 +68,38 @@ interface PageHeaderProps {
 // ==================== 样式配置 ====================
 
 const HEADER_STYLES = cn(
-  'relative overflow-hidden',
-  'bg-gradient-to-br from-white via-white/98 to-white/95',
-  'border border-slate-200/60 backdrop-blur-lg',
-  'rounded-3xl shadow-sm hover:shadow-lg',
-  'transition-all duration-700 ease-out',
-  'before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/5 before:to-transparent',
-  'before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-1000',
-  'group'
+  'bg-card border border-border/40',
+  'rounded-xl shadow-sm',
+  'transition-all duration-300'
 );
 
 const TITLE_STYLES = cn(
-  'text-3xl font-black',
-  'bg-gradient-to-r from-slate-900 via-slate-700 to-slate-900',
-  'bg-clip-text text-transparent',
-  'mb-2 tracking-tight leading-tight',
-  'drop-shadow-sm'
+  'text-2xl font-semibold text-foreground',
+  'mb-2 leading-tight'
 );
 
 const DESCRIPTION_STYLES = cn(
-  'flex items-center gap-3',
+  'flex items-center gap-2',
   'text-muted-foreground',
-  'text-base font-medium'
+  'text-sm'
 );
 
 const STATS_CARD_STYLES = cn(
-  'bg-gradient-to-br from-slate-50/80 to-white/40',
-  'border border-slate-200/50 rounded-2xl',
-  'p-5 hover:scale-[1.02] hover:bg-gradient-to-br hover:from-blue-50/60 hover:to-indigo-50/40',
-  'transition-all duration-500 ease-out',
-  'shadow-sm hover:shadow-md',
-  'backdrop-blur-sm',
-  'group/stat'
+  'bg-muted/30 border border-border',
+  'rounded-lg p-4',
+  'transition-all duration-200'
 );
 
 const ACTION_BUTTON_STYLES = cn(
-  'relative overflow-hidden',
-  'bg-gradient-to-r from-slate-900 to-slate-800',
-  'hover:from-slate-800 hover:to-slate-700',
-  'text-white font-semibold text-sm',
-  'px-8 py-3.5 rounded-2xl',
-  'shadow-lg hover:shadow-xl hover:shadow-slate-900/30',
-  'hover:-translate-y-0.5 active:translate-y-0 active:scale-98',
-  'transition-all duration-400 ease-out',
-  'border border-slate-700/30',
-  'backdrop-blur-sm'
+  'bg-primary hover:bg-primary/90',
+  'text-primary-foreground font-medium text-sm',
+  'px-6 py-2 rounded-lg',
+  'transition-all duration-200'
 );
 
 const REFRESH_BUTTON_STYLES = cn(
-  'border-slate-300/60 text-slate-600',
-  'hover:bg-slate-100 hover:text-slate-900 hover:border-slate-400/60',
-  'hover:-translate-y-0.5 active:translate-y-0 active:scale-95',
-  'transition-all duration-400 ease-out',
-  'backdrop-blur-sm rounded-2xl',
-  'shadow-sm hover:shadow-md font-medium text-sm px-6 py-3'
+  'font-medium text-sm px-4 py-2 rounded-lg',
+  'transition-all duration-200'
 );
 
 // ==================== 组件实现 ====================
@@ -140,27 +118,17 @@ export function PageHeader({
 }: PageHeaderProps) {
   return (
     <Card className={cn(HEADER_STYLES, className)}>
-      <div className="relative z-10 p-10">
-        {/* 24列栅格主布局 */}
-        <div className="grid grid-cols-24 gap-8 items-center">
-          {/* 左侧：标题和描述区域 (占16列) */}
-          <div className="col-span-24 lg:col-span-16 space-y-6">
+      <div className="p-6">
+        {/* 主布局 */}
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          {/* 左侧：标题和描述区域 */}
+          <div className="space-y-4">
             {/* 标题行：图标 + 标题 */}
-            <div className="flex items-center gap-5">
-              <div
-                className={cn(
-                  'p-4 rounded-2xl',
-                  'bg-gradient-to-br from-slate-100/80 to-white/60',
-                  'border border-slate-200/60 backdrop-blur-sm',
-                  'group-hover:scale-110 group-hover:rotate-3',
-                  'transition-all duration-700 ease-out',
-                  'shadow-sm hover:shadow-md'
-                )}
-              >
-                <PageIcon className="h-9 w-9 text-slate-700" />
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-primary/10 rounded-lg">
+                <PageIcon className="h-5 w-5 text-primary" />
               </div>
-
-              <div className="flex-1">
+              <div>
                 <h1 className={TITLE_STYLES}>{title}</h1>
                 <div className={DESCRIPTION_STYLES}>
                   <LiveIndicator status={status} />
@@ -171,123 +139,65 @@ export function PageHeader({
 
             {/* 统计数据展示 */}
             {stats && (
-              <div className="grid grid-cols-2 gap-6 mt-8">
+              <div className="grid grid-cols-2 gap-4">
                 <div className={STATS_CARD_STYLES}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-3xl font-black text-slate-900 mb-1">
-                        {stats.primary.value}
-                      </div>
-                      <div className="text-sm font-medium text-slate-600">
-                        {stats.primary.label}
-                      </div>
-                    </div>
-                    {stats.primary.trend && (
-                      <div className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200/60">
-                        {stats.primary.trend}
-                      </div>
-                    )}
+                  <div className="text-xl font-semibold text-foreground mb-1">
+                    {stats.primary.value}
                   </div>
+                  <div className="text-sm text-muted-foreground">
+                    {stats.primary.label}
+                  </div>
+                  {stats.primary.trend && (
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {stats.primary.trend}
+                    </div>
+                  )}
                 </div>
-
                 <div className={STATS_CARD_STYLES}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-3xl font-black text-slate-900 mb-1">
-                        {stats.secondary.value}
-                      </div>
-                      <div className="text-sm font-medium text-slate-600">
-                        {stats.secondary.label}
-                      </div>
-                    </div>
-                    {stats.secondary.trend && (
-                      <div className="text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full border border-blue-200/60">
-                        {stats.secondary.trend}
-                      </div>
-                    )}
+                  <div className="text-xl font-semibold text-foreground mb-1">
+                    {stats.secondary.value}
                   </div>
+                  <div className="text-sm text-muted-foreground">
+                    {stats.secondary.label}
+                  </div>
+                  {stats.secondary.trend && (
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {stats.secondary.trend}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
           </div>
 
-          {/* 右侧：操作按钮区域 (占8列) */}
-          <div className="col-span-24 lg:col-span-8 flex flex-col gap-4 lg:items-end">
-            {/* 系统状态指示器 */}
-            <div
-              className={cn(
-                'inline-flex items-center gap-2 px-4 py-2',
-                'bg-green-50 text-green-700 rounded-full',
-                'border border-green-200',
-                'text-sm font-medium'
-              )}
+          {/* 右侧：操作按钮区域 */}
+          <div className="flex items-center gap-3">
+            {/* 刷新按钮 */}
+            <Button
+              variant="outline"
+              onClick={onRefresh}
+              disabled={isLoading}
+              className={REFRESH_BUTTON_STYLES}
             >
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span>系统运行正常</span>
-            </div>
+              <RefreshCw
+                className={cn('w-4 h-4 mr-2', isLoading && 'animate-spin')}
+              />
+              {isLoading ? '刷新中...' : '刷新'}
+            </Button>
 
-            {/* 操作按钮组 */}
-            <div className="flex gap-3 w-full lg:w-auto">
-              {/* 刷新按钮 */}
+            {/* 主要操作按钮 */}
+            {primaryAction && onPrimaryAction && (
               <Button
-                variant="outline"
-                onClick={onRefresh}
-                disabled={isLoading}
-                className={REFRESH_BUTTON_STYLES}
+                onClick={onPrimaryAction}
+                className={ACTION_BUTTON_STYLES}
               >
-                <RefreshCw
-                  className={cn('w-4 h-4 mr-2', isLoading && 'animate-spin')}
-                />
-                {isLoading ? '刷新中...' : '刷新数据'}
+                <Plus className="w-4 h-4 mr-2" />
+                {primaryAction}
               </Button>
-
-              {/* 主要操作按钮 */}
-              {primaryAction && onPrimaryAction && (
-                <Button
-                  onClick={onPrimaryAction}
-                  className={ACTION_BUTTON_STYLES}
-                >
-                  <Plus className="w-5 h-5 mr-2" />
-                  {primaryAction}
-
-                  {/* 按钮光效 */}
-                  <div
-                    className={cn(
-                      'absolute inset-0 bg-gradient-to-r',
-                      'from-transparent via-white/20 to-transparent',
-                      'translate-x-[-100%] hover:translate-x-[100%]',
-                      'transition-transform duration-700'
-                    )}
-                  />
-                </Button>
-              )}
-            </div>
-
-            {/* 实时数据概览 */}
-            <div className="text-right text-sm text-muted-foreground space-y-1">
-              <div>最后更新: {new Date().toLocaleTimeString()}</div>
-              <div className="flex items-center gap-2 justify-end">
-                <Activity className="h-3 w-3 text-green-500" />
-                <span>数据实时同步</span>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
-
-      {/* 装饰性背景渐变 */}
-      <div
-        className={cn(
-          'absolute inset-0 bg-gradient-to-r',
-          'from-primary/3 via-transparent to-accent/3',
-          'opacity-0 group-hover:opacity-100',
-          'transition-opacity duration-500',
-          'pointer-events-none'
-        )}
-      />
-
-      {/* 底部装饰条 */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary opacity-60" />
     </Card>
   );
 }

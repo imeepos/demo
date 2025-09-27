@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { Button } from '@sker/ui';
 import { DashboardLayout } from '../components/layout';
+import { SimplePageHeader } from '../components/layout/SimplePageHeader';
 import { SentimentIntensityDialog } from '../components/sentiment-intensity/SentimentIntensityDialog';
 import { SentimentIntensityList } from '../components/sentiment-intensity/SentimentIntensityList';
 import { SentimentIntensitySearchForm } from '../components/sentiment-intensity/SentimentIntensitySearchForm';
@@ -176,45 +176,26 @@ export const SentimentIntensityPage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      {/* 极简优雅的容器 */}
       <div className="min-h-full">
-        <div className="max-w-6xl mx-auto px-10 py-16">
-          {/* 艺术级页面头部 */}
-          <div className="mb-16">
-            <div className="flex items-center justify-between">
-              <div className="space-y-6">
-                <div className="flex items-center space-x-6">
-                  <div className="w-1.5 h-16 bg-gradient-to-b from-indigo-600 via-purple-600 to-pink-600 rounded-full shadow-lg"></div>
-                  <div>
-                    <h1 className="text-3xl font-extralight text-slate-900 tracking-wide leading-tight">
-                      情感强度管理
-                    </h1>
-                    <p className="text-slate-400 text-base font-light mt-3 tracking-wide">
-                      精致管理情感数据配置
-                    </p>
-                  </div>
-                </div>
-              </div>
+        <div className="max-w-6xl mx-auto p-6">
+          {/* 页面头部 */}
+          <SimplePageHeader
+            title="情感强度管理"
+            description="精致管理情感数据配置"
+            primaryAction="+ 新建配置"
+            onPrimaryAction={handleCreate}
+          />
 
-              <Button
-                onClick={handleCreate}
-                className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:via-purple-700 hover:to-pink-700 text-white font-medium px-10 py-4 rounded-2xl shadow-2xl hover:shadow-indigo-500/25 transition-all duration-500 transform hover:-translate-y-1 hover:scale-105"
-              >
-                <span className="text-sm">+ 新建配置</span>
-              </Button>
-            </div>
-          </div>
-
-          {/* 精致搜索区域 */}
-          <div className="mb-12">
+          {/* 搜索区域 */}
+          <div className="mb-6">
             <SentimentIntensitySearchForm
               onSearch={handleSearch}
               onClear={handleClearSearch}
             />
           </div>
 
-          {/* 美观数据区域 */}
-          <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-xl border border-slate-200/60">
+          {/* 数据区域 */}
+          <div className="bg-card border border-border/40 rounded-xl shadow-sm">
             <SentimentIntensityList
               items={displayData}
               isLoading={isLoading}

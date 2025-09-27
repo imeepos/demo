@@ -5,7 +5,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@sker/ui';
-import { RefreshCw, Settings } from 'lucide-react';
+import {
+  RefreshCw,
+  Settings,
+  TrendingUp,
+  ThumbsUp,
+  Minus,
+  ThumbsDown,
+} from 'lucide-react';
 import { DashboardLayout } from '../components/layout';
 import {
   mockDashboardData,
@@ -139,9 +146,9 @@ export const DataVisualizationPage: React.FC = () => {
           <TremorCard decoration="top" decorationColor="blue">
             <TremorText>总监控数据</TremorText>
             <TremorMetric>{metrics.totalData.toLocaleString()}</TremorMetric>
-            <Flex className="mt-4">
+            <Flex className="mt-4 items-center">
               <TremorText>较昨日: {metrics.trends.total}</TremorText>
-              <TremorText>📈</TremorText>
+              <TrendingUp className="h-4 w-4 text-blue-500" />
             </Flex>
           </TremorCard>
         </Col>
@@ -152,13 +159,13 @@ export const DataVisualizationPage: React.FC = () => {
             <TremorMetric>
               {metrics.positiveCount.toLocaleString()}
             </TremorMetric>
-            <Flex className="mt-4">
+            <Flex className="mt-4 items-center">
               <TremorText>
                 占比:{' '}
                 {((metrics.positiveCount / metrics.totalData) * 100).toFixed(1)}
                 %
               </TremorText>
-              <TremorText>😊</TremorText>
+              <ThumbsUp className="h-4 w-4 text-emerald-500" />
             </Flex>
           </TremorCard>
         </Col>
@@ -167,12 +174,12 @@ export const DataVisualizationPage: React.FC = () => {
           <TremorCard decoration="top" decorationColor="amber">
             <TremorText>中性情感</TremorText>
             <TremorMetric>{metrics.neutralCount.toLocaleString()}</TremorMetric>
-            <Flex className="mt-4">
+            <Flex className="mt-4 items-center">
               <TremorText>
                 占比:{' '}
                 {((metrics.neutralCount / metrics.totalData) * 100).toFixed(1)}%
               </TremorText>
-              <TremorText>😐</TremorText>
+              <Minus className="h-4 w-4 text-amber-500" />
             </Flex>
           </TremorCard>
         </Col>
@@ -183,13 +190,13 @@ export const DataVisualizationPage: React.FC = () => {
             <TremorMetric>
               {metrics.negativeCount.toLocaleString()}
             </TremorMetric>
-            <Flex className="mt-4">
+            <Flex className="mt-4 items-center">
               <TremorText>
                 占比:{' '}
                 {((metrics.negativeCount / metrics.totalData) * 100).toFixed(1)}
                 %
               </TremorText>
-              <TremorText>😢</TremorText>
+              <ThumbsDown className="h-4 w-4 text-red-500" />
             </Flex>
           </TremorCard>
         </Col>

@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:ui.shadcn.com)",
+      "Read(C:\\Users\\imeep\\Desktop\\demos\\apps\\web\\src\\routes/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

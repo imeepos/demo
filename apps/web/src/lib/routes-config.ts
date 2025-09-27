@@ -8,6 +8,7 @@ import {
   Palette,
   Search,
   Activity,
+  Tag,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -190,6 +191,28 @@ export const ROUTES_CONFIG: readonly RouteConfig[] = [
     order: 1,
     tags: ['事件管理', '生命周期', '舆情处置'],
   },
+  {
+    path: '/event-type',
+    title: '事件类型管理',
+    description: '舆情事件分类体系，自定义颜色和排序',
+    icon: Tag,
+    group: 'management',
+    theme: 'accent',
+    showInNav: true,
+    order: 2,
+    tags: ['事件类型', '分类管理', '颜色标识'],
+  },
+  {
+    path: '/media-type',
+    title: '媒体类型管理',
+    description: '媒体类型配置与分类管理',
+    icon: Settings,
+    group: 'management',
+    theme: 'warning',
+    showInNav: true,
+    order: 3,
+    tags: ['媒体类型', '配置管理', '分类设置'],
+  },
 
   // ==================== 系统工具类 ====================
   {
@@ -202,6 +225,28 @@ export const ROUTES_CONFIG: readonly RouteConfig[] = [
     showInNav: true,
     order: 1,
     tags: ['设计系统', '配色方案', '组件展示'],
+  },
+  {
+    path: '/layout-basic-demo',
+    title: '布局组件-基础示例',
+    description: 'SentimentDashboardLayout 基础功能展示',
+    icon: BarChart3,
+    group: 'system',
+    theme: 'primary',
+    showInNav: true,
+    order: 2,
+    tags: ['布局组件', '基础示例', '组件库'],
+  },
+  {
+    path: '/layout-minimal-demo',
+    title: '布局组件-极简示例',
+    description: 'SentimentDashboardLayout 极简风格展示',
+    icon: Palette,
+    group: 'system',
+    theme: 'accent',
+    showInNav: true,
+    order: 3,
+    tags: ['布局组件', '极简风格', '组件库'],
   },
 ] as const;
 

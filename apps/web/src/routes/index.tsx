@@ -1,4 +1,15 @@
 import { createFileRoute, Link } from '@tanstack/react-router';
+import {
+  BarChart3,
+  Map,
+  Settings,
+  FileText,
+  TrendingUp,
+  PieChart,
+  Zap,
+  Palette,
+  Tag,
+} from 'lucide-react';
 import { DataPreviewSection } from '../components/home/DataPreviewSection';
 import { FeaturesGrid } from '../components/home/FeaturesGrid';
 import { SystemStatusSection } from '../components/home/SystemStatusSection';
@@ -7,6 +18,19 @@ import { WelcomeSection } from '../components/home/WelcomeSection';
 export const Route = createFileRoute('/')({
   component: HomePage,
 });
+
+// 图标映射
+const iconComponents = {
+  BarChart3,
+  Map,
+  Settings,
+  FileText,
+  TrendingUp,
+  PieChart,
+  Zap,
+  Palette,
+  Tag,
+};
 
 /**
  * 舆情监控系统首页
@@ -48,7 +72,7 @@ function HomePage() {
                 to: '/dashboard-view',
                 title: '舆情分析大屏',
                 description: '完整的数据可视化界面，实时监控和分析',
-                icon: '📊',
+                icon: 'BarChart3',
                 gradient: 'from-blue-600 to-blue-700',
                 shadowColor: 'blue-400',
               },
@@ -56,7 +80,7 @@ function HomePage() {
                 to: '/dashboard',
                 title: '地图监控视图',
                 description: '地理位置结合数据分析，区域舆情监控',
-                icon: '🗺️',
+                icon: 'Map',
                 gradient: 'from-emerald-600 to-emerald-700',
                 shadowColor: 'emerald-400',
               },
@@ -64,7 +88,7 @@ function HomePage() {
                 to: '/sentiment-intensity',
                 title: '情感强度管理',
                 description: '配置和管理情感分析参数设置',
-                icon: '⚙️',
+                icon: 'Settings',
                 gradient: 'from-purple-600 to-purple-700',
                 shadowColor: 'purple-400',
               },
@@ -72,7 +96,7 @@ function HomePage() {
                 to: '/sentiment-event',
                 title: '舆情事件管理',
                 description: '管理舆情事件数据，创建、编辑和分析',
-                icon: '📝',
+                icon: 'FileText',
                 gradient: 'from-orange-600 to-orange-700',
                 shadowColor: 'orange-400',
               },
@@ -80,7 +104,7 @@ function HomePage() {
                 to: '/enhanced-dashboard',
                 title: '增强仪表板',
                 description: '更丰富的交互式数据分析和可视化面板',
-                icon: '📈',
+                icon: 'TrendingUp',
                 gradient: 'from-rose-600 to-rose-700',
                 shadowColor: 'rose-400',
               },
@@ -88,7 +112,7 @@ function HomePage() {
                 to: '/data-visualization',
                 title: '数据可视化',
                 description: '专业的数据图表展示和深度分析工具',
-                icon: '📊',
+                icon: 'PieChart',
                 gradient: 'from-cyan-600 to-cyan-700',
                 shadowColor: 'cyan-400',
               },
@@ -96,17 +120,25 @@ function HomePage() {
                 to: '/admin-dashboard',
                 title: '管理员仪表板',
                 description: '系统管理和配置中心，监控系统运行状态',
-                icon: '⚡',
+                icon: 'Zap',
                 gradient: 'from-indigo-600 to-indigo-700',
                 shadowColor: 'indigo-400',
+              },
+              {
+                to: '/event-type',
+                title: '事件类型管理',
+                description: '管理舆情事件的分类体系，支持自定义颜色和排序',
+                icon: 'Tag',
+                gradient: 'from-pink-600 to-pink-700',
+                shadowColor: 'pink-400',
               },
               {
                 to: '/color-test',
                 title: '配色系统测试',
                 description: '查看亮色科技蓝配色方案的完整展示',
-                icon: '🎨',
-                gradient: 'from-pink-600 to-pink-700',
-                shadowColor: 'pink-400',
+                icon: 'Palette',
+                gradient: 'from-slate-600 to-slate-700',
+                shadowColor: 'slate-400',
               },
             ].map((item, index) => (
               <Link
@@ -121,8 +153,16 @@ function HomePage() {
 
                 {/* 内容区域 */}
                 <div className="relative space-y-4 z-10">
-                  <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300 backdrop-blur-sm border border-white/30">
-                    {item.icon}
+                  <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300 backdrop-blur-sm border border-white/30">
+                    {(() => {
+                      const IconComponent =
+                        iconComponents[
+                          item.icon as keyof typeof iconComponents
+                        ];
+                      return IconComponent ? (
+                        <IconComponent className="w-8 h-8 text-white" />
+                      ) : null;
+                    })()}
                   </div>
 
                   <div className="space-y-2">

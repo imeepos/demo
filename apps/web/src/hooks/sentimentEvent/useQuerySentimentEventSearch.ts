@@ -17,7 +17,7 @@ export const useQuerySentimentEventSearch = (
     queryKey: queryKeys.sentimentEvent.search(queryParams),
     queryFn: async () => {
       const response = await sentimentEventControllerSearch(queryParams);
-      return response.data;
+      return response.data || [];
     },
     ...config,
   });

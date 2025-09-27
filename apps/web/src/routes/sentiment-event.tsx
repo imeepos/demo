@@ -171,7 +171,7 @@ function SentimentEventPage() {
   });
 
   return (
-    <div className="dashboard-container min-h-screen p-2">
+    <div className="dashboard-container p-2">
       <div className="w-full space-y-4">
         {/* 页面标题栏 - 左右布局 */}
         <div className="flex items-center justify-between mb-8">

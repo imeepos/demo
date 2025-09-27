@@ -1,11 +1,7 @@
 import { useState, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 import { DashboardLayout } from '../components/layout';
-import {
-  PageHeader,
-  SentimentEventPageHeader,
-} from '../components/layout/PageHeader';
-import { DataSection } from '../components/layout/DataSection';
+import { SimplePageHeader } from '../components/layout/SimplePageHeader';
 import { SentimentEventDialog } from '../components/sentiment-event/SentimentEventDialog';
 import { SentimentEventList } from '../components/sentiment-event/SentimentEventList';
 import { SentimentEventSearchForm } from '../components/sentiment-event/SentimentEventSearchForm';
@@ -177,111 +173,47 @@ export const SentimentEventPage: React.FC = () => {
     return value !== undefined && value !== '' && value !== null;
   });
 
-  // 生成搜索关键词标签
-  const searchKeywords = useMemo(() => {
-    const keywords: string[] = [];
-    if (searchParams.title) keywords.push(`标题: ${searchParams.title}`);
-    if (searchParams.minScore !== undefined)
-      keywords.push(`最低分: ${searchParams.minScore}`);
-    if (searchParams.maxScore !== undefined)
-      keywords.push(`最高分: ${searchParams.maxScore}`);
-    if (searchParams.startTime)
-      keywords.push(`开始: ${searchParams.startTime.toLocaleDateString()}`);
-    if (searchParams.endTime)
-      keywords.push(`结束: ${searchParams.endTime.toLocaleDateString()}`);
-    return keywords;
-  }, [searchParams]);
-
-  // 页面统计数据
-  const pageStats = useMemo(
-    () => ({
-      primary: {
-        label: '舆情事件总数',
-        value: items.length,
-        trend: '+12.5%',
-      },
-      secondary: {
-        label: '实时监控源',
-        value: '2,847',
-        trend: '在线',
-      },
-    }),
-    [items.length]
-  );
-
   return (
     <DashboardLayout>
-      <div className="space-y-12 p-8 max-w-7xl mx-auto">
-        {/* 专业页面头部 */}
-        <PageHeader
-          {...SentimentEventPageHeader}
-          stats={pageStats}
-          onPrimaryAction={handleCreate}
-          onRefresh={handleRefresh}
-          isLoading={isLoading}
-          className="mb-8"
-        />
+      <div className="min-h-full">
+        <div className="max-w-6xl mx-auto p-6">
+          {/* 页面头部 */}
+          <SimplePageHeader
+            title="舆情事件管理"
+            description="实时监控和管理舆情事件数据"
+            primaryAction="+ 新建舆情事件"
+            onPrimaryAction={handleCreate}
+          />
 
-        {/* 搜索表单区域 */}
-        <div className="bg-gradient-to-br from-white via-white/98 to-slate-50/40 rounded-3xl border border-slate-200/60 shadow-sm hover:shadow-lg transition-all duration-500 p-8 backdrop-blur-sm">
-          <SentimentEventSearchForm
-            onSearch={handleSearch}
-            onClear={handleClearSearch}
-            isSearching={isLoading}
+          {/* 搜索区域 */}
+          <div className="mb-6">
+            <SentimentEventSearchForm
+              onSearch={handleSearch}
+              onClear={handleClearSearch}
+              isSearching={isLoading}
+            />
+          </div>
+
+          {/* 数据区域 */}
+          <div className="bg-card border border-border/40 rounded-xl shadow-sm">
+            <SentimentEventList
+              items={items}
+              isLoading={isLoading}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          </div>
+
+          {/* 对话框 */}
+          <SentimentEventDialog
+            open={dialogOpen}
+            onClose={handleDialogClose}
+            onSubmit={handleSubmit}
+            initialData={editingItem}
+            isSubmitting={isSubmitting}
+            title={editingItem ? '编辑舆情事件' : '新建舆情事件'}
           />
         </div>
-
-        {/* 数据展示区域 */}
-        <DataSection
-          searchHeader={
-            hasActiveSearch
-              ? {
-                  isSearchMode: hasActiveSearch,
-                  totalCount: items.length,
-                  searchKeywords,
-                  onClearSearch: handleClearSearch,
-                  showExport: true,
-                  onExport: () => toast.success('导出功能开发中...'),
-                }
-              : undefined
-          }
-          loadingState={
-            isLoading
-              ? {
-                  type: 'loading',
-                  message: '正在加载舆情事件数据...',
-                }
-              : items.length === 0 && hasActiveSearch
-                ? {
-                    type: 'noResults',
-                    message: '未找到符合条件的舆情事件',
-                  }
-                : items.length === 0
-                  ? {
-                      type: 'empty',
-                      dataTypeName: '舆情事件',
-                      onCreate: handleCreate,
-                    }
-                  : undefined
-          }
-        >
-          <SentimentEventList
-            items={items}
-            isLoading={isLoading}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        </DataSection>
-
-        {/* 对话框 */}
-        <SentimentEventDialog
-          open={dialogOpen}
-          onClose={handleDialogClose}
-          onSubmit={handleSubmit}
-          initialData={editingItem}
-          isSubmitting={isSubmitting}
-          title={editingItem ? '编辑舆情事件' : '新建舆情事件'}
-        />
       </div>
     </DashboardLayout>
   );

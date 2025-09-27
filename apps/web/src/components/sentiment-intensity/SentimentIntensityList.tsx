@@ -37,8 +37,8 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
             <Database className="w-8 h-8 text-blue-500 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
           </div>
           <div className="text-center space-y-2">
-            <div className="text-xl font-light text-slate-800">数据加载中</div>
-            <div className="text-slate-500">正在为您获取最新数据...</div>
+            <div className="text-xl font-light text-foreground">数据加载中</div>
+            <div className="text-muted-foreground">正在为您获取最新数据...</div>
           </div>
         </div>
       </div>
@@ -50,11 +50,11 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
       <div className="p-16">
         <div className="flex flex-col items-center justify-center space-y-8">
           <div className="p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-full">
-            <FileX className="w-16 h-16 text-slate-400" />
+            <FileX className="w-16 h-16 text-muted-foreground" />
           </div>
           <div className="text-center space-y-3">
-            <h3 className="text-2xl font-light text-slate-800">暂无数据</h3>
-            <p className="text-slate-500 max-w-md">
+            <h3 className="text-2xl font-light text-foreground">暂无数据</h3>
+            <p className="text-muted-foreground max-w-md">
               还没有任何情感强度配置，点击上方"新建配置"按钮开始创建
             </p>
           </div>
@@ -102,14 +102,14 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
     <div className="overflow-hidden">
       <Table>
         <TableHeader>
-          <TableRow className="bg-gradient-to-r from-slate-50 to-slate-100 border-b border-slate-200">
-            <TableHead className="font-medium text-slate-700 py-4 px-6">
+          <TableRow className="bg-gradient-to-r from-muted/30 to-muted/50 border-b border-border">
+            <TableHead className="font-medium text-foreground py-4 px-6">
               标题
             </TableHead>
-            <TableHead className="font-medium text-slate-700 py-4 px-6">
+            <TableHead className="font-medium text-foreground py-4 px-6">
               强度值
             </TableHead>
-            <TableHead className="font-medium text-slate-700 py-4 px-6">
+            <TableHead className="font-medium text-foreground py-4 px-6">
               描述
             </TableHead>
             <TableHead className="font-medium text-slate-700 py-4 px-6 text-center">
@@ -125,11 +125,11 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
             return (
               <TableRow
                 key={item.id}
-                className="border-b border-slate-100 hover:bg-slate-50/50 transition-all duration-200 group"
+                className="border-b border-border hover:bg-muted/50 transition-all duration-200 group"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <TableCell className="py-5 px-6">
-                  <div className="font-medium text-slate-800 group-hover:text-blue-600 transition-colors duration-200">
+                  <div className="font-medium text-foreground group-hover:text-primary transition-colors duration-200">
                     {item.title}
                   </div>
                 </TableCell>
@@ -148,7 +148,7 @@ export const SentimentIntensityList: React.FC<SentimentIntensityListProps> = ({
                 </TableCell>
 
                 <TableCell className="py-5 px-6 max-w-xs">
-                  <div className="text-slate-600 truncate">
+                  <div className="text-muted-foreground truncate">
                     {item.description || '暂无描述'}
                   </div>
                 </TableCell>
