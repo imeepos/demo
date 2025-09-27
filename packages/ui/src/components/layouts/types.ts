@@ -318,3 +318,291 @@ export interface LayoutEventHandlers {
   /** 无障碍配置变化回调 */
   onAccessibilityChange?: (config: AccessibilityConfig) => void;
 }
+
+/** 报告生成器和监测中心相关类型 */
+
+/** 报告内容区块类型 */
+export type ReportSectionType =
+  | 'overview'
+  | 'chart'
+  | 'table'
+  | 'text'
+  | 'timeline';
+
+/** 导出格式类型 */
+export type ExportFormat = 'pdf' | 'docx' | 'html' | 'excel' | 'pptx';
+
+/** 预览模式 */
+export type PreviewMode = 'desktop' | 'mobile' | 'print';
+
+/** 报告主题 */
+export type ReportTheme = 'light' | 'dark' | 'minimal';
+
+/** 报告区块配置 */
+export interface ReportSection {
+  /** 区块ID */
+  id: string;
+  /** 区块类型 */
+  type: ReportSectionType;
+  /** 区块标题 */
+  title: string;
+  /** 是否启用 */
+  enabled: boolean;
+  /** 区块配置 */
+  config: Record<string, any>;
+}
+
+/** 报告样式配置 */
+export interface ReportStyle {
+  /** 主题 */
+  theme: ReportTheme;
+  /** 主色调 */
+  primaryColor: string;
+  /** 字体 */
+  fontFamily: string;
+  /** 标志URL */
+  logoUrl?: string;
+  /** 是否显示页眉页脚 */
+  headerFooter: boolean;
+}
+
+/** 报告配置 */
+export interface ReportConfig {
+  /** 报告标题 */
+  title: string;
+  /** 报告描述 */
+  description?: string;
+  /** 时间范围 */
+  dateRange: {
+    start: Date;
+    end: Date;
+  };
+  /** 数据源 */
+  dataSources: string[];
+  /** 报告区块 */
+  sections: ReportSection[];
+  /** 样式配置 */
+  style: ReportStyle;
+  /** 导出格式 */
+  format: ExportFormat;
+}
+
+/** 报告模板 */
+export interface ReportTemplate {
+  /** 模板ID */
+  id: string;
+  /** 模板名称 */
+  name: string;
+  /** 模板描述 */
+  description?: string;
+  /** 报告配置 */
+  config: ReportConfig;
+  /** 缩略图 */
+  thumbnail?: string;
+  /** 是否默认模板 */
+  isDefault?: boolean;
+}
+
+/** 报告生成器布局属性 */
+export interface ReportGeneratorLayoutProps extends BaseLayoutProps {
+  /** 默认配置 */
+  defaultConfig?: ReportConfig;
+  /** 模板列表 */
+  templates?: ReportTemplate[];
+  /** 配置变更回调 */
+  onConfigChange?: (config: ReportConfig) => void;
+  /** 报告生成回调 */
+  onGenerate?: (config: ReportConfig, format: ExportFormat) => Promise<void>;
+  /** 保存模板回调 */
+  onSaveTemplate?: (template: ReportTemplate) => void;
+  /** 是否正在生成 */
+  isGenerating?: boolean;
+  /** 生成进度 */
+  generationProgress?: number;
+}
+
+/** 报告预览组件属性 */
+export interface ReportPreviewProps {
+  /** 报告配置 */
+  config: ReportConfig;
+  /** 预览模式 */
+  mode: PreviewMode;
+  /** 自定义样式 */
+  className?: string;
+}
+
+/** 监测中心布局相关类型 */
+
+/** 预警等级 */
+export type AlertLevel = 'critical' | 'high' | 'medium' | 'low';
+
+/** 预警状态 */
+export type AlertStatus = 'new' | 'processing' | 'resolved';
+
+/** 预警操作 */
+export interface AlertAction {
+  /** 操作ID */
+  id: string;
+  /** 操作标签 */
+  label: string;
+  /** 按钮变体 */
+  variant?: 'default' | 'destructive' | 'outline';
+  /** 点击回调 */
+  onClick: () => void;
+}
+
+/** 预警项 */
+export interface AlertItem {
+  /** 预警ID */
+  id: string;
+  /** 预警等级 */
+  level: AlertLevel;
+  /** 预警标题 */
+  title: string;
+  /** 预警描述 */
+  description: string;
+  /** 数据源 */
+  source: string;
+  /** 时间戳 */
+  timestamp: Date;
+  /** 预警状态 */
+  status: AlertStatus;
+  /** 可执行操作 */
+  actions?: AlertAction[];
+}
+
+/** 监测标签页 */
+export interface MonitoringTab {
+  /** 标签页ID */
+  id: string;
+  /** 标签页名称 */
+  label: string;
+  /** 标签页内容 */
+  content: React.ReactNode;
+  /** 徽章数字 */
+  badge?: number;
+  /** 是否紧急 */
+  urgent?: boolean;
+  /** 是否禁用 */
+  disabled?: boolean;
+}
+
+/** 监测中心布局属性 */
+export interface MonitoringCenterLayoutProps extends BaseLayoutProps {
+  /** 监测标签页列表 */
+  tabs?: MonitoringTab[];
+  /** 预警信息列表 */
+  alerts?: AlertItem[];
+  /** 默认激活的标签页 */
+  defaultTab?: string;
+  /** 标签页切换回调 */
+  onTabChange?: (tabId: string) => void;
+  /** 预警操作回调 */
+  onAlertAction?: (alertId: string, action: string) => void;
+  /** 是否启用全屏功能 */
+  enableFullscreen?: boolean;
+  /** 是否自动刷新 */
+  autoRefresh?: boolean;
+  /** 刷新间隔（毫秒） */
+  refreshInterval?: number;
+  /** 数据刷新回调 */
+  onRefresh?: () => void;
+}
+
+/** 趋势分析图表相关类型 */
+
+/** 图表类型 */
+export type ChartType = 'line' | 'area' | 'bar' | 'heatmap' | 'scatter';
+
+/** 时间范围类型 */
+export type TimeRange = '1h' | '6h' | '24h' | '7d' | '30d' | '90d' | 'custom';
+
+/** 导出格式类型 */
+export type ChartExportFormat = 'png' | 'svg' | 'pdf' | 'csv' | 'excel';
+
+/** 趋势数据 */
+export interface TrendData {
+  /** 时间戳 */
+  timestamp: Date;
+  /** 数据值映射 */
+  values: Record<string, number>;
+  /** 元数据 */
+  metadata?: {
+    /** 事件标记 */
+    events?: EventMarker[];
+    /** 异常点 */
+    anomalies?: AnomalyPoint[];
+  };
+}
+
+/** 事件标记 */
+export interface EventMarker {
+  /** 事件ID */
+  id: string;
+  /** 时间戳 */
+  timestamp: Date;
+  /** 标题 */
+  title: string;
+  /** 描述 */
+  description?: string;
+  /** 事件类型 */
+  type: 'positive' | 'negative' | 'neutral' | 'crisis';
+  /** 影响程度 */
+  impact: 'high' | 'medium' | 'low';
+}
+
+/** 异常点 */
+export interface AnomalyPoint {
+  /** 时间戳 */
+  timestamp: Date;
+  /** 实际值 */
+  value: number;
+  /** 期望值 */
+  expectedValue: number;
+  /** 偏差 */
+  deviation: number;
+  /** 严重程度 */
+  severity: 'high' | 'medium' | 'low';
+}
+
+/** 数据源配置 */
+export interface DataSource {
+  /** 数据源ID */
+  id: string;
+  /** 数据源名称 */
+  name: string;
+  /** 颜色 */
+  color: string;
+  /** 是否启用 */
+  enabled: boolean;
+  /** 数据源类型 */
+  type: 'sentiment' | 'volume' | 'engagement' | 'reach';
+}
+
+/** 趋势分析图表属性 */
+export interface TrendAnalysisChartProps extends BaseLayoutProps {
+  /** 趋势数据 */
+  data?: TrendData[];
+  /** 图表类型 */
+  chartType?: ChartType;
+  /** 时间范围 */
+  timeRange?: TimeRange;
+  /** 数据源配置 */
+  dataSources?: DataSource[];
+  /** 是否加载中 */
+  isLoading?: boolean;
+  /** 图表类型变化回调 */
+  onChartTypeChange?: (type: ChartType) => void;
+  /** 时间范围变化回调 */
+  onTimeRangeChange?: (range: TimeRange) => void;
+  /** 数据源变化回调 */
+  onDataSourceChange?: (sources: string[]) => void;
+  /** 导出回调 */
+  onExport?: (format: ChartExportFormat) => void;
+  /** 是否显示预测 */
+  showPrediction?: boolean;
+  /** 是否显示异常检测 */
+  showAnomalies?: boolean;
+  /** 图表高度 */
+  height?: number;
+}

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createFileRoute } from '@tanstack/react-router';
-import { SentimentDashboardLayout } from '@sker/ui';
+import { SentimentDashboardLayout, TrendAnalysisChart } from '@sker/ui';
 import {
   Card,
   CardContent,
@@ -53,6 +53,103 @@ function LayoutBasicDemoPage() {
   const [minWidth, setMinWidth] = React.useState(240);
   const [maxWidth, setMaxWidth] = React.useState(400);
   const [logMessages, setLogMessages] = React.useState<string[]>([]);
+
+  // 趋势图表数据
+  const trendData = React.useMemo(
+    () => [
+      {
+        timestamp: new Date('2024-01-01'),
+        values: { positive: 120, negative: 45, neutral: 80 },
+      },
+      {
+        timestamp: new Date('2024-01-02'),
+        values: { positive: 150, negative: 38, neutral: 90 },
+        metadata: {
+          events: [
+            {
+              id: '1',
+              timestamp: new Date('2024-01-02'),
+              title: '正面新闻发布',
+              description: '品牌形象得到提升',
+              type: 'positive' as const,
+              impact: 'medium' as const,
+            },
+          ],
+        },
+      },
+      {
+        timestamp: new Date('2024-01-03'),
+        values: { positive: 135, negative: 52, neutral: 85 },
+        metadata: {
+          anomalies: [
+            {
+              timestamp: new Date('2024-01-03'),
+              value: 52,
+              expectedValue: 40,
+              deviation: 12,
+              severity: 'medium' as const,
+            },
+          ],
+        },
+      },
+      {
+        timestamp: new Date('2024-01-04'),
+        values: { positive: 180, negative: 28, neutral: 95 },
+      },
+      {
+        timestamp: new Date('2024-01-05'),
+        values: { positive: 165, negative: 35, neutral: 88 },
+        metadata: {
+          events: [
+            {
+              id: '2',
+              timestamp: new Date('2024-01-05'),
+              title: '危机事件处理',
+              description: '快速响应负面舆情',
+              type: 'crisis' as const,
+              impact: 'high' as const,
+            },
+          ],
+        },
+      },
+      {
+        timestamp: new Date('2024-01-06'),
+        values: { positive: 145, negative: 42, neutral: 92 },
+      },
+      {
+        timestamp: new Date('2024-01-07'),
+        values: { positive: 170, negative: 30, neutral: 98 },
+      },
+    ],
+    []
+  );
+
+  const dataSources = React.useMemo(
+    () => [
+      {
+        id: 'positive',
+        name: '正面',
+        color: '#22c55e',
+        enabled: true,
+        type: 'sentiment' as const,
+      },
+      {
+        id: 'negative',
+        name: '负面',
+        color: '#ef4444',
+        enabled: true,
+        type: 'sentiment' as const,
+      },
+      {
+        id: 'neutral',
+        name: '中性',
+        color: '#6b7280',
+        enabled: false,
+        type: 'sentiment' as const,
+      },
+    ],
+    []
+  );
 
   const addLog = (message: string) => {
     setLogMessages(prev => [
@@ -424,6 +521,33 @@ function LayoutBasicDemoPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* 趋势分析图表展示 */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="h-5 w-5" />
+            TrendAnalysisChart 组件演示
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <TrendAnalysisChart
+            data={trendData}
+            dataSources={dataSources}
+            chartType="line"
+            timeRange="7d"
+            showAnomalies={true}
+            showPrediction={false}
+            height={400}
+            onChartTypeChange={type => addLog(`图表类型切换为: ${type}`)}
+            onTimeRangeChange={range => addLog(`时间范围切换为: ${range}`)}
+            onDataSourceChange={sources =>
+              addLog(`数据源变更: ${sources.join(', ')}`)
+            }
+            onExport={format => addLog(`导出图表格式: ${format}`)}
+          />
+        </CardContent>
+      </Card>
 
       {/* 响应式与移动端功能 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

@@ -1,0 +1,3 @@
+我是一个专业的中国前端开发艺术家 我追求极致的视觉和极致简约 包括对界面样式和代码风格
+注意不要过度设计，一切以实现文档中要求的功能为核心目标，不多不少
+packages\ui\src\components\elements\UrgencyLevel.md
