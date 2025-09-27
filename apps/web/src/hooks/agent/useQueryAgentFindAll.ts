@@ -4,7 +4,7 @@ import {
   type AgentControllerFindAllData,
 } from '@sker/sdk';
 import { queryKeys } from '../constants/queryKeys';
-import type { QueryConfig } from '../types';
+import type { PaginatedResponse, QueryConfig } from '../types';
 
 export const useQueryAgentFindAll = (
   options?: AgentControllerFindAllData & {
@@ -15,7 +15,7 @@ export const useQueryAgentFindAll = (
 
   return useQuery({
     queryKey: queryKeys.agent.list(queryParams),
-    queryFn: async () => {
+    queryFn: async (): Promise<PaginatedResponse | undefined> => {
       const response = await agentControllerFindAll(queryParams);
       return response.data;
     },

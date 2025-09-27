@@ -8,128 +8,148 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as UiShowcaseRouteImport } from './routes/ui-showcase'
-import { Route as SentimentIntensityRouteImport } from './routes/sentiment-intensity'
-import { Route as SentimentEventRouteImport } from './routes/sentiment-event'
-import { Route as MediaTypeRouteImport } from './routes/media-type'
-import { Route as LayoutMinimalDemoRouteImport } from './routes/layout-minimal-demo'
-import { Route as LayoutBasicDemoRouteImport } from './routes/layout-basic-demo'
-import { Route as EventTypeRouteImport } from './routes/event-type'
-import { Route as EnhancedDashboardRouteImport } from './routes/enhanced-dashboard'
-import { Route as DataVisualizationRouteImport } from './routes/data-visualization'
-import { Route as DashboardViewRouteImport } from './routes/dashboard-view'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as rootRouteImport } from './routes/__root';
+import { Route as UiShowcaseRouteImport } from './routes/ui-showcase';
+import { Route as SentimentIntensityRouteImport } from './routes/sentiment-intensity';
+import { Route as SentimentEventRouteImport } from './routes/sentiment-event';
+import { Route as MediaTypeRouteImport } from './routes/media-type';
+import { Route as LayoutMinimalDemoRouteImport } from './routes/layout-minimal-demo';
+import { Route as LayoutBasicDemoRouteImport } from './routes/layout-basic-demo';
+import { Route as EventTypeRouteImport } from './routes/event-type';
+import { Route as EnhancedDashboardRouteImport } from './routes/enhanced-dashboard';
+import { Route as DataVisualizationRouteImport } from './routes/data-visualization';
+import { Route as DashboardViewRouteImport } from './routes/dashboard-view';
+import { Route as DashboardRouteImport } from './routes/dashboard';
+import { Route as AgentsRouteImport } from './routes/agents';
+import { Route as AgentExecutionRouteImport } from './routes/agent-execution';
+import { Route as IndexRouteImport } from './routes/index';
 
 const UiShowcaseRoute = UiShowcaseRouteImport.update({
   id: '/ui-showcase',
   path: '/ui-showcase',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const SentimentIntensityRoute = SentimentIntensityRouteImport.update({
   id: '/sentiment-intensity',
   path: '/sentiment-intensity',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const SentimentEventRoute = SentimentEventRouteImport.update({
   id: '/sentiment-event',
   path: '/sentiment-event',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const MediaTypeRoute = MediaTypeRouteImport.update({
   id: '/media-type',
   path: '/media-type',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const LayoutMinimalDemoRoute = LayoutMinimalDemoRouteImport.update({
   id: '/layout-minimal-demo',
   path: '/layout-minimal-demo',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const LayoutBasicDemoRoute = LayoutBasicDemoRouteImport.update({
   id: '/layout-basic-demo',
   path: '/layout-basic-demo',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const EventTypeRoute = EventTypeRouteImport.update({
   id: '/event-type',
   path: '/event-type',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const EnhancedDashboardRoute = EnhancedDashboardRouteImport.update({
   id: '/enhanced-dashboard',
   path: '/enhanced-dashboard',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DataVisualizationRoute = DataVisualizationRouteImport.update({
   id: '/data-visualization',
   path: '/data-visualization',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DashboardViewRoute = DashboardViewRouteImport.update({
   id: '/dashboard-view',
   path: '/dashboard-view',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
+const AgentsRoute = AgentsRouteImport.update({
+  id: '/agents',
+  path: '/agents',
+  getParentRoute: () => rootRouteImport,
+} as any);
+const AgentExecutionRoute = AgentExecutionRouteImport.update({
+  id: '/agent-execution',
+  path: '/agent-execution',
+  getParentRoute: () => rootRouteImport,
+} as any);
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
-} as any)
+} as any);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
-  '/dashboard-view': typeof DashboardViewRoute
-  '/data-visualization': typeof DataVisualizationRoute
-  '/enhanced-dashboard': typeof EnhancedDashboardRoute
-  '/event-type': typeof EventTypeRoute
-  '/layout-basic-demo': typeof LayoutBasicDemoRoute
-  '/layout-minimal-demo': typeof LayoutMinimalDemoRoute
-  '/media-type': typeof MediaTypeRoute
-  '/sentiment-event': typeof SentimentEventRoute
-  '/sentiment-intensity': typeof SentimentIntensityRoute
-  '/ui-showcase': typeof UiShowcaseRoute
+  '/': typeof IndexRoute;
+  '/agent-execution': typeof AgentExecutionRoute;
+  '/agents': typeof AgentsRoute;
+  '/dashboard': typeof DashboardRoute;
+  '/dashboard-view': typeof DashboardViewRoute;
+  '/data-visualization': typeof DataVisualizationRoute;
+  '/enhanced-dashboard': typeof EnhancedDashboardRoute;
+  '/event-type': typeof EventTypeRoute;
+  '/layout-basic-demo': typeof LayoutBasicDemoRoute;
+  '/layout-minimal-demo': typeof LayoutMinimalDemoRoute;
+  '/media-type': typeof MediaTypeRoute;
+  '/sentiment-event': typeof SentimentEventRoute;
+  '/sentiment-intensity': typeof SentimentIntensityRoute;
+  '/ui-showcase': typeof UiShowcaseRoute;
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
-  '/dashboard-view': typeof DashboardViewRoute
-  '/data-visualization': typeof DataVisualizationRoute
-  '/enhanced-dashboard': typeof EnhancedDashboardRoute
-  '/event-type': typeof EventTypeRoute
-  '/layout-basic-demo': typeof LayoutBasicDemoRoute
-  '/layout-minimal-demo': typeof LayoutMinimalDemoRoute
-  '/media-type': typeof MediaTypeRoute
-  '/sentiment-event': typeof SentimentEventRoute
-  '/sentiment-intensity': typeof SentimentIntensityRoute
-  '/ui-showcase': typeof UiShowcaseRoute
+  '/': typeof IndexRoute;
+  '/agent-execution': typeof AgentExecutionRoute;
+  '/agents': typeof AgentsRoute;
+  '/dashboard': typeof DashboardRoute;
+  '/dashboard-view': typeof DashboardViewRoute;
+  '/data-visualization': typeof DataVisualizationRoute;
+  '/enhanced-dashboard': typeof EnhancedDashboardRoute;
+  '/event-type': typeof EventTypeRoute;
+  '/layout-basic-demo': typeof LayoutBasicDemoRoute;
+  '/layout-minimal-demo': typeof LayoutMinimalDemoRoute;
+  '/media-type': typeof MediaTypeRoute;
+  '/sentiment-event': typeof SentimentEventRoute;
+  '/sentiment-intensity': typeof SentimentIntensityRoute;
+  '/ui-showcase': typeof UiShowcaseRoute;
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/dashboard': typeof DashboardRoute
-  '/dashboard-view': typeof DashboardViewRoute
-  '/data-visualization': typeof DataVisualizationRoute
-  '/enhanced-dashboard': typeof EnhancedDashboardRoute
-  '/event-type': typeof EventTypeRoute
-  '/layout-basic-demo': typeof LayoutBasicDemoRoute
-  '/layout-minimal-demo': typeof LayoutMinimalDemoRoute
-  '/media-type': typeof MediaTypeRoute
-  '/sentiment-event': typeof SentimentEventRoute
-  '/sentiment-intensity': typeof SentimentIntensityRoute
-  '/ui-showcase': typeof UiShowcaseRoute
+  __root__: typeof rootRouteImport;
+  '/': typeof IndexRoute;
+  '/agent-execution': typeof AgentExecutionRoute;
+  '/agents': typeof AgentsRoute;
+  '/dashboard': typeof DashboardRoute;
+  '/dashboard-view': typeof DashboardViewRoute;
+  '/data-visualization': typeof DataVisualizationRoute;
+  '/enhanced-dashboard': typeof EnhancedDashboardRoute;
+  '/event-type': typeof EventTypeRoute;
+  '/layout-basic-demo': typeof LayoutBasicDemoRoute;
+  '/layout-minimal-demo': typeof LayoutMinimalDemoRoute;
+  '/media-type': typeof MediaTypeRoute;
+  '/sentiment-event': typeof SentimentEventRoute;
+  '/sentiment-intensity': typeof SentimentIntensityRoute;
+  '/ui-showcase': typeof UiShowcaseRoute;
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
     | '/'
+    | '/agent-execution'
+    | '/agents'
     | '/dashboard'
     | '/dashboard-view'
     | '/data-visualization'
@@ -140,10 +160,12 @@ export interface FileRouteTypes {
     | '/media-type'
     | '/sentiment-event'
     | '/sentiment-intensity'
-    | '/ui-showcase'
-  fileRoutesByTo: FileRoutesByTo
+    | '/ui-showcase';
+  fileRoutesByTo: FileRoutesByTo;
   to:
     | '/'
+    | '/agent-execution'
+    | '/agents'
     | '/dashboard'
     | '/dashboard-view'
     | '/data-visualization'
@@ -154,10 +176,12 @@ export interface FileRouteTypes {
     | '/media-type'
     | '/sentiment-event'
     | '/sentiment-intensity'
-    | '/ui-showcase'
+    | '/ui-showcase';
   id:
     | '__root__'
     | '/'
+    | '/agent-execution'
+    | '/agents'
     | '/dashboard'
     | '/dashboard-view'
     | '/data-visualization'
@@ -168,115 +192,133 @@ export interface FileRouteTypes {
     | '/media-type'
     | '/sentiment-event'
     | '/sentiment-intensity'
-    | '/ui-showcase'
-  fileRoutesById: FileRoutesById
+    | '/ui-showcase';
+  fileRoutesById: FileRoutesById;
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  DashboardRoute: typeof DashboardRoute
-  DashboardViewRoute: typeof DashboardViewRoute
-  DataVisualizationRoute: typeof DataVisualizationRoute
-  EnhancedDashboardRoute: typeof EnhancedDashboardRoute
-  EventTypeRoute: typeof EventTypeRoute
-  LayoutBasicDemoRoute: typeof LayoutBasicDemoRoute
-  LayoutMinimalDemoRoute: typeof LayoutMinimalDemoRoute
-  MediaTypeRoute: typeof MediaTypeRoute
-  SentimentEventRoute: typeof SentimentEventRoute
-  SentimentIntensityRoute: typeof SentimentIntensityRoute
-  UiShowcaseRoute: typeof UiShowcaseRoute
+  IndexRoute: typeof IndexRoute;
+  AgentExecutionRoute: typeof AgentExecutionRoute;
+  AgentsRoute: typeof AgentsRoute;
+  DashboardRoute: typeof DashboardRoute;
+  DashboardViewRoute: typeof DashboardViewRoute;
+  DataVisualizationRoute: typeof DataVisualizationRoute;
+  EnhancedDashboardRoute: typeof EnhancedDashboardRoute;
+  EventTypeRoute: typeof EventTypeRoute;
+  LayoutBasicDemoRoute: typeof LayoutBasicDemoRoute;
+  LayoutMinimalDemoRoute: typeof LayoutMinimalDemoRoute;
+  MediaTypeRoute: typeof MediaTypeRoute;
+  SentimentEventRoute: typeof SentimentEventRoute;
+  SentimentIntensityRoute: typeof SentimentIntensityRoute;
+  UiShowcaseRoute: typeof UiShowcaseRoute;
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
     '/ui-showcase': {
-      id: '/ui-showcase'
-      path: '/ui-showcase'
-      fullPath: '/ui-showcase'
-      preLoaderRoute: typeof UiShowcaseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/ui-showcase';
+      path: '/ui-showcase';
+      fullPath: '/ui-showcase';
+      preLoaderRoute: typeof UiShowcaseRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/sentiment-intensity': {
-      id: '/sentiment-intensity'
-      path: '/sentiment-intensity'
-      fullPath: '/sentiment-intensity'
-      preLoaderRoute: typeof SentimentIntensityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/sentiment-intensity';
+      path: '/sentiment-intensity';
+      fullPath: '/sentiment-intensity';
+      preLoaderRoute: typeof SentimentIntensityRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/sentiment-event': {
-      id: '/sentiment-event'
-      path: '/sentiment-event'
-      fullPath: '/sentiment-event'
-      preLoaderRoute: typeof SentimentEventRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/sentiment-event';
+      path: '/sentiment-event';
+      fullPath: '/sentiment-event';
+      preLoaderRoute: typeof SentimentEventRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/media-type': {
-      id: '/media-type'
-      path: '/media-type'
-      fullPath: '/media-type'
-      preLoaderRoute: typeof MediaTypeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/media-type';
+      path: '/media-type';
+      fullPath: '/media-type';
+      preLoaderRoute: typeof MediaTypeRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/layout-minimal-demo': {
-      id: '/layout-minimal-demo'
-      path: '/layout-minimal-demo'
-      fullPath: '/layout-minimal-demo'
-      preLoaderRoute: typeof LayoutMinimalDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/layout-minimal-demo';
+      path: '/layout-minimal-demo';
+      fullPath: '/layout-minimal-demo';
+      preLoaderRoute: typeof LayoutMinimalDemoRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/layout-basic-demo': {
-      id: '/layout-basic-demo'
-      path: '/layout-basic-demo'
-      fullPath: '/layout-basic-demo'
-      preLoaderRoute: typeof LayoutBasicDemoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/layout-basic-demo';
+      path: '/layout-basic-demo';
+      fullPath: '/layout-basic-demo';
+      preLoaderRoute: typeof LayoutBasicDemoRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/event-type': {
-      id: '/event-type'
-      path: '/event-type'
-      fullPath: '/event-type'
-      preLoaderRoute: typeof EventTypeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/event-type';
+      path: '/event-type';
+      fullPath: '/event-type';
+      preLoaderRoute: typeof EventTypeRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/enhanced-dashboard': {
-      id: '/enhanced-dashboard'
-      path: '/enhanced-dashboard'
-      fullPath: '/enhanced-dashboard'
-      preLoaderRoute: typeof EnhancedDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/enhanced-dashboard';
+      path: '/enhanced-dashboard';
+      fullPath: '/enhanced-dashboard';
+      preLoaderRoute: typeof EnhancedDashboardRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/data-visualization': {
-      id: '/data-visualization'
-      path: '/data-visualization'
-      fullPath: '/data-visualization'
-      preLoaderRoute: typeof DataVisualizationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/data-visualization';
+      path: '/data-visualization';
+      fullPath: '/data-visualization';
+      preLoaderRoute: typeof DataVisualizationRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/dashboard-view': {
-      id: '/dashboard-view'
-      path: '/dashboard-view'
-      fullPath: '/dashboard-view'
-      preLoaderRoute: typeof DashboardViewRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/dashboard-view';
+      path: '/dashboard-view';
+      fullPath: '/dashboard-view';
+      preLoaderRoute: typeof DashboardViewRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/dashboard';
+      path: '/dashboard';
+      fullPath: '/dashboard';
+      preLoaderRoute: typeof DashboardRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/agents': {
+      id: '/agents';
+      path: '/agents';
+      fullPath: '/agents';
+      preLoaderRoute: typeof AgentsRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
+    '/agent-execution': {
+      id: '/agent-execution';
+      path: '/agent-execution';
+      fullPath: '/agent-execution';
+      preLoaderRoute: typeof AgentExecutionRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
     '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
+      id: '/';
+      path: '/';
+      fullPath: '/';
+      preLoaderRoute: typeof IndexRouteImport;
+      parentRoute: typeof rootRouteImport;
+    };
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AgentExecutionRoute: AgentExecutionRoute,
+  AgentsRoute: AgentsRoute,
   DashboardRoute: DashboardRoute,
   DashboardViewRoute: DashboardViewRoute,
   DataVisualizationRoute: DataVisualizationRoute,
@@ -288,7 +330,7 @@ const rootRouteChildren: RootRouteChildren = {
   SentimentEventRoute: SentimentEventRoute,
   SentimentIntensityRoute: SentimentIntensityRoute,
   UiShowcaseRoute: UiShowcaseRoute,
-}
+};
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();

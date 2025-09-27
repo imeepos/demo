@@ -53,6 +53,8 @@ export function AgentExecutionTable({
     query: queryParams,
   });
 
+  console.log({ executions });
+
   const getStatusBadge = (status: string) => {
     const statusConfig = {
       running: {
@@ -189,7 +191,7 @@ export function AgentExecutionTable({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {!executions || executions.length === 0 ? (
+            {!executions || executions?.data?.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} className="text-center py-12">
                   <div className="flex flex-col items-center gap-2">
@@ -199,7 +201,7 @@ export function AgentExecutionTable({
                 </TableCell>
               </TableRow>
             ) : (
-              executions.map((execution: any) => (
+              executions?.data?.map((execution: any) => (
                 <TableRow key={execution.id} className="hover:bg-muted/50">
                   <TableCell>
                     <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">

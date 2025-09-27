@@ -325,7 +325,7 @@ const DataExplorerTable = forwardRef<HTMLDivElement, DataExplorerTableProps>(
               <SelectValue placeholder="筛选" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">全部</SelectItem>
+              <SelectItem value="all">全部</SelectItem>
               {column.filterOptions.map(option => (
                 <SelectItem key={option.value} value={option.value}>
                   {option.label}

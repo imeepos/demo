@@ -30,9 +30,8 @@ export function AgentExecutionFilter({
   onDateRangeChange,
 }: AgentExecutionFilterProps) {
   const { data: agents } = useQueryAgentFindAll();
-
   const statusOptions = [
-    { label: '全部状态', value: '' },
+    { label: '全部状态', value: 'all' },
     { label: '运行中', value: 'running' },
     { label: '成功', value: 'success' },
     { label: '失败', value: 'failed' },
@@ -64,8 +63,8 @@ export function AgentExecutionFilter({
           <SelectValue placeholder="选择Agent" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="">全部Agent</SelectItem>
-          {agents?.map((agent: any) => (
+          <SelectItem value="all">全部Agent</SelectItem>
+          {agents?.data?.map((agent: any) => (
             <SelectItem key={agent.id} value={agent.id}>
               {agent.name}
             </SelectItem>
