@@ -1,10 +1,7 @@
 import { cn } from '@sker/ui';
 import { useState, useCallback, useEffect } from 'react';
-
-export interface GeoCoordinate {
-  lat: number;
-  lng: number;
-}
+import type { GeoCoordinate } from './types';
+import { validateCoordinate, formatCoordinate, convertToDMS } from './utils';
 
 export interface LocationInputProps {
   value?: GeoCoordinate;
@@ -45,23 +42,17 @@ export function LocationInput({
   // 验证纬度值
   const validateLatitude = useCallback((value: string): string => {
     if (!value.trim()) return '';
-
     const num = parseFloat(value);
     if (isNaN(num)) return '请输入有效数字';
-    if (num < -90 || num > 90) return '纬度范围：-90 到 90';
-
-    return '';
+    return validateCoordinate.latitude(num) ? '' : '纬度范围：-90 到 90';
   }, []);
 
   // 验证经度值
   const validateLongitude = useCallback((value: string): string => {
     if (!value.trim()) return '';
-
     const num = parseFloat(value);
     if (isNaN(num)) return '请输入有效数字';
-    if (num < -180 || num > 180) return '经度范围：-180 到 180';
-
-    return '';
+    return validateCoordinate.longitude(num) ? '' : '经度范围：-180 到 180';
   }, []);
 
   // 处理输入变化
@@ -100,7 +91,7 @@ export function LocationInput({
     (field: 'lat' | 'lng', value: string) => {
       if (value.trim() && !errors[field]) {
         const num = parseFloat(value);
-        const formatted = num.toFixed(precision);
+        const formatted = formatCoordinate(num, precision);
         setInputValues(prev => ({ ...prev, [field]: formatted }));
       }
     },
@@ -122,7 +113,7 @@ export function LocationInput({
   const handleClear = useCallback(() => {
     setInputValues({ lat: '', lng: '' });
     setErrors({ lat: '', lng: '' });
-    onChange?.(undefined as any);
+    onChange?.(null as unknown as GeoCoordinate);
   }, [onChange]);
 
   return (
@@ -222,8 +213,8 @@ export function LocationInput({
         <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="text-sm font-medium text-blue-800 mb-1">坐标预览</div>
           <div className="text-sm text-blue-700 font-mono">
-            {parseFloat(inputValues.lat).toFixed(precision)},{' '}
-            {parseFloat(inputValues.lng).toFixed(precision)}
+            {formatCoordinate(parseFloat(inputValues.lat), precision)},{' '}
+            {formatCoordinate(parseFloat(inputValues.lng), precision)}
           </div>
           <div className="text-xs text-blue-600 mt-1">
             DMS格式:{' '}
@@ -236,21 +227,4 @@ export function LocationInput({
       )}
     </div>
   );
-}
-
-// 转换为度分秒格式
-function convertToDMS(lat: number, lng: number): string {
-  const formatDMS = (coord: number, isLat: boolean): string => {
-    const absolute = Math.abs(coord);
-    const degrees = Math.floor(absolute);
-    const minutesFloat = (absolute - degrees) * 60;
-    const minutes = Math.floor(minutesFloat);
-    const seconds = Math.round((minutesFloat - minutes) * 60 * 100) / 100;
-
-    const direction = isLat ? (coord >= 0 ? 'N' : 'S') : coord >= 0 ? 'E' : 'W';
-
-    return `${degrees}°${minutes}'${seconds}"${direction}`;
-  };
-
-  return `${formatDMS(lat, true)} ${formatDMS(lng, false)}`;
 }

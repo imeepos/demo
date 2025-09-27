@@ -1,20 +1,7 @@
 import { cn } from '@sker/ui';
 import { useState, useCallback, useRef, useEffect } from 'react';
-
-export interface GeoCoordinate {
-  lat: number;
-  lng: number;
-}
-
-export interface SearchResult {
-  id: string;
-  name: string;
-  address: string;
-  location: GeoCoordinate;
-  district: string;
-  city: string;
-  province: string;
-}
+import type { SearchResult } from './types';
+import { AmapService, storage } from './utils';
 
 export interface AddressSearchProps {
   value?: string;
@@ -55,14 +42,8 @@ export function AddressSearch({
   // 从localStorage加载搜索历史
   useEffect(() => {
     if (showHistory) {
-      try {
-        const history = localStorage.getItem('addressSearchHistory');
-        if (history) {
-          setSearchHistory(JSON.parse(history).slice(0, 5));
-        }
-      } catch (error) {
-        console.warn('加载搜索历史失败:', error);
-      }
+      const history = storage.get<SearchResult[]>('addressSearchHistory', []);
+      setSearchHistory(history?.slice(0, 5) || []);
     }
   }, [showHistory]);
 
@@ -71,25 +52,18 @@ export function AddressSearch({
     (result: SearchResult) => {
       if (!showHistory) return;
 
-      try {
-        const newHistory = [
-          result,
-          ...searchHistory.filter(item => item.id !== result.id),
-        ].slice(0, 5);
+      const newHistory = [
+        result,
+        ...searchHistory.filter(item => item.id !== result.id),
+      ].slice(0, 5);
 
-        setSearchHistory(newHistory);
-        localStorage.setItem(
-          'addressSearchHistory',
-          JSON.stringify(newHistory)
-        );
-      } catch (error) {
-        console.warn('保存搜索历史失败:', error);
-      }
+      setSearchHistory(newHistory);
+      storage.set('addressSearchHistory', newHistory);
     },
     [searchHistory, showHistory]
   );
 
-  // 高德地图地理编码搜索
+  // 地址搜索
   const searchAddress = useCallback(
     async (searchQuery: string) => {
       if (!searchQuery.trim()) {
@@ -99,31 +73,11 @@ export function AddressSearch({
 
       setIsLoading(true);
       try {
-        const response = await fetch(
-          `https://restapi.amap.com/v3/place/text?key=d2f3394e4d2807b003a50a8a6f4bb6bb&keywords=${encodeURIComponent(searchQuery)}&types=&city=&children=1&offset=${maxResults}&page=1&extensions=base`
+        const searchResults = await AmapService.searchPlaces(
+          searchQuery,
+          maxResults
         );
-        const data = await response.json();
-
-        if (data.status === '1' && data.pois) {
-          const searchResults: SearchResult[] = data.pois.map(
-            (poi: any, index: number) => ({
-              id: poi.id || `search_${index}`,
-              name: poi.name || searchQuery,
-              address: poi.address || poi.pname + poi.cityname + poi.adname,
-              location: {
-                lng: parseFloat(poi.location.split(',')[0]),
-                lat: parseFloat(poi.location.split(',')[1]),
-              },
-              district: poi.adname || '',
-              city: poi.cityname || '',
-              province: poi.pname || '',
-            })
-          );
-
-          setResults(searchResults);
-        } else {
-          setResults([]);
-        }
+        setResults(searchResults);
       } catch (error) {
         console.warn('地址搜索失败:', error);
         setResults([]);
@@ -236,7 +190,7 @@ export function AddressSearch({
   const clearHistory = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
     setSearchHistory([]);
-    localStorage.removeItem('addressSearchHistory');
+    storage.remove('addressSearchHistory');
   }, []);
 
   // 点击外部关闭下拉框

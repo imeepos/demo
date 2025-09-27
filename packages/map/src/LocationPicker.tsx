@@ -1,11 +1,9 @@
 import { GaodeMap, Marker, Scene } from '@antv/l7';
 import { cn } from '@sker/ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
-
-export interface GeoCoordinate {
-  lat: number;
-  lng: number;
-}
+import type { GeoCoordinate, L7MouseEvent } from './types';
+import { mapConfig } from './config';
+import { AmapService, validateCoordinate, formatCoordinate } from './utils';
 
 export interface LocationPickerProps {
   value?: GeoCoordinate;
@@ -19,21 +17,14 @@ export interface LocationPickerProps {
   height?: string | number;
 }
 
-export interface L7MouseEvent {
-  lngLat?: {
-    lng: number;
-    lat: number;
-  };
-}
-
 /**
  * 基于 L7 + 高德地图的地理位置选择器组件
  */
 export function LocationPicker({
   value,
   onChange,
-  defaultCenter = { lat: 39.9042, lng: 116.4074 }, // 北京
-  zoom = 10,
+  defaultCenter = mapConfig.defaultCenter,
+  zoom = mapConfig.defaultZoom,
   enableSearch = true,
   enableAddressDisplay = true,
   placeholder = '点击地图选择位置',
@@ -56,26 +47,11 @@ export function LocationPicker({
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
-  // 高德地图地理编码API
+  // 获取地址信息
   const getAddressFromCoords = useCallback(
     async (coords: GeoCoordinate) => {
       if (!enableAddressDisplay) return '';
-
-      try {
-        // 使用高德地图逆地理编码API
-        const response = await fetch(
-          `https://restapi.amap.com/v3/geocode/regeo?key=d2f3394e4d2807b003a50a8a6f4bb6bb&location=${coords.lng},${coords.lat}&extensions=base&batch=false&roadlevel=0`
-        );
-        const data = await response.json();
-
-        if (data.status === '1' && data.regeocode) {
-          return data.regeocode.formatted_address || '';
-        }
-        return '';
-      } catch (error) {
-        console.warn('获取地址信息失败:', error);
-        return '';
-      }
+      return await AmapService.reverseGeocode(coords);
     },
     [enableAddressDisplay]
   );
@@ -87,28 +63,15 @@ export function LocationPicker({
 
       setIsSearching(true);
       try {
-        const response = await fetch(
-          `https://restapi.amap.com/v3/geocode/geo?key=d2f3394e4d2807b003a50a8a6f4bb6bb&address=${encodeURIComponent(query)}&city=全国`
-        );
-        const data = await response.json();
-
-        if (data.status === '1' && data.geocodes && data.geocodes.length > 0) {
-          const location = data.geocodes[0].location.split(',');
-          const coords = {
-            lng: parseFloat(location[0]),
-            lat: parseFloat(location[1]),
-          };
-
+        const coords = await AmapService.geocode(query);
+        if (coords) {
           await updateLocation(coords);
-
           // 移动地图中心到搜索结果
           if (sceneRef.current) {
             sceneRef.current.setCenter([coords.lng, coords.lat]);
             sceneRef.current.setZoom(15);
           }
         }
-      } catch (error) {
-        console.warn('地址搜索失败:', error);
       } finally {
         setIsSearching(false);
       }
@@ -146,8 +109,8 @@ export function LocationPicker({
     async (coords: GeoCoordinate) => {
       setCurrentLocation(coords);
       setManualInput({
-        lat: coords.lat.toFixed(6),
-        lng: coords.lng.toFixed(6),
+        lat: formatCoordinate(coords.lat),
+        lng: formatCoordinate(coords.lng),
       });
 
       // 更新标记位置
@@ -173,10 +136,7 @@ export function LocationPicker({
     if (
       !isNaN(lat) &&
       !isNaN(lng) &&
-      lat >= -90 &&
-      lat <= 90 &&
-      lng >= -180 &&
-      lng <= 180
+      validateCoordinate.coordinate({ lat, lng })
     ) {
       updateLocation({ lat, lng });
 
@@ -198,7 +158,7 @@ export function LocationPicker({
           style: 'light',
           center: [defaultCenter.lng, defaultCenter.lat],
           zoom: zoom,
-          token: 'd2f3394e4d2807b003a50a8a6f4bb6bb',
+          token: mapConfig.apiKey,
         }),
       });
 
@@ -249,8 +209,8 @@ export function LocationPicker({
     ) {
       setCurrentLocation(value);
       setManualInput({
-        lat: value.lat.toFixed(6),
-        lng: value.lng.toFixed(6),
+        lat: formatCoordinate(value.lat),
+        lng: formatCoordinate(value.lng),
       });
 
       if (isReady) {
@@ -395,8 +355,8 @@ export function LocationPicker({
             当前选择位置
           </div>
           <div className="text-sm text-blue-700">
-            纬度: {currentLocation.lat.toFixed(6)}, 经度:{' '}
-            {currentLocation.lng.toFixed(6)}
+            纬度: {formatCoordinate(currentLocation.lat)}, 经度:{' '}
+            {formatCoordinate(currentLocation.lng)}
           </div>
         </div>
       )}

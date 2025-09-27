@@ -8,40 +8,15 @@ import {
 } from '@antv/l7';
 import { cn } from '@sker/ui';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type { SentimentEvent, L7MouseEvent, ClusterOptions } from './types';
+import { mapConfig, clusterColors } from './config';
+import { getSentimentColor, processEventData, debounce } from './utils';
 
 export interface MapProps {
   events: SentimentEvent[];
-  enableCluster?: boolean; // 是否启用聚合
-  clusterRadius?: number; // 聚合半径，默认50
-  minClusterSize?: number; // 最小聚合数量，默认2
-}
-
-export interface GeoCoordinate {
-  lat: number;
-  lng: number;
-}
-
-export interface SentimentEvent {
-  id: string;
-  title: string;
-  content: string;
-  sentiment: 'positive' | 'negative' | 'neutral';
-  score: number;
-  location: GeoCoordinate;
-  address: string;
-  source: string;
-  timestamp: string;
-  hotness: number; // 热度值，影响标记点大小 1-10
-  tags?: string[];
-}
-export interface L7MouseEvent {
-  lngLat?: {
-    lng: number;
-    lat: number;
-  };
-  feature?: {
-    properties?: Record<string, unknown>;
-  };
+  enableCluster?: boolean;
+  clusterRadius?: number;
+  minClusterSize?: number;
 }
 
 /**
@@ -63,51 +38,7 @@ export function L7EventMap({
   const [loading, setLoading] = useState(true);
 
   // 缓存处理过的数据
-  const processedData = useMemo(() => {
-    const validEvents = events.filter(
-      event =>
-        event.location &&
-        typeof event.location.lng === 'number' &&
-        typeof event.location.lat === 'number' &&
-        !isNaN(event.location.lng) &&
-        !isNaN(event.location.lat) &&
-        Math.abs(event.location.lng) <= 180 &&
-        Math.abs(event.location.lat) <= 90
-    );
-
-    const pointData = validEvents.map(event => ({
-      lng: event.location.lng,
-      lat: event.location.lat,
-      title: event.title,
-      sentiment: event.sentiment,
-      hotness: event.hotness || 1,
-      address: event.address,
-      timestamp: event.timestamp,
-      score: event.score || 0,
-      source: event.source,
-      content: event.content,
-      tags: event.tags || [],
-    }));
-
-    return { validEvents, pointData };
-  }, [events]);
-
-  // 优化的颜色获取函数
-  const getSentimentColorOptimized = useCallback(
-    (sentiment: SentimentEvent['sentiment']): string => {
-      switch (sentiment) {
-        case 'positive':
-          return '#52c41a'; // 绿色
-        case 'negative':
-          return '#ff4d4f'; // 红色
-        case 'neutral':
-          return '#1890ff'; // 蓝色
-        default:
-          return '#d9d9d9'; // 灰色
-      }
-    },
-    []
-  );
+  const processedData = useMemo(() => processEventData(events), [events]);
 
   // 创建弹窗内容函数 - 兼容LayerPopup格式
   const createPopupContent = useCallback(
@@ -120,7 +51,9 @@ export function L7EventMap({
       const sentiment = String(properties.sentiment || '');
       const sentimentText = sentimentMap.get(sentiment) || '未知';
 
-      const sentimentColor = getSentimentColorOptimized(properties.sentiment as SentimentEvent['sentiment']);
+      const sentimentColor = getSentimentColor(
+        properties.sentiment as SentimentEvent['sentiment']
+      );
 
       return `
       <div style="padding: 12px; min-width: 280px; max-width: 320px; font-family: Arial, sans-serif;">
@@ -153,7 +86,7 @@ export function L7EventMap({
       </div>
     `;
     },
-    [getSentimentColorOptimized]
+    []
   );
 
   const initScene = () => {
@@ -162,9 +95,9 @@ export function L7EventMap({
         id: containerRef.current!,
         map: new GaodeMap({
           style: 'light',
-          center: [104, 35.5],
-          zoom: 4,
-          token: 'd2f3394e4d2807b003a50a8a6f4bb6bb',
+          center: [mapConfig.defaultCenter.lng, mapConfig.defaultCenter.lat],
+          zoom: mapConfig.defaultZoom,
+          token: mapConfig.apiKey,
         }),
       });
 
@@ -205,287 +138,222 @@ export function L7EventMap({
     };
   }, []);
 
-  // 更新事件数据图层（添加防抖机制）
+  // 更新图层的防抖函数
+  const updateLayersDebounced = useMemo(
+    () =>
+      debounce(() => {
+        const scene = sceneRef.current;
+        if (!scene || !isReady || !processedData.validEvents.length) return;
+
+        const { validEvents, pointData } = processedData;
+
+        // 清理现有图层
+        const existingLayers = scene.getLayers();
+        const layersToRemove = existingLayers.filter(
+          (layer: ILayer) =>
+            layer.name === 'event-points' || layer.name === 'cluster-text'
+        );
+
+        layersToRemove.forEach((layer: ILayer) => {
+          scene.removeLayer(layer);
+        });
+
+        // 创建事件点图层
+        const pointLayer = new PointLayer({ name: 'event-points' });
+
+        if (enableCluster && validEvents.length >= minClusterSize) {
+          // 启用聚合
+          pointLayer
+            .source(pointData, {
+              parser: { type: 'json', x: 'lng', y: 'lat' },
+              cluster: true,
+              clusterOptions: {
+                field: 'point_count',
+                method: 'sum',
+                radius: clusterRadius,
+                minZoom: 0,
+                maxZoom: 20,
+              },
+            })
+            .size('point_count', (count: number) => {
+              if (count === 1) return 14;
+              if (count <= 3) return 20;
+              if (count <= 6) return 28;
+              if (count <= 10) return 36;
+              return 44;
+            })
+            .color('point_count', (count: number) => {
+              if (count === 1) return getSentimentColor('neutral');
+              if (count <= 3) return clusterColors.small;
+              if (count <= 6) return clusterColors.medium;
+              if (count <= 10) return clusterColors.large;
+              return clusterColors.xlarge;
+            })
+            .shape('circle')
+            .style({ opacity: 0.9, strokeWidth: 2, stroke: '#ffffff' })
+            .select({ color: '#1890ff' })
+            .active({ color: '#0050b3' });
+        } else {
+          // 不启用聚合
+          pointLayer
+            .source(pointData, {
+              parser: { type: 'json', x: 'lng', y: 'lat' },
+            })
+            .size('hotness', (hotness: number) =>
+              Math.max(10, Math.min(30, hotness * 2.5 + 5))
+            )
+            .color('sentiment', getSentimentColor)
+            .shape('circle')
+            .style({ opacity: 0.8, strokeWidth: 2, stroke: '#ffffff' })
+            .select({ color: '#1890ff' })
+            .active({ color: '#0050b3' });
+        }
+
+        // 鼠标事件
+        pointLayer.on('mousemove', () => {
+          if (containerRef.current) {
+            containerRef.current.style.cursor = 'pointer';
+          }
+        });
+
+        pointLayer.on('mouseleave', () => {
+          if (containerRef.current) {
+            containerRef.current.style.cursor = 'grab';
+          }
+        });
+
+        scene.addLayer(pointLayer);
+
+        // 创建弹窗
+        if (layerPopupRef.current) {
+          scene.removePopup(layerPopupRef.current);
+        }
+
+        const layerPopupFields =
+          enableCluster && validEvents.length >= minClusterSize
+            ? [
+                {
+                  field: 'point_count',
+                  formatField: (props: any) =>
+                    props?.point_count === 1 ? '事件标题' : '事件数量',
+                  formatValue: (val: number, props: any) =>
+                    val === 1
+                      ? props?.title || '单个事件（放大查看详情）'
+                      : `${val} 个事件`,
+                },
+                {
+                  field: 'point_count',
+                  formatField: (props: any) =>
+                    props?.point_count === 1 ? '情感倾向' : '聚合类型',
+                  formatValue: (val: number, props: any) => {
+                    if (val === 1) {
+                      const sentimentMap = {
+                        positive: '正面',
+                        negative: '负面',
+                        neutral: '中性',
+                      };
+                      return (
+                        sentimentMap[
+                          props?.sentiment as keyof typeof sentimentMap
+                        ] || '未知'
+                      );
+                    }
+                    if (val <= 3) return '小型聚合';
+                    if (val <= 6) return '中型聚合';
+                    if (val <= 10) return '大型聚合';
+                    return '超大聚合';
+                  },
+                },
+                {
+                  field: 'point_count',
+                  formatField: () => '区域概览',
+                  formatValue: (val: number) => {
+                    const percentage = (
+                      (val / validEvents.length) *
+                      100
+                    ).toFixed(1);
+                    return `包含该区域${percentage}%的事件`;
+                  },
+                },
+                {
+                  field: 'point_count',
+                  formatField: () => '操作提示',
+                  formatValue: (val: number) =>
+                    val === 1
+                      ? '放大地图查看完整事件详情'
+                      : `放大地图查看${val}个具体事件`,
+                },
+              ]
+            : [
+                { field: 'title', formatField: () => '标题' },
+                {
+                  field: 'sentiment',
+                  formatField: () => '情感',
+                  formatValue: (val: string) => {
+                    const map = {
+                      positive: '正面',
+                      negative: '负面',
+                      neutral: '中性',
+                    };
+                    return map[val as keyof typeof map] || '未知';
+                  },
+                },
+                {
+                  field: 'content',
+                  formatField: () => '内容',
+                  formatValue: (val: string) =>
+                    val?.length > 50
+                      ? val.substring(0, 50) + '...'
+                      : val || '暂无内容',
+                },
+                { field: 'source', formatField: () => '来源' },
+                { field: 'address', formatField: () => '地址' },
+                { field: 'hotness', formatField: () => '热度' },
+                { field: 'timestamp', formatField: () => '时间' },
+              ];
+
+        const layerPopup = new LayerPopup({
+          items: [{ layer: pointLayer, fields: layerPopupFields }],
+        });
+
+        layerPopupRef.current = layerPopup;
+        scene.addPopup(layerPopup);
+
+        // 聚合文本图层
+        if (enableCluster && validEvents.length >= minClusterSize) {
+          const textLayer = new PointLayer({ name: 'cluster-text' })
+            .source(pointData, {
+              parser: { type: 'json', x: 'lng', y: 'lat' },
+              cluster: true,
+              clusterOptions: {
+                field: 'point_count',
+                method: 'sum',
+                radius: clusterRadius,
+                minZoom: 0,
+                maxZoom: 20,
+              },
+            })
+            .shape('point_count', 'text')
+            .size(14)
+            .color('#ffffff')
+            .style({
+              opacity: 1,
+              strokeWidth: 1,
+              stroke: '#333333',
+              fontFamily: 'Arial, sans-serif',
+              fontWeight: 'bold',
+            });
+
+          scene.addLayer(textLayer);
+        }
+      }, 300),
+    [processedData, isReady, enableCluster, clusterRadius, minClusterSize]
+  );
+
+  // 更新事件数据图层
   useEffect(() => {
-    if (!sceneRef.current || !isReady || !processedData.validEvents.length)
-      return;
-
-    // 使用防抖延迟更新图层，避免频繁重建
-    const scene = sceneRef.current;
-    if (!scene) return;
-
-    const { validEvents, pointData } = processedData;
-
-    // 清理现有图层，但要确保场景状态稳定
-    const existingLayers = scene.getLayers();
-    const layersToRemove = existingLayers.filter(
-      (layer: ILayer) =>
-        layer.name === 'event-points' || layer.name === 'cluster-text'
-    );
-
-    // 批量移除图层，避免多次渲染
-    layersToRemove.forEach((layer: ILayer) => {
-      scene.removeLayer(layer);
-    });
-
-    // 创建事件点图层，根据是否启用聚合采用不同配置
-    const pointLayer = new PointLayer({ name: 'event-points' });
-
-    if (enableCluster && validEvents.length >= minClusterSize) {
-      // 启用聚合
-      pointLayer
-        .source(pointData, {
-          parser: {
-            type: 'json',
-            x: 'lng',
-            y: 'lat',
-          },
-          cluster: true,
-          clusterOptions: {
-            field: 'point_count',
-            method: 'sum',
-            radius: clusterRadius,
-            minZoom: 0,
-            maxZoom: 20,
-          },
-        })
-        .size('point_count', (count: number) => {
-          if (count === 1) return 14;
-          if (count <= 3) return 20;
-          if (count <= 6) return 28;
-          if (count <= 10) return 36;
-          return 44;
-        })
-        .color('point_count', (count: number) => {
-          if (count === 1) return getSentimentColorOptimized('neutral');
-          if (count <= 3) return '#52c41a'; // 绿色
-          if (count <= 6) return '#faad14'; // 黄色
-          if (count <= 10) return '#fa8c16'; // 橙色
-          return '#f5222d'; // 红色
-        })
-        .shape('circle')
-        .style({
-          opacity: 0.9,
-          strokeWidth: 2,
-          stroke: '#ffffff',
-        })
-        .select({
-          color: '#1890ff',
-        })
-        .active({
-          color: '#0050b3',
-        });
-    } else {
-      // 不启用聚合，按情感类型着色
-      pointLayer
-        .source(pointData, {
-          parser: {
-            type: 'json',
-            x: 'lng',
-            y: 'lat',
-          },
-        })
-        .size('hotness', (hotness: number) => {
-          // 根据热度值动态计算大小，范围在10-30之间
-          return Math.max(10, Math.min(30, hotness * 2.5 + 5));
-        })
-        .color('sentiment', (sentiment: SentimentEvent['sentiment']) =>
-          getSentimentColorOptimized(sentiment)
-        )
-        .shape('circle')
-        .style({
-          opacity: 0.8,
-          strokeWidth: 2,
-          stroke: '#ffffff',
-        })
-        .select({
-          color: '#1890ff',
-        })
-        .active({
-          color: '#0050b3',
-        });
-    }
-
-    // 添加鼠标悬停效果
-    pointLayer.on('mousemove', (e: L7MouseEvent) => {
-      // 通过修改容器的CSS样式来改变鼠标样式
-      if (containerRef.current) {
-        containerRef.current.style.cursor = 'pointer';
-      }
-    });
-
-    pointLayer.on('mouseleave', () => {
-      // 恢复默认鼠标样式
-      if (containerRef.current) {
-        containerRef.current.style.cursor = 'grab';
-      }
-    });
-
-    // 添加图层到场景
-    scene.addLayer(pointLayer);
-
-    // 创建并添加LayerPopup
-    if (layerPopupRef.current) {
-      scene.removePopup(layerPopupRef.current);
-    }
-
-    const layerPopupFields = (enableCluster && validEvents.length >= minClusterSize) ? [
-      // 聚合模式：根据point_count动态显示不同内容
-      {
-        field: 'point_count',
-        formatField: (properties: any) => {
-          const count = properties?.point_count || 0;
-          return count === 1 ? '事件标题' : '事件数量';
-        },
-        formatValue: (val: number, properties: any) => {
-          if (val === 1) {
-            // 单个事件：尝试显示标题，如果没有则显示提示
-            return properties?.title || '单个事件（放大查看详情）';
-          }
-          return `${val} 个事件`;
-        },
-      },
-      {
-        field: 'point_count',
-        formatField: (properties: any) => {
-          const count = properties?.point_count || 0;
-          return count === 1 ? '情感倾向' : '聚合类型';
-        },
-        formatValue: (val: number, properties: any) => {
-          if (val === 1) {
-            // 单个事件：显示情感，如果没有则显示未知
-            const sentiment = properties?.sentiment;
-            const sentimentMap = new Map([
-              ['positive', '正面'],
-              ['negative', '负面'],
-              ['neutral', '中性'],
-            ]);
-            return sentimentMap.get(sentiment) || '未知';
-          }
-          // 多个事件：显示聚合类型
-          if (val <= 3) return '小型聚合';
-          if (val <= 6) return '中型聚合';  
-          if (val <= 10) return '大型聚合';
-          return '超大聚合';
-        },
-      },
-      {
-        field: 'point_count',
-        formatField: () => '区域概览',
-        formatValue: (val: number) => {
-          const totalEvents = validEvents.length;
-          const percentage = ((val / totalEvents) * 100).toFixed(1);
-          return `包含该区域${percentage}%的事件`;
-        },
-      },
-      {
-        field: 'point_count',
-        formatField: () => '操作提示',
-        formatValue: (val: number) => {
-          return val === 1 
-            ? '放大地图查看完整事件详情' 
-            : `放大地图查看${val}个具体事件`;
-        },
-      },
-    ] : [
-      // 单点模式：显示详细信息
-      {
-        field: 'title',
-        formatField: () => '标题',
-      },
-      {
-        field: 'sentiment',
-        formatField: () => '情感',
-        formatValue: (val: string) => {
-          const sentimentMap = new Map([
-            ['positive', '正面'],
-            ['negative', '负面'],
-            ['neutral', '中性'],
-          ]);
-          return sentimentMap.get(val) || '未知';
-        },
-      },
-      {
-        field: 'content',
-        formatField: () => '内容',
-        formatValue: (val: string) => {
-          return val && val.length > 50 ? val.substring(0, 50) + '...' : val || '暂无内容';
-        },
-      },
-      {
-        field: 'source',
-        formatField: () => '来源',
-      },
-      {
-        field: 'address',
-        formatField: () => '地址',
-      },
-      {
-        field: 'hotness',
-        formatField: () => '热度',
-      },
-      {
-        field: 'timestamp',
-        formatField: () => '时间',
-      },
-    ];
-
-    const layerPopup = new LayerPopup({
-      items: [
-        {
-          layer: pointLayer,
-          fields: layerPopupFields,
-        },
-      ],
-    });
-
-    layerPopupRef.current = layerPopup;
-    scene.addPopup(layerPopup);
-
-    // 如果启用聚合，添加单独的文本图层显示聚合数量
-    if (enableCluster && validEvents.length >= minClusterSize) {
-      // 延迟添加文本图层，确保点图层已经稳定渲染
-      if (sceneRef.current) {
-        const textLayer = new PointLayer({ name: 'cluster-text' })
-          .source(pointData, {
-            parser: {
-              type: 'json',
-              x: 'lng',
-              y: 'lat',
-            },
-            cluster: true,
-            clusterOptions: {
-              field: 'point_count',
-              method: 'sum',
-              radius: clusterRadius,
-              minZoom: 0,
-              maxZoom: 20,
-            },
-          })
-          .shape('point_count', 'text')
-          .size(14)
-          .color('#ffffff')
-          .style({
-            opacity: 1,
-            strokeWidth: 1,
-            stroke: '#333333',
-            fontFamily: 'Arial, sans-serif',
-            fontWeight: 'bold',
-          });
-
-        sceneRef.current.addLayer(textLayer);
-      }
-    }
-    return () => {};
-  }, [
-    processedData,
-    isReady,
-    enableCluster,
-    clusterRadius,
-    minClusterSize,
-    getSentimentColorOptimized,
-    createPopupContent,
-  ]);
+    updateLayersDebounced();
+  }, [updateLayersDebounced]);
 
   return (
     <div

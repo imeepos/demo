@@ -1,18 +1,39 @@
+// 组件导出
 export { L7EventMap } from './L7EventMap';
+export { LocationPicker } from './LocationPicker';
+export { LocationInput } from './LocationInput';
+export { AddressSearch } from './AddressSearch';
+
+// 类型导出
+export type { MapProps } from './L7EventMap';
+export type { LocationPickerProps } from './LocationPicker';
+export type { LocationInputProps } from './LocationInput';
+export type { AddressSearchProps } from './AddressSearch';
+
+// 公共类型导出
 export type {
   GeoCoordinate,
   L7MouseEvent,
-  MapProps,
   SentimentEvent,
-} from './L7EventMap';
+  SearchResult,
+  MapConfig,
+  ClusterOptions,
+} from './types';
 
-export { LocationPicker } from './LocationPicker';
-export type { LocationPickerProps } from './LocationPicker';
+// 工具函数导出
+export {
+  AmapService,
+  validateCoordinate,
+  getSentimentColor,
+  formatCoordinate,
+  convertToDMS,
+  debounce,
+  processEventData,
+  storage,
+} from './utils';
 
-export { LocationInput } from './LocationInput';
-export type { LocationInputProps } from './LocationInput';
+// 配置导出
+export { mapConfig, sentimentColors, clusterColors } from './config';
 
-export { AddressSearch } from './AddressSearch';
-export type { AddressSearchProps, SearchResult } from './AddressSearch';
-
+// 样式导入
 import './styles.css';
